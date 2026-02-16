@@ -2,10 +2,12 @@
 
 app-navbar {
   height: 100dvh;
-  background-color: blue;
+  background-color: all.$blue;
 }
 
 app-header {
-  background-color: red;
+  background-color: white;
   color: black;
+  filter: drop-shadow(0 1px 4px rgba(110, 110, 110, 0.4));
+  z-index: 1;
 }
