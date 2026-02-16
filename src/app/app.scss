@@ -1,0 +1,11 @@
+@use '../../public/assets/styles/all-styles.scss' as all;
+
+app-navbar {
+  height: 100dvh;
+  background-color: blue;
+}
+
+app-header {
+  background-color: red;
+  color: black;
+}
