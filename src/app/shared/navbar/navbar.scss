@@ -5,7 +5,7 @@ main {
   height: inherit;
   @include all.flexi($jc: center);
   padding: 64px 0px;
-  color: all.$grey;
+  color: all.$greyMid;
 
   > section {
     width: 100%;
@@ -28,7 +28,7 @@ nav {
   @include all.flexi($fd: column, $ai: center, $gap: 15px);
 
   .navigation {
-    @include all.flexi($gap: 16px, $jc: flex-start);
+    @include all.flexi($gap: 8px, $jc: flex-start);
     padding: 8px 56px;
     width: all.$nav-width;
     // background-color: all.$blueDark;
@@ -41,8 +41,8 @@ nav {
     }
 
     img {
-      width: 30px;
-      height: 31px;
+      width: 25px;
+      height: 26px;
     }
   }
 }
