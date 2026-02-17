@@ -4,31 +4,44 @@
       <div id="logo"><img src="assets/icons/logo-light.png" alt="Logo" /></div>
       <div>
         <nav>
+          <!-- <a href="" id="summary" 
+          (click)="setActiveNav('summary')"
+          class="navigation">
+            <img src="assets/icons/summary.png" alt="Summary" />
+            <span>Summary</span>
+          </a> -->
 
-          <a href="" class="navigation">
+          <a
+            href="#1"
+            id="summary"
+            (click)="setActiveNav('summary')"
+            class="navigation"
+            [class.active]="activeNav === 'summary'"
+          >
             <img src="assets/icons/summary.png" alt="Summary" />
             <span>Summary</span>
           </a>
 
-          <a href="" class="navigation">
+          <a href="#1" (click)="setActiveNav('add-task')"
+            class="navigation"
+            [class.active]="activeNav === 'add-task'">
             <img src="assets/icons/add-task.png" alt="Add Task" />
             <span>Add Task</span>
           </a>
 
-          <a href="" class="navigation">
+          <a href="#1" (click)="setActiveNav('board')"
+            class="navigation"
+            [class.active]="activeNav === 'board'">
             <img src="assets/icons/board.png" alt="Board" />
             <span>Board</span>
           </a>
 
-          <a href="" class="navigation">
+          <a href="" routerLink="contacts" (click)="setActiveNav('contacts')"
+            class="navigation"
+            [class.active]="activeNav === 'contacts'">
             <img src="assets/icons/contacts.png" alt="Contacts" />
             <span>Contacts</span>
           </a>
-
-          <!-- <div class="navigation">
-            <img src="assets/icons/contacts.png" alt="Contacts" /> 
-            <a href="">Contacts</a>
-          </div> -->
         </nav>
       </div>
     </section>

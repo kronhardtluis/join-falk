@@ -31,13 +31,12 @@ nav {
     @include all.flexi($gap: 8px, $jc: flex-start);
     padding: 8px 56px;
     width: all.$nav-width;
-    // background-color: all.$blueDark;
     min-height: 50px;
+    z-index: 5;
 
-    &:hover {
-      // was ist hier los????
+    &:not(.active):hover {
       cursor: pointer;
-      background-color: all.$blueDark;
+      background-color: all.$blueHover;
     }
 
     img {
@@ -45,18 +44,31 @@ nav {
       height: 26px;
     }
   }
+
+  .active {
+    background-color: all.$blueDark;
+    color: white;
+
+    >img{
+      filter: brightness(0) invert(1)
+    }
+  }
 }
 
 #legal-links {
   width: 100%;
   @include all.flexi($fd: column, $ai: flex-start);
+  z-index: 10;
 
-  >a {
+  > a {
     padding: 8px 8px 8px 52px;
+    width: 100%;
 
     &:hover {
       cursor: pointer;
       color: all.$blueLight;
+      font-weight: bold;
+      transform: translateX(6px) scale(1.1);
     }
   }
 }
