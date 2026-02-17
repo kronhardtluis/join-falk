@@ -5,15 +5,15 @@
     </div>
     <div id="header-navigation">
       <a id="help" href=""><img src="assets/icons/help.png" alt="Help" /></a>
-      <button id="user" (click)="toggleMenu()">G</button>
+      <button id="user" (click)="toggleMenu(); $event.stopPropagation()">G</button>
     </div>
   </section>
 
-  <div class="dropdown">
+  <div class="dropdown" (click)="$event.stopPropagation()" [class.open]="isMenuOpen">
     <div class="dropdown-content">
-      <a href="#">Legal Notice</a>
-      <a href="#">Privacy Policy</a>
-      <a href="#">Log out</a>
+      <a (click)="closeMenu()" href="#">Legal Notice</a>
+      <a (click)="closeMenu()" href="#">Privacy Policy</a>
+      <a (click)="closeMenu()" href="#">Log out</a>
     </div>
   </div>
 </main>

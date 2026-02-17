@@ -41,14 +41,13 @@ p {
   font-size: 20px;
 
   &:hover {
-    background-color: grey;
+    background-color: all.$greyLight;
     z-index: 10;
   }
 }
 
 .dropdown {
-  //   display: none;
-  display: block;
+  display: none;
   position: absolute;
   width: 170px;
   height: 157px;
@@ -59,7 +58,7 @@ p {
   border-top-left-radius: 20px;
   border-top-right-radius: 0;
   border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px; /* diese Ecke bleibt eckig */
+  border-bottom-right-radius: 20px; 
 
   .dropdown-content {
     width: 100%;
@@ -68,11 +67,15 @@ p {
 
     > a {
       padding: 10px;
-      width: 100%;
+      width: 80%;
 
-      &:hover{
-        background-color: all.$blueLight;
+      &:hover {
+        background-color: all.$blueHover;
       }
     }
   }
+}
+
+.dropdown.open {
+  display: flex; 
 }

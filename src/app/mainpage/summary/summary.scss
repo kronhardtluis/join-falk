@@ -1,0 +1,13 @@
+@use '../../../../public/assets/styles/all-styles.scss' as all;
+
+section{
+    width: 760px;
+    height: 100%;
+    padding-left: 140px;
+    @include all.flexi($jc: flex-start);
+}
+
+#headline{
+    @include all.flexi();
+    padding: 30px 0px;
+}
