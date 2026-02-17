@@ -68,6 +68,11 @@ p {
 
     > a {
       padding: 10px;
+      width: 100%;
+
+      &:hover{
+        background-color: all.$blueLight;
+      }
     }
   }
 }
