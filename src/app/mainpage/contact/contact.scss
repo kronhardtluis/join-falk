@@ -131,24 +131,29 @@
   }
 }
 
-::-webkit-scrollbar
- {
-    width: 7px;
-}
-::-webkit-scrollbar {
-    width: 7px;
-}
-::-webkit-scrollbar-corner {
-    background-color: transparent;
-}
-::-webkit-scrollbar-corner {
-    background-color: transparent;
-}
-::-webkit-scrollbar-thumb {
-    background: #dedede;
-    border-radius: 10px;
-}
-::-webkit-scrollbar-thumb {
-    background: #dedede;
-    border-radius: 10px;
-}
+
+// #region in styles.css eingefügt
+
+// ::-webkit-scrollbar
+//  {
+//     width: 7px;
+// }
+// ::-webkit-scrollbar {
+//     width: 7px;
+// }
+// ::-webkit-scrollbar-corner {
+//     background-color: transparent;
+// }
+// ::-webkit-scrollbar-corner {
+//     background-color: transparent;
+// }
+// ::-webkit-scrollbar-thumb {
+//     background: #dedede;
+//     border-radius: 10px;
+// }
+// ::-webkit-scrollbar-thumb {
+//     background: #dedede;
+//     border-radius: 10px;
+// }
+
+// #endregion
