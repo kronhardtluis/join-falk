@@ -1,1 +1,41 @@
-<p>contact works!</p>
+<div class="contact-site">
+  <div class="main-contacts-list">
+
+  <button (click)="openAddDialogWindow()" class="add-contact-btn">Add new contact</button>
+
+  @if (dbService.contacts().length > 0) {
+    <div class="list">
+      @for (contact of dbService.contacts(); track contact.id; let i = $index){
+        <div>
+          <div>
+            @let currentLetter = contact.name[0].toUpperCase();
+            @let previousContact = dbService.contacts()[i - 1];
+            @if (i === 0 || currentLetter !== previousContact.name[0].toUpperCase()) {
+              <div>
+                <h2 class="letter">{{ currentLetter }}</h2>
+                <div class="line-contacts"></div>
+              </div>
+            }
+            </div>
+            <div class="simple-info" (click)="openDetailDialogWindow(contact.id)" [class.active]="selectedContactId() === contact.id">
+              <span class="roundContact" [style.background-color]="contact.color" >{{contact.name[0].toUpperCase()}}{{ getSecondInitial(contact.name) }}</span>
+              <div>
+                <span>{{ contact.name }}</span><br>
+                <span class="email">{{ contact.email }}</span>
+              </div>
+            </div>
+          </div>
+        }
+    </div>
+  }
+  </div>
+
+  <div class="main-contact-info">
+    <div class="contact-header">
+      <p class="contact-header__title">Contacts</p>
+      <div class="contact-header__separator"></div>
+      <p class="contact-header__description">Better with a team</p>
+    </div>
+  </div>
+
+</div>

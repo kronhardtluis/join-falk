@@ -9,7 +9,7 @@ import { RouterLink } from "@angular/router";
   styleUrl: './navbar.scss',
 })
 export class Navbar {
-  activeNav: string = ''; 
+  activeNav: string = '';
 
   setActiveNav(id: string) {
     this.activeNav = id;
