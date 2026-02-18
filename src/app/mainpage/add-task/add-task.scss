@@ -1,0 +1,55 @@
+@use '../../../../public/assets/styles/all-styles.scss' as all;
+
+section {
+  display: flex;
+  min-height: 50%;
+  max-width: 1070px;
+  width: 100%;
+  margin-top: 32px;
+  overflow-y: auto;
+
+  div {
+    @include all.flexi($fd: column, $ai: start);
+    flex: 1;
+    max-width: 1070px;
+    width: 100%;
+
+    p {
+      margin-block: 16px 8px;
+    }
+
+    input,
+    textarea {
+      border-radius: 8px;
+      // border: 1px solid gray;
+      box-shadow: 0px 0px 2px;
+      padding: 12px 8px;
+      background-color: white;
+      width: 100%;
+      margin: 3px;
+
+      &:focus {
+        box-shadow: all.$blueLight;
+      }
+    }
+
+    textarea {
+      flex: 1;
+    }
+
+    span {
+      color: red;
+    }
+
+    #descrition {
+      flex: 1;
+    }
+  }
+
+  #line {
+    height: 100%;
+    width: 10px;
+    background-color: black;
+    flex: none;
+  }
+}

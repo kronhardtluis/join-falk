@@ -1,6 +1,28 @@
 <h1><strong>Add Task</strong></h1>
 
-<p>Title <span>*</span></p>
-<input placeholder="Enter a Title" type="text">
-<p>Description</p>
-<input placeholder="Enter a Description" type="text">
+<section id="form">
+  <div>
+    <p>Title <span>*</span></p>
+    <input placeholder="Enter a Title" type="text">
+    <p>Description</p>
+    <textarea placeholder="Enter a Description" name="description" id="description"></textarea>
+    <p>Assigned to</p>
+
+    <!-- #region - Kontakte laden. Wie? -->
+    <input placeholder="Select contacts to assign" list="contacts" name="contacts" />
+    <datalist id="contacts">
+      <option value="A">
+      <option value="B">
+      <option value="C">
+      <option value="D">
+      <option value="E">
+      <option value="F">
+    </datalist>
+    <!-- #endregion -->
+
+  </div>
+  <div id="line"></div>
+  <div>
+
+  </div>
+</section>
