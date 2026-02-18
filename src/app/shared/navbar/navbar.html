@@ -5,7 +5,7 @@
       <div>
         <nav>
           <a
-            href="#1"
+            href=""
             routerLink="summary"
             id="summary"
             (click)="setActiveNav('summary')"
@@ -28,7 +28,8 @@
           </a>
 
           <a
-            href="#1"
+            href=""
+            routerLink="board"
             (click)="setActiveNav('board')"
             class="navigation"
             [class.active]="activeNav === 'board'"
@@ -52,8 +53,8 @@
     </section>
 
     <section id="legal-links">
-      <a href="">Privacy Policy</a>
-      <a href="">Legal Notice</a>
+      <a routerLink="privacy-policy" href="">Privacy Policy</a>
+      <a routerLink="legal-notice" href="">Legal Notice</a>
     </section>
   </section>
 </main>

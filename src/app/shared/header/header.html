@@ -4,16 +4,16 @@
       <p>Kanban Project Management Tool</p>
     </div>
     <div id="header-navigation">
-      <a id="help" href=""><img src="assets/icons/help.png" alt="Help" /></a>
+      <a id="help" routerLink="help"><img src="assets/icons/help.png" alt="Help" /></a>
       <button id="user" (click)="toggleMenu(); $event.stopPropagation()">G</button>
     </div>
   </section>
 
   <div class="dropdown" (click)="$event.stopPropagation()" [class.open]="isMenuOpen">
     <div class="dropdown-content">
-      <a (click)="closeMenu()" href="#">Legal Notice</a>
-      <a (click)="closeMenu()" href="#">Privacy Policy</a>
-      <a (click)="closeMenu()" href="#">Log out</a>
+      <a routerLink="legal-notice" (click)="closeMenu()">Legal Notice</a>
+      <a routerLink="privacy-policy" (click)="closeMenu()">Privacy Policy</a>
+      <a routerLink="" (click)="closeMenu()">Log out</a>
     </div>
   </div>
 </main>

@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { NgIf } from "../../../../node_modules/@angular/common/types/_common_module-chunk";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-summary',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './summary.html',
   styleUrl: './summary.scss',
 })
 export class Summary {
-  backgroundColor: string = '';
+  
 }
