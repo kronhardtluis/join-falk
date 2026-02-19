@@ -1,33 +1,41 @@
 <div class="contact-site">
   <div class="main-contacts-list">
+    <button (click)="openAddDialogWindow()" class="add-contact-btn">Add new contact</button>
 
-  <button (click)="openAddDialogWindow()" class="add-contact-btn">Add new contact</button>
-
-  @if (dbService.contacts().length > 0) {
+    @if (dbService.contacts().length > 0) {
     <div class="list">
       @for (contact of dbService.contacts(); track contact.id; let i = $index){
+      <div>
         <div>
+          @let currentLetter = contact.name[0].toUpperCase(); @let previousContact =
+          dbService.contacts()[i - 1]; @if (i === 0 || currentLetter !==
+          previousContact.name[0].toUpperCase()) {
           <div>
-            @let currentLetter = contact.name[0].toUpperCase();
-            @let previousContact = dbService.contacts()[i - 1];
-            @if (i === 0 || currentLetter !== previousContact.name[0].toUpperCase()) {
-              <div>
-                <h2 class="letter">{{ currentLetter }}</h2>
-                <div class="line-contacts"></div>
-              </div>
-            }
-            </div>
-            <div class="simple-info" (click)="contact.id !== undefined && openDetailDialogWindow(contact.id)" [class.active]="selectedContactId() === contact.id">
-              <span class="roundContact" [style.background-color]="contact.color" >{{contact.name[0].toUpperCase()}}{{ getSecondInitial(contact.name) }}</span>
-              <div>
-                <span>{{ contact.name }}</span><br>
-                <span class="email"><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></span>
-              </div>
-            </div>
+            <h2 class="letter">{{ currentLetter }}</h2>
+            <div class="line-contacts"></div>
           </div>
-        }
+          }
+        </div>
+        <div
+          class="simple-info"
+          (click)="contact.id !== undefined && openDetailDialogWindow(contact.id)"
+          [class.active]="selectedContactId() === contact.id"
+        >
+          <span class="roundContact" [style.background-color]="contact.color"
+            >{{ contact.name[0].toUpperCase() }}{{ getSecondInitial(contact.name) }}</span
+          >
+          <div>
+            <span>{{ contact.name }}</span
+            ><br />
+            <span class="email"
+              ><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></span
+            >
+          </div>
+        </div>
+      </div>
+      }
     </div>
-  }
+    }
   </div>
 
   <div class="main-contact-info">
@@ -39,44 +47,77 @@
 
     <div class="contact-description" [class.show]="selectedContactId()">
       @if (selectedContactData(); as contact) {
-        <div class="header-details">
-          <div class="roundContact-large" [style.background-color]="contact.color">
-              {{ contact.name[0].toUpperCase() }}{{ getSecondInitial(contact.name) }}
+      <div class="header-details">
+        <div class="roundContact-large" [style.background-color]="contact.color">
+          {{ contact.name[0].toUpperCase() }}{{ getSecondInitial(contact.name) }}
+        </div>
+
+        <div class="name-container">
+          <h2>{{ contact.name }}</h2>
+          <div class="action-buttons">
+            <button class="btn-edit" (click)="openAddDialogWindow()">
+              <img src="assets/img/edit.svg" alt="" /> Edit
+            </button>
+            <button class="btn-delete"><img src="assets/img/delete.svg" alt="" /> Delete</button>
           </div>
+        </div>
+      </div>
 
-            <div class="name-container">
-              <h2>{{ contact.name }}</h2>
-              <div class="action-buttons">
-                <button class="btn-edit" (click)="openAddDialogWindow()">
-                  <img src="assets/img/edit.svg" alt=""> Edit
-                </button>
-                <button class="btn-delete">
-                  <img src="assets/img/delete.svg" alt=""> Delete
-                </button>
-              </div>
-            </div>
+      <div class="contact-info-details">
+        <p class="section-title">Contact Information</p>
+
+        <div class="detail-item">
+          <p class="label">Email</p>
+          <p class="value email">{{ contact.email }}</p>
         </div>
 
-        <div class="contact-info-details">
-            <p class="section-title">Contact Information</p>
-
-            <div class="detail-item">
-              <p class="label">Email</p>
-              <p class="value email">{{ contact.email }}</p>
-            </div>
-
-            <div class="detail-item">
-              <p class="label">Phone</p>
-              <p class="value">{{ contact.phone || 'No phone number' }}</p>
-            </div>
+        <div class="detail-item">
+          <p class="label">Phone</p>
+          <p class="value">{{ contact.phone || 'No phone number' }}</p>
         </div>
+      </div>
       }
     </div>
-
   </div>
 
+  <dialog>
+    <div>
+      <section id="left-section">
+        <img id="logo" src="assets/icons/logo-light.png" alt="Logo" />
+        <h3>Add contact</h3>
+        <p>Tasks are better with a team</p>
+        <img src="assets/icons/blue-underline.png" alt="Underline" />
+      </section>
+
+      <section id="right-section">
+        <div id="user">
+          <img src="assets/icons/unknown-user.png" alt="User" />
+        </div>
+        <div id="form-container">
+          <button id="close">
+            <img id="default-close" src="assets/icons/close-blue.png" alt="Close" />
+            <img id="hover-close" src="assets/icons/close-light-blue.png" alt="Close-Blue" />
+          </button>
+          <!-- [formGroup]="userForm" (ngSubmit)="formSubmit()" -->
+          <form action="">
+            <input id="name" formControlName="name" type="text" placeholder="Name" />
+
+            <input id="mail" formControlName="email" type="text" placeholder="E-Mail" />
+
+            <input id="phone" formControlName="phone" type="text" placeholder="Phone" />
+            <div id="dialog-buttons">
+              <button id="cancel">
+                Cancel
+                <img src="assets/icons/close-blue.png" alt="Cancel" />
+              </button>
+              <button id="create-contact">
+                Create contact
+                <img src="assets/icons/check.png" alt="">
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+  </dialog>
 </div>
-
-<dialog>
-
-</dialog>
