@@ -20,7 +20,7 @@ export class Contact {
 
   public selectedContactId = signal<number | null>(null);
   public selectedContactData = signal<ContactData | null>(null);
-
+  public isVisible = signal(false);
   dbService = inject(Supabase);
 
   /**
@@ -50,7 +50,7 @@ export class Contact {
   * @param {number} [id] - The optional unique identifier of the contact (required for 'edit' and 'delete').
   * @returns {void}
   */
-  openDialogWindow(type:string, id?:number){
+  openDialogWindow(type:'addContact' | 'editContact' | 'deleteContact', id?:number){
     if(type === "addContact"){
       console.log("Opened dialog window for add new contact. ID will be ignored.")
     } else if(type === "editContact") {
@@ -62,17 +62,23 @@ export class Contact {
   }
 
   /**
-  * Opens the contact detail view and fetches specific contact data from the database.
-  * Sets the selected contact ID immediately to trigger UI highlighting,
-  * then asynchronously loads and sets the detailed contact data.
+  * Opens the contact detail view with a smooth transition effect.
+  * If a contact is already displayed, it triggers an exit animation, waits for its completion,
+  * then fetches new contact data from the database and triggers an entry animation.
   * * @param {number} id - The unique identifier of the contact to be displayed.
-  * @returns {Promise<void>} A promise that resolves when the contact data is fetched and set.
+  * @returns {Promise<void>} A promise that resolves once the animations are sequenced
+  * and the new data is rendered.
   */
   async openDetailDialogWindow(id: number) {
+    if (this.isVisible()) {
+      this.isVisible.set(false);
+      await new Promise(resolve => setTimeout(resolve, 250));
+    }
     this.selectedContactId.set(id);
-    const DATA = await this.dbService.getContactById(id);
-    if (DATA) {
-      this.selectedContactData.set(DATA);
+    const data = await this.dbService.getContactById(id);
+    if (data) {
+      this.selectedContactData.set(data);
+      this.isVisible.set(true);
     }
   }
 

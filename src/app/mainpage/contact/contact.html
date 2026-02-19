@@ -36,8 +36,7 @@
       <div class="contact-header__separator"></div>
       <p class="contact-header__description">Better with a team</p>
     </div>
-
-    <div class="contact-description" [class.show]="selectedContactId()">
+    <div class="contact-description" [class.active-view]="isVisible()">
       @if (selectedContactData(); as contact) {
         <div class="header-details">
           <div class="roundContact-large" [style.background-color]="contact.color">
