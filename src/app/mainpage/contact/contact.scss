@@ -104,6 +104,7 @@
   width: 60%;
   height: 100%;
   padding: 0px 40px;
+  overflow: hidden;
 
   .contact-header {
     margin: 40px 0px;
@@ -132,114 +133,7 @@
     }
   }
 
-  .contact-description {
-  }
-}
+  .contact-description{
 
-dialog {
-  position: absolute;
-  z-index: 100;
-  width: 90%;
-  height: 90%;
-  background-color: white;
-  display: block;
-  border-radius: 30px;
-  overflow: hidden;
-
-  > div {
-    display: flex;
-    width: 100%;
-    height: 100%;
-  }
-
-  #left-section {
-    padding-left: 40px;
-    width: 40%;
-    background-color: all.$blue;
-    color: white;
-    @include all.flexi($fd: column, $ai: flex-start);
-
-    #logo {
-      width: 57px;
-      height: 67px;
-    }
-
-    h3 {
-      font-size: 6rem;
-      margin-top: 10px;
-    }
-
-    p {
-      margin: 22.5px 0px;
-      font-size: 2.8rem;
-    }
-  }
-
-  #right-section {
-    width: 60%;
-    @include all.flexi($jc: flex-start);
-
-    #user {
-      width: 30%;
-      @include all.flexi($ai: center);
-      margin: 0px 16px;
-    }
-
-    #form-container {
-      width: 100%;
-      height: 100%;
-      @include all.flexi($ai: center, $jc:center);
-
-      #hover-close{
-        display: none;
-      }
-
-      #close{
-        position: absolute;
-        top: 5%;
-        right: 10%;
-        padding: 8px;
-        background-color: transparent;
-
-        &:hover{
-          cursor: pointer;
-
-          #default-close{
-            display: none;
-          }
-
-          #hover-close{
-            display: block;
-          }
-
-        }
-      }
-    }
-
-    form {
-      width: 100%;
-      @include all.flexi($fd: column, $ai: center, $jc:center, $gap: 32px);
-    }
-
-    input {
-      width: 80%;
-      border-radius: 10px;
-      box-shadow: 0px 0px 1px;
-      padding: 8px 21px;
-      margin: 3px;
-
-      &::placeholder {
-        font-size: 1.3rem;
-      }
-    }
-  }
-
-  #dialog-buttons{
-    width: 100%;
-    @include all.flexi($jc:center, $gap: 24px);
-
-    #cancel{
-      @include all.flexi($jc:center, $ai: center)
-    }
   }
 }
