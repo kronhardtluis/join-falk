@@ -1,6 +1,14 @@
 import { Component } from '@angular/core';
-import { inject, signal } from '@angular/core';
+import { inject, signal, OnInit } from '@angular/core';
 import { Supabase } from '../../services/supabase';
+
+interface ContactData {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  color: string;
+}
 
 @Component({
   selector: 'app-contact',
@@ -11,10 +19,11 @@ import { Supabase } from '../../services/supabase';
 export class Contact {
 
   public selectedContactId = signal<number | null>(null);
+  public selectedContactData = signal<ContactData | null>(null);
 
- //Hier binden wir den Datenbankdienst ein.
   dbService = inject(Supabase);
-  //Hier laden wir Daten vom Server herunter.
+
+
   ngOnInit(){
     this.dbService.getContacts();
     this.dbService.subscribeToContactsChanges();
@@ -26,17 +35,28 @@ export class Contact {
   * @returns {string} The second initial or an empty string if not found.
   */
   getSecondInitial(name: string): string {
-    const parts = name.trim().split(/\s+/);
-    return parts.length > 1 ? parts[1][0].toUpperCase() : '';
+    const PARTS = name.trim().split(/\s+/);
+    return PARTS.length > 1 ? PARTS[1][0].toUpperCase() : '';
   }
+
 
   openAddDialogWindow(){
     console.log('Opened add dialog window');
   }
 
-  openDetailDialogWindow(id: number | undefined){
-    console.log("Opened contact detail with id:" + id)
-    if(id) this.selectedContactId.set(id);
+
+  async openDetailDialogWindow(id: number) {
+    this.selectedContactId.set(id);
+    const DATA = await this.dbService.getContactById(id);
+    if (DATA) {
+      this.selectedContactData.set(DATA);
+    }
+  }
+
+
+  closeDetailView() {
+    this.selectedContactData.set(null);
+    this.selectedContactId.set(null);
   }
 
 }

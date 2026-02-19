@@ -17,11 +17,11 @@
               </div>
             }
             </div>
-            <div class="simple-info" (click)="openDetailDialogWindow(contact.id)" [class.active]="selectedContactId() === contact.id">
+            <div class="simple-info" (click)="contact.id !== undefined && openDetailDialogWindow(contact.id)" [class.active]="selectedContactId() === contact.id">
               <span class="roundContact" [style.background-color]="contact.color" >{{contact.name[0].toUpperCase()}}{{ getSecondInitial(contact.name) }}</span>
               <div>
                 <span>{{ contact.name }}</span><br>
-                <span class="email">{{ contact.email }}</span>
+                <span class="email"><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></span>
               </div>
             </div>
           </div>
@@ -36,6 +36,47 @@
       <div class="contact-header__separator"></div>
       <p class="contact-header__description">Better with a team</p>
     </div>
+
+    <div class="contact-description" [class.show]="selectedContactId()">
+      @if (selectedContactData(); as contact) {
+        <div class="header-details">
+          <div class="roundContact-large" [style.background-color]="contact.color">
+              {{ contact.name[0].toUpperCase() }}{{ getSecondInitial(contact.name) }}
+          </div>
+
+            <div class="name-container">
+              <h2>{{ contact.name }}</h2>
+              <div class="action-buttons">
+                <button class="btn-edit" (click)="openAddDialogWindow()">
+                  <img src="assets/img/edit.svg" alt=""> Edit
+                </button>
+                <button class="btn-delete">
+                  <img src="assets/img/delete.svg" alt=""> Delete
+                </button>
+              </div>
+            </div>
+        </div>
+
+        <div class="contact-info-details">
+            <p class="section-title">Contact Information</p>
+
+            <div class="detail-item">
+              <p class="label">Email</p>
+              <p class="value email">{{ contact.email }}</p>
+            </div>
+
+            <div class="detail-item">
+              <p class="label">Phone</p>
+              <p class="value">{{ contact.phone || 'No phone number' }}</p>
+            </div>
+        </div>
+      }
+    </div>
+
   </div>
 
 </div>
+
+<dialog>
+
+</dialog>
