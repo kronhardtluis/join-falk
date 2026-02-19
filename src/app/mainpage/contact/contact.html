@@ -63,6 +63,43 @@
 
 </div>
 
-<dialog>
+  <dialog>
+    <div>
+      <section id="left-section">
+        <img id="logo" src="assets/icons/logo-light.png" alt="Logo" />
+        <h3>Add contact</h3>
+        <p>Tasks are better with a team</p>
+        <img src="assets/icons/blue-underline.png" alt="Underline" />
+      </section>
 
-</dialog>
+      <section id="right-section">
+        <div id="user">
+          <img src="assets/icons/unknown-user.png" alt="User" />
+        </div>
+        <div id="form-container">
+          <button id="close">
+            <img id="default-close" src="assets/icons/close-blue.png" alt="Close" />
+            <img id="hover-close" src="assets/icons/close-light-blue.png" alt="Close-Blue" />
+          </button>
+          <!-- [formGroup]="userForm" (ngSubmit)="formSubmit()" -->
+          <form action="">
+            <input id="name" formControlName="name" type="text" placeholder="Name" />
+
+            <input id="mail" formControlName="email" type="text" placeholder="E-Mail" />
+
+            <input id="phone" formControlName="phone" type="text" placeholder="Phone" />
+            <div id="dialog-buttons">
+              <button id="cancel">
+                Cancel
+                <img src="assets/icons/close-blue.png" alt="Cancel" />
+              </button>
+              <button id="create-contact">
+                Create contact
+                <img src="assets/icons/check.png" alt="">
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+  </dialog>
