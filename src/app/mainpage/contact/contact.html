@@ -1,33 +1,43 @@
 <div class="contact-site">
   <div class="main-contacts-list">
+    <button (click)="openDialogWindow('addContact')" class="add-contact-btn">
+      Add new contact
+    </button>
 
-  <button (click)="openDialogWindow('addContact')" class="add-contact-btn">Add new contact</button>
-
-  @if (dbService.contacts().length > 0) {
+    @if (dbService.contacts().length > 0) {
     <div class="list">
       @for (contact of dbService.contacts(); track contact.id; let i = $index){
+      <div>
         <div>
+          @let currentLetter = contact.name[0].toUpperCase(); @let previousContact =
+          dbService.contacts()[i - 1]; @if (i === 0 || currentLetter !==
+          previousContact.name[0].toUpperCase()) {
           <div>
-            @let currentLetter = contact.name[0].toUpperCase();
-            @let previousContact = dbService.contacts()[i - 1];
-            @if (i === 0 || currentLetter !== previousContact.name[0].toUpperCase()) {
-              <div>
-                <h2 class="letter">{{ currentLetter }}</h2>
-                <div class="line-contacts"></div>
-              </div>
-            }
-            </div>
-            <div class="simple-info" (click)="contact.id !== undefined && openDetailDialogWindow(contact.id)" [class.active]="selectedContactId() === contact.id">
-              <span class="roundContact" [style.background-color]="contact.color" >{{contact.name[0].toUpperCase()}}{{ getSecondInitial(contact.name) }}</span>
-              <div>
-                <span>{{ contact.name }}</span><br>
-                <span class="email"><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></span>
-              </div>
-            </div>
+            <h2 class="letter">{{ currentLetter }}</h2>
+            <div class="line-contacts"></div>
           </div>
-        }
+          }
+        </div>
+        <div
+          class="simple-info"
+          (click)="contact.id !== undefined && openDetailDialogWindow(contact.id)"
+          [class.active]="selectedContactId() === contact.id"
+        >
+          <span class="roundContact" [style.background-color]="contact.color"
+            >{{ contact.name[0].toUpperCase() }}{{ getSecondInitial(contact.name) }}</span
+          >
+          <div>
+            <span>{{ contact.name }}</span
+            ><br />
+            <span class="email"
+              ><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></span
+            >
+          </div>
+        </div>
+      </div>
+      }
     </div>
-  }
+    }
   </div>
 
   <div class="main-contact-info">
@@ -38,31 +48,40 @@
     </div>
     <div class="contact-description" [class.active-view]="isVisible()">
       @if (selectedContactData(); as contact) {
-        <div class="header-details">
-          <div class="roundContact-large" [style.background-color]="contact.color">
-              {{ contact.name[0].toUpperCase() }}{{ getSecondInitial(contact.name) }}
-          </div>
+      <div class="header-details">
+        <div class="roundContact-large" [style.background-color]="contact.color">
+          {{ contact.name[0].toUpperCase() }}{{ getSecondInitial(contact.name) }}
+        </div>
 
-          <div class="name-container">
-              <h3>{{ contact.name }}</h3>
-              <div class="action-buttons">
-                <button class="btn-edit" (click)="openDialogWindow('editContact',contact.id)">Edit</button>
-                <button class="btn-delete" (click)="openDialogWindow('deleteContact',contact.id)">Delete</button>
-              </div>
+        <div class="name-container">
+          <h3>{{ contact.name }}</h3>
+          <div class="action-buttons">
+            <button class="btn-edit" (click)="openDialogWindow('editContact', contact.id)">
+              Edit
+            </button>
+            <button class="btn-delete" (click)="openDialogWindow('deleteContact', contact.id)">
+              Delete
+            </button>
           </div>
         </div>
-        <h4>Contact Information</h4>
-        <h5 class="label">Email</h5>
-        <p><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></p>
-        <h5 class="label">Phone</h5>
-        <p class="value">{{ contact.phone || 'No phone number' }}</p>
+      </div>
+      <h4>Contact Information</h4>
+      <h5 class="label">Email</h5>
+      <p>
+        <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
+      </p>
+      <h5 class="label">Phone</h5>
+      <p class="value">{{ contact.phone || 'No phone number' }}</p>
       }
     </div>
-
   </div>
 
-   <dialog>
+  <dialog>
     <div>
+      <button id="close">
+        <img id="default-close" src="assets/icons/close-blue.png" alt="Close" />
+        <img id="hover-close" src="assets/icons/close-light-blue.png" alt="Close-Blue" />
+      </button>
       <section id="left-section">
         <img id="logo" src="assets/icons/logo-light.png" alt="Logo" />
         <h3>Add contact</h3>
@@ -75,25 +94,29 @@
           <img src="assets/icons/unknown-user.png" alt="User" />
         </div>
         <div id="form-container">
-          <button id="close">
-            <img id="default-close" src="assets/icons/close-blue.png" alt="Close" />
-            <img id="hover-close" src="assets/icons/close-light-blue.png" alt="Close-Blue" />
-          </button>
           <!-- [formGroup]="userForm" (ngSubmit)="formSubmit()" -->
           <form action="">
-            <input id="name" formControlName="name" type="text" placeholder="Name" />
-
-            <input id="mail" formControlName="email" type="text" placeholder="E-Mail" />
-
-            <input id="phone" formControlName="phone" type="text" placeholder="Phone" />
+            <div class="input-icons">
+              <img class="icon" src="assets/icons/person.png" alt="User" />
+              <input id="name" formControlName="name" type="text" placeholder="Name" />
+            </div>
+            <div class="input-icons">
+              <img class="icon" src="assets/icons/mail.png" alt="Mail" />
+              <input id="mail" formControlName="email" type="text" placeholder="E-Mail" />
+            </div>
+            <div class="input-icons">
+              <img class="icon" src="assets/icons/phone.png" alt="Phone" />
+              <input id="phone" formControlName="phone" type="text" placeholder="Phone" />
+            </div>
             <div id="dialog-buttons">
               <button id="cancel">
                 Cancel
-                <img src="assets/icons/close-blue.png" alt="Cancel" />
+                <img id="cancel-default" src="assets/icons/close-blue.png" alt="Cancel" />
+                <img id="cancel-hover" src="assets/icons/close-light-blue.png" alt="Cancel" />
               </button>
               <button id="create-contact">
                 Create contact
-                <img src="assets/icons/check.png" alt="">
+                <img src="assets/icons/check.png" alt="Check" />
               </button>
             </div>
           </form>
@@ -101,7 +124,5 @@
       </section>
     </div>
   </dialog>
-
+  
 </div>
-
- 

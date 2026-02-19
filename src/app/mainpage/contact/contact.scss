@@ -1,6 +1,6 @@
 @use '../../../../public/assets/styles/all-styles.scss' as all;
 
-.contact-site{
+.contact-site {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -10,17 +10,17 @@
   align-items: flex-start;
 }
 
-.main-contacts-list{
+.main-contacts-list {
   width: 40%;
   height: calc(100vh - 96px);
   padding: 0px 20px;
 
-  .list{
+  .list {
     width: 100%;
     height: calc(100% - 20px - 56px);
     overflow-y: auto;
 
-    .letter{
+    .letter {
       width: 100%;
       height: 58px;
       display: flex;
@@ -32,14 +32,14 @@
       justify-content: center;
     }
 
-    .line-contacts{
+    .line-contacts {
       width: 100%;
       border: 1px;
       background-color: all.$greyMid;
       height: 1px;
     }
 
-    .simple-info{
+    .simple-info {
       height: 58px;
       padding-left: 20px;
       font-size: 20px;
@@ -53,21 +53,21 @@
       margin: 16px 0px;
       border-radius: 10px;
       cursor: pointer;
-      &:hover{
+      &:hover {
         background-color: all.$greyMid;
       }
     }
 
-    .active{
+    .active {
       background-color: all.$blue;
       color: all.$grey;
     }
 
-    .email{
+    .email {
       color: all.$blueLight;
     }
 
-    .roundContact{
+    .roundContact {
       border-radius: 50%;
       height: 75%;
       aspect-ratio: 1;
@@ -80,7 +80,7 @@
     }
   }
 
-  .add-contact-btn{
+  .add-contact-btn {
     background-image: url(/assets/icons/add-person.png);
     background-repeat: no-repeat;
     background-position: 90%;
@@ -94,19 +94,19 @@
     font-size: 18px;
     margin-top: 20px;
     z-index: 90;
-    &:hover{
+    &:hover {
       background-color: all.$blueLight;
     }
   }
 }
 
-.main-contact-info{
+.main-contact-info {
   width: 60%;
   height: 100%;
   padding: 0px 40px;
   overflow: hidden;
 
-  .contact-header{
+  .contact-header {
     margin: 40px 0px;
     display: flex;
     flex-direction: row;
@@ -116,24 +116,24 @@
     align-items: center;
     height: 60px;
     gap: 30px;
-    &__title{
+    &__title {
       font-size: 60px;
       width: 70%;
       font-weight: 700;
     }
-    &__separator{
+    &__separator {
       height: 100%;
       width: 2px;
       background-color: all.$blueLight;
     }
-    &__description{
+    &__description {
       width: 30%;
       font-size: 18px;
       font-weight: 400px;
     }
   }
 
-  .contact-description{
+  .contact-description {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -148,7 +148,7 @@
       opacity: 1;
       transition: transform 0.3s ease-out, opacity 0.3s ease-out;
     }
-    .header-details{
+    .header-details {
       width: 100%;
       height: 140px;
       display: flex;
@@ -157,7 +157,7 @@
       justify-content: flex-start;
       align-items: center;
       gap: 10px;
-      .roundContact-large{
+      .roundContact-large {
         height: 100px;
         aspect-ratio: 1;
         border-radius: 50%;
@@ -171,15 +171,15 @@
         align-items: center;
         color: white;
       }
-      .name-container{
+      .name-container {
         padding-left: 20px;
-        h3{
+        h3 {
           font-size: 47px;
           margin-block-start: 0;
           margin-block-end: 0;
           font-weight: 500;
         }
-        .action-buttons{
+        .action-buttons {
           display: flex;
           flex-direction: row;
           flex-wrap: nowrap;
@@ -187,7 +187,7 @@
           justify-content: flex-start;
           align-items: center;
           gap: 16px;
-          .btn-edit{
+          .btn-edit {
             padding-left: 10px;
             width: 54px;
             height: 24px;
@@ -200,12 +200,12 @@
             color: black;
             font-size: 18px;
             z-index: 90;
-            &:hover{
+            &:hover {
               background-image: url(/assets/icons/edit-light-blue.png);
               color: all.$blueLight;
             }
           }
-          .btn-delete{
+          .btn-delete {
             padding-left: 20px;
             width: 70px;
             height: 24px;
@@ -218,7 +218,7 @@
             color: black;
             font-size: 18px;
             z-index: 90;
-            &:hover{
+            &:hover {
               background-image: url(/assets/icons/delete-light-blue.png);
               color: all.$blueLight;
             }
@@ -226,18 +226,18 @@
         }
       }
     }
-    h4{
+    h4 {
       font-size: 20px;
       font-weight: normal;
       padding-top: 20px;
       margin: 20px 0px;
     }
-    h5{
+    h5 {
       font-size: 18px;
       font-weight: normal;
       padding: 15px 0px;
     }
-    p{
+    p {
       font-size: 16px;
       font-weight: normal;
     }
@@ -253,6 +253,31 @@ dialog {
   display: block;
   border-radius: 30px;
   overflow: hidden;
+
+  #close {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    padding: 8px;
+    background-color: transparent;
+    z-index: 110;
+
+    #hover-close {
+      display: none;
+    }
+
+    &:hover {
+      cursor: pointer;
+
+      #default-close {
+        display: none;
+      }
+
+      #hover-close {
+        display: block;
+      }
+    }
+  }
 
   > div {
     display: flex;
@@ -298,27 +323,14 @@ dialog {
       height: 100%;
       @include all.flexi($ai: center, $jc: center);
 
-      #hover-close {
-        display: none;
-      }
+      .input-icons {
+        width: 100%;
+        @include all.flexi($ai: center, $jc: center);
 
-      #close {
-        position: absolute;
-        top: 5%;
-        right: 10%;
-        padding: 8px;
-        background-color: transparent;
-
-        &:hover {
-          cursor: pointer;
-
-          #default-close {
-            display: none;
-          }
-
-          #hover-close {
-            display: block;
-          }
+        .icon {
+          position: absolute;
+          z-index: 100;
+          right: 15%;
         }
       }
     }
@@ -346,7 +358,42 @@ dialog {
     @include all.flexi($jc: center, $gap: 24px);
 
     #cancel {
-      @include all.flexi($jc: center, $ai: center);
+      @include all.flexi($jc: center, $ai: center, $gap: 8px);
+      background-color: transparent;
+      border: 1px solid black;
+      padding: 16px 16px;
+      border-radius: 8px;
+      font-size: 2rem;
+
+      #cancel-hover {
+        display: none;
+      }
+
+      &:hover {
+        cursor: pointer;
+        color: all.$blueLight;
+        border-color: all.$blueLight;
+
+        #cancel-default {
+          display: none;
+        }
+        #cancel-hover {
+          display: block;
+        }
+      }
+    }
+
+    #create-contact {
+      @include all.flexi($jc: center, $ai: center, $gap: 8px);
+      background-color: all.$blue;
+      padding: 16px 16px;
+      border-radius: 8px;
+      font-size: 2rem;
+      color: white;
+
+      &:hover {
+        background-color: all.$blueLight;
+      }
     }
   }
 }
