@@ -1,7 +1,7 @@
 <div class="contact-site">
   <div class="main-contacts-list">
 
-  <button (click)="openAddDialogWindow()" class="add-contact-btn">Add new contact</button>
+  <button (click)="openDialogWindow('addContact')" class="add-contact-btn">Add new contact</button>
 
   @if (dbService.contacts().length > 0) {
     <div class="list">
@@ -44,32 +44,19 @@
               {{ contact.name[0].toUpperCase() }}{{ getSecondInitial(contact.name) }}
           </div>
 
-            <div class="name-container">
-              <h2>{{ contact.name }}</h2>
+          <div class="name-container">
+              <h3>{{ contact.name }}</h3>
               <div class="action-buttons">
-                <button class="btn-edit" (click)="openAddDialogWindow()">
-                  <img src="assets/img/edit.svg" alt=""> Edit
-                </button>
-                <button class="btn-delete">
-                  <img src="assets/img/delete.svg" alt=""> Delete
-                </button>
+                <button class="btn-edit" (click)="openDialogWindow('editContact',contact.id)">Edit</button>
+                <button class="btn-delete" (click)="openDialogWindow('deleteContact',contact.id)">Delete</button>
               </div>
-            </div>
+          </div>
         </div>
-
-        <div class="contact-info-details">
-            <p class="section-title">Contact Information</p>
-
-            <div class="detail-item">
-              <p class="label">Email</p>
-              <p class="value email">{{ contact.email }}</p>
-            </div>
-
-            <div class="detail-item">
-              <p class="label">Phone</p>
-              <p class="value">{{ contact.phone || 'No phone number' }}</p>
-            </div>
-        </div>
+        <h4>Contact Information</h4>
+        <h5 class="label">Email</h5>
+        <p><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></p>
+        <h5 class="label">Phone</h5>
+        <p class="value">{{ contact.phone || 'No phone number' }}</p>
       }
     </div>
 

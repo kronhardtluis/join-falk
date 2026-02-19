@@ -23,7 +23,11 @@ export class Contact {
 
   dbService = inject(Supabase);
 
-
+  /**
+  * Lifecycle hook that initializes the component by fetching the initial contact list
+  * and establishing a real-time database subscription for live updates.
+  * @returns {void}
+  */
   ngOnInit(){
     this.dbService.getContacts();
     this.dbService.subscribeToContactsChanges();
@@ -39,12 +43,31 @@ export class Contact {
     return PARTS.length > 1 ? PARTS[1][0].toUpperCase() : '';
   }
 
-
-  openAddDialogWindow(){
-    console.log('Opened add dialog window');
+  /**
+  * Orchestrates the opening of various dialog windows based on the provided type.
+  * Handles navigation/logic for adding, editing, or deleting contacts.
+  * * @param {string} type - The type of dialog to open (e.g., 'addContact', 'editContact', 'deleteContact').
+  * @param {number} [id] - The optional unique identifier of the contact (required for 'edit' and 'delete').
+  * @returns {void}
+  */
+  openDialogWindow(type:string, id?:number){
+    if(type === "addContact"){
+      console.log("Opened dialog window for add new contact. ID will be ignored.")
+    } else if(type === "editContact") {
+      console.log("Opened dialog window to edit contact with id: " + id)
+    }
+      else if(type === "deleteContact"){
+      console.log('Opened dialog window for delete contact with id: ' + id);
+    } else return
   }
 
-
+  /**
+  * Opens the contact detail view and fetches specific contact data from the database.
+  * Sets the selected contact ID immediately to trigger UI highlighting,
+  * then asynchronously loads and sets the detailed contact data.
+  * * @param {number} id - The unique identifier of the contact to be displayed.
+  * @returns {Promise<void>} A promise that resolves when the contact data is fetched and set.
+  */
   async openDetailDialogWindow(id: number) {
     this.selectedContactId.set(id);
     const DATA = await this.dbService.getContactById(id);
@@ -53,7 +76,11 @@ export class Contact {
     }
   }
 
-
+  /**
+  * Closes the contact detail view by resetting the selection states.
+  * Clears both the selected ID and the contact data signals to hide the UI elements.
+  * * @returns {void}
+  */
   closeDetailView() {
     this.selectedContactData.set(null);
     this.selectedContactId.set(null);
