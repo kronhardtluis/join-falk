@@ -1,4 +1,4 @@
-<div class="contact-site">
+<div class="contact-site" [class.mobile-details-open]="isVisible()">
   <div class="main-contacts-list">
     <button (click)="openDialogWindow('addContact')" class="add-contact-btn">
       Add new contact
@@ -20,7 +20,7 @@
         </div>
         <div
           class="simple-info"
-          (click)="contact.id !== undefined && openDetailDialogWindow(contact.id)"
+          (click)="contact.id !== undefined && openDetailWindow(contact.id)"
           [class.active]="selectedContactId() === contact.id"
         >
           <span class="roundContact" [style.background-color]="contact.color"
@@ -42,7 +42,7 @@
 
   <div class="main-contact-info">
     <div class="contact-header">
-      <p class="contact-header__title">Contacts</p>
+      <p class="contact-header__title">Contacts <button class="mobile-back-btn" (click)="closeDetailView(true)"></button></p>
       <div class="contact-header__separator"></div>
       <p class="contact-header__description">Better with a team</p>
     </div>

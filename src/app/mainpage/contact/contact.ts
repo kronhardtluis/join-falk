@@ -127,7 +127,7 @@ export class Contact implements OnInit {
   * @returns {Promise<void>} A promise that resolves once the animations are sequenced
   * and the new data is rendered.
   */
-  async openDetailDialogWindow(id: number) {
+  async openDetailWindow(id: number) {
     if (this.isVisible()) {
       this.isVisible.set(false);
       await new Promise(resolve => setTimeout(resolve, 250));
@@ -141,13 +141,17 @@ export class Contact implements OnInit {
   }
 
   /**
-  * Closes the contact detail view by resetting the selection states.
-  * Clears both the selected ID and the contact data signals to hide the UI elements.
-  * * @returns {void}
+  * Closes the contact detail view.
+  * @param {boolean} keepSelection - If true, the selectedContactId remains set (useful for mobile back navigation).
   */
-  closeDetailView() {
-    this.selectedContactData.set(null);
-    this.selectedContactId.set(null);
+  closeDetailView(keepSelection: boolean = false) {
+    this.isVisible.set(false);
+    setTimeout(() => {
+      this.selectedContactData.set(null);
+      if (!keepSelection) {
+        this.selectedContactId.set(null);
+      }
+    }, 200);
   }
 
 }
