@@ -1,28 +1,51 @@
 <h2><strong>Add Task</strong></h2>
 
 <section id="form">
-  <div>
+  <div class="content">
     <p>Title <span>*</span></p>
-    <input placeholder="Enter a Title" type="text">
+    <input placeholder="Enter a Title" type="text" />
     <p>Description</p>
     <textarea placeholder="Enter a Description" name="description" id="description"></textarea>
+    <p>Due date<span>*</span></p>
+    <input type="date" />
+  </div>
+  <div id="line"></div>
+  <div class="content">
+    <p>Prio</p>
+    <div id="priorities">
+      <button class="importance">
+        <p>urgent</p>
+        <img src="assets/icons/urgent-red.png" alt="" />
+      </button>
+      <button class="importance">
+        <p>medium</p>
+        <img src="assets/icons/medium-orange.png" alt="" />
+      </button>
+      <button class="importance">
+        <p>low</p>
+        <img src="assets/icons/low-green.png" alt="" />
+      </button>
+    </div>
     <p>Assigned to</p>
 
     <!-- #region - Kontakte laden. Wie? -->
     <input placeholder="Select contacts to assign" list="contacts" name="contacts" />
     <datalist id="contacts">
-      <option value="A">
-      <option value="B">
-      <option value="C">
-      <option value="D">
-      <option value="E">
-      <option value="F">
+      <option value="test"></option>
     </datalist>
     <!-- #endregion -->
 
-  </div>
-  <div id="line"></div>
-  <div>
-
+    
+    <p>Category<span>*</span></p>
+    <input placeholder="Add new Task" list="categorys" name="categorys" />
+    <datalist id="categorys">
+      <option value="Technical Task"></option>
+      <option value="User Story"></option>
+    </datalist>
+    <p>Subtasks</p>
+    <div>
+      <input type="text" placeholder="Add new Subtask">
+      <button id="plus"><img src="assets/icons/plus.png" alt="plus"></button>
+    </div>
   </div>
 </section>
