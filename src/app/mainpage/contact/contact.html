@@ -139,10 +139,8 @@
               }
             </div>
             <div id="dialog-buttons">
-              <button id="cancel" (click) = "closeDialog()">
-                @if(isEditMode()){
-                  Delete
-                } @else{
+              <button id="cancel" (click) = "isEditMode() ? openDialogWindow('deleteContact') : closeDialog()">
+                @if(isEditMode()){Delete} @else{
                   Cancel
                   <img id="cancel-default" src="assets/icons/close-blue.png" alt="Cancel" />
                   <img id="cancel-hover" src="assets/icons/close-light-blue.png" alt="Cancel" />
