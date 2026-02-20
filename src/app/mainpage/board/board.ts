@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './board.scss',
 })
 export class Board {
-
+  // Logik und Eigenschaften
+  title = 'Board';
+  columns: string[] = ['To Do', 'In Progress', 'Await Feedback', 'Done'];
 }
