@@ -74,7 +74,7 @@ export class Contact implements OnInit {
       console.log("Opened dialog window to edit contact with id: " + id)
     }
       else if(type === "deleteContact"){
-      this.handleDelete(id);
+      this.handleDelete();
       console.log('Opened dialog window for delete contact with id: ' + id);
     } else return
   }
@@ -91,10 +91,16 @@ export class Contact implements OnInit {
     this.dialog.nativeElement.close();
   }
 
-  async handleDelete(id?: number) {
-    if (!id) return;
-    if (confirm('Are you sure you want to delete this contact?')) {
-      this.closeDetailView();
+  async handleDelete() {
+   const id = this.selectedContactId();
+    if (id) {
+      try {
+        await this.dbService.deleteContact(id);
+        this.closeDetailView();
+        this.closeDialog();
+      } catch (error) {
+      console.error('Error deleting contact:', error);
+      }
     }
   }
 
