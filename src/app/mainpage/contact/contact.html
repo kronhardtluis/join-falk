@@ -76,16 +76,18 @@
     </div>
   </div>
 
-  <dialog>
-    <div>
-      <button id="close">
+  <dialog #contactDialog (click)="onBackdropClick($event)">
+    <div (click)="$event.stopPropagation()">
+      <button id="close" (click) = "closeDialog()" >
         <img id="default-close" src="assets/icons/close-blue.png" alt="Close" />
         <img id="hover-close" src="assets/icons/close-light-blue.png" alt="Close-Blue" />
       </button>
       <section id="left-section">
         <img id="logo" src="assets/icons/logo-light.png" alt="Logo" />
-        <h3>Add contact</h3>
-        <p>Tasks are better with a team</p>
+        <h3>{{ isEditMode() ? 'Edit contact' : 'Add contact' }}</h3>
+        @if(!isEditMode()){
+          <p>Tasks are better with a team</p>
+        }
         <img src="assets/icons/blue-underline.png" alt="Underline" />
       </section>
 
@@ -94,8 +96,7 @@
           <img src="assets/icons/unknown-user.png" alt="User" />
         </div>
         <div id="form-container">
-          <!-- [formGroup]="userForm" (ngSubmit)="formSubmit()" -->
-          <form action="">
+          <form [formGroup]="userForm" (ngSubmit)="formSubmit()">
             <div class="input-icons">
               <img class="icon" src="assets/icons/person.png" alt="User" />
               <input id="name" formControlName="name" type="text" placeholder="Name" />
@@ -109,12 +110,12 @@
               <input id="phone" formControlName="phone" type="text" placeholder="Phone" />
             </div>
             <div id="dialog-buttons">
-              <button id="cancel">
+              <button id="cancel" (click) = "closeDialog()">
                 Cancel
                 <img id="cancel-default" src="assets/icons/close-blue.png" alt="Cancel" />
                 <img id="cancel-hover" src="assets/icons/close-light-blue.png" alt="Cancel" />
               </button>
-              <button id="create-contact">
+              <button id="create-contact" (click) = "closeDialog()">
                 Create contact
                 <img src="assets/icons/check.png" alt="Check" />
               </button>
@@ -124,5 +125,5 @@
       </section>
     </div>
   </dialog>
-  
+
 </div>
