@@ -118,7 +118,7 @@
   }
 
   .mobile-add-contact-btn-div{
-    @media (min-width: 1024px) {display: none;}
+    @media (min-width: 1024px) {display: none !important;}
     width: 100%;
     height: auto;
     display: flex;
@@ -216,21 +216,7 @@
       justify-content: flex-start;
       align-items: center;
       gap: 10px;
-      .roundContact-large {
-        height: 100px;
-        aspect-ratio: 1;
-        border-radius: 50%;
-        text-align: center;
-        font-size: 47px;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        align-content: center;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        border: medium solid white;
-      }
+
       .name-container {
         padding-left: 20px;
         h3 {
@@ -378,6 +364,22 @@
       }
     }
   }
+}
+
+.roundContact-large {
+  height: 100px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 47px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border: medium solid white;
 }
 
 .mobile-back-btn {

@@ -98,11 +98,38 @@ export class Contact implements OnInit {
     }
   }
 
-  formSubmit(){
-    console.log("test");
-    this.closeDialog();
+  async formSubmit(){
+    if (this.userForm.invalid) return;
+    const formData = this.userForm.value;
+    try {
+      if (this.isEditMode()) {
+        const id = this.selectedContactId();
+        if (id) {
+          await this.dbService.updateContact(id, formData);
+        }
+      } else {
+        const newContact = {
+          ...formData,
+          color: this.getRandomColor()
+        };
+        await this.dbService.addContact(newContact);
+      }
+      this.userForm.reset();
+      this.closeDialog();
+    } catch (error) {
+      console.error('Error handling form submission:', error);
+    }
   }
 
+  getRandomColor():string{
+    const colors = [
+    '#FF7A00', '#FF5EB3', '#6E52FF', '#9327FF',
+    '#00BEE8', '#1FD7C1', '#FFBB2B', '#462F8A',
+    '#FF4646', '#0038FF'
+    ];
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    return colors[randomIndex];
+  }
 
   onBackdropClick(event: MouseEvent) {
     const DIALOG_ELEMENT = this.dialog.nativeElement;

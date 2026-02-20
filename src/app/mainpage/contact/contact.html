@@ -107,30 +107,49 @@
 
       <section id="right-section">
         <div id="user">
-          <img src="assets/icons/unknown-user.png" alt="User" />
+          @if(isEditMode() && selectedContactData(); as contact){
+            <div class="roundContact-large" [style.background-color]="selectedContactData()?.color">
+              {{ contact.name[0].toUpperCase() }}{{ getSecondInitial(contact.name) }}
+            </div>
+          } @else {
+            <img src="assets/icons/unknown-user.png" alt="User" />
+          }
         </div>
         <div id="form-container">
           <form [formGroup]="userForm" (ngSubmit)="formSubmit()">
             <div class="input-icons">
               <img class="icon" src="assets/icons/person.png" alt="User" />
               <input id="name" formControlName="name" type="text" placeholder="Name" />
+              @if (userForm.get('name')?.invalid && userForm.get('name')?.touched) {
+                <span class="error-msg">This field is required</span>
+              }
             </div>
             <div class="input-icons">
               <img class="icon" src="assets/icons/mail.png" alt="Mail" />
               <input id="mail" formControlName="email" type="text" placeholder="E-Mail" />
+              @if (userForm.get('email')?.invalid && userForm.get('email')?.touched) {
+                <span class="error-msg">This field is required</span>
+              }
             </div>
             <div class="input-icons">
               <img class="icon" src="assets/icons/phone.png" alt="Phone" />
               <input id="phone" formControlName="phone" type="text" placeholder="Phone" />
+              @if (userForm.get('phone')?.invalid && userForm.get('phone')?.touched) {
+                <span class="error-msg">This field is required</span>
+              }
             </div>
             <div id="dialog-buttons">
               <button id="cancel" (click) = "closeDialog()">
-                Cancel
-                <img id="cancel-default" src="assets/icons/close-blue.png" alt="Cancel" />
-                <img id="cancel-hover" src="assets/icons/close-light-blue.png" alt="Cancel" />
+                @if(isEditMode()){
+                  Delete
+                } @else{
+                  Cancel
+                  <img id="cancel-default" src="assets/icons/close-blue.png" alt="Cancel" />
+                  <img id="cancel-hover" src="assets/icons/close-light-blue.png" alt="Cancel" />
+                }
               </button>
-              <button id="create-contact" (click) = "closeDialog()">
-                Create contact
+              <button id="create-contact" type="submit" [disabled]="userForm.invalid">
+                @if(isEditMode()){ Save } @else{ Create contact }
                 <img src="assets/icons/check.png" alt="Check" />
               </button>
             </div>
