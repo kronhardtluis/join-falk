@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { inject, signal, OnInit } from '@angular/core';
 import { Supabase } from '../../services/supabase';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { HostListener } from '@angular/core';
 
 interface ContactData {
   id: number;
@@ -24,6 +25,7 @@ export class Contact implements OnInit {
   public selectedContactData = signal<ContactData | null>(null);
   public isVisible = signal(false);
   public isEditMode = signal(false);
+  public isMobileMenuOpen = signal(false);
   dbService = inject(Supabase);
   private fb = inject(FormBuilder);
   public userForm: FormGroup = this.fb.group({
@@ -101,10 +103,7 @@ export class Contact implements OnInit {
     this.closeDialog();
   }
 
-  /**
-   * Closes the dialog if the user clicks on the backdrop (outside the dialog content).
-   * @param {MouseEvent} event - The click event.
-   */
+
   onBackdropClick(event: MouseEvent) {
     const DIALOG_ELEMENT = this.dialog.nativeElement;
     const RECT = DIALOG_ELEMENT.getBoundingClientRect();
@@ -116,6 +115,7 @@ export class Contact implements OnInit {
     );
     if (IS_CLICK_OUTSIDE) {
       this.closeDialog();
+      this.isMobileMenuOpen.set(false);
     }
   }
 
@@ -154,5 +154,27 @@ export class Contact implements OnInit {
     }, 200);
   }
 
+
+  toggleMobileMenu(event: Event) {
+    event.stopPropagation();
+    event.preventDefault();
+    this.isMobileMenuOpen.update(v => !v);
+  }
+
+  handleMobileAction(type: 'editContact' | 'deleteContact') {
+    const ID = this.selectedContactId();
+    if (ID) {
+      this.openDialogWindow(type, ID);
+      this.isMobileMenuOpen.set(false);
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickOutsideMenu(event: Event) {
+    const clickedElement = event.target as HTMLElement;
+    if (this.isMobileMenuOpen() && !clickedElement.closest('.mobile-menu-container')) {
+      this.isMobileMenuOpen.set(false);
+    }
+  }
 }
 

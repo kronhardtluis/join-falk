@@ -38,6 +38,9 @@
       }
     </div>
     }
+    <div class="mobile-add-contact-btn-div">
+      <button (click)="openDialogWindow('addContact')" class="add-contact-btn-mobile"></button>
+    </div>
   </div>
 
   <div class="main-contact-info">
@@ -72,6 +75,17 @@
       </p>
       <h5 class="label">Phone</h5>
       <p class="value">{{ contact.phone || 'No phone number' }}</p>
+      }
+    </div>
+    <div class="mobile-menu-btn-div">
+      @if (!isMobileMenuOpen()) {
+        <button (click)="toggleMobileMenu($event)" class="mobile-menu-btn"></button>
+      }
+      @if (isMobileMenuOpen()) {
+        <div class="mobile-options-menu" (click)="$event.stopPropagation()">
+          <button (click)="handleMobileAction('editContact')" class="btn-edit-mobile">Edit</button>
+          <button (click)="handleMobileAction('deleteContact')" class="btn-delete-mobile">Delete</button>
+        </div>
       }
     </div>
   </div>
