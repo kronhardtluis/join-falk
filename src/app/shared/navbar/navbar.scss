@@ -19,9 +19,14 @@ main {
 }
 
 #logo {
+  display: none;
   margin-bottom: 40px;
   width: 101px;
   height: 122px;
+
+  @media (min-width: 1024px) {
+    display: block;
+  }
 }
 
 nav {
