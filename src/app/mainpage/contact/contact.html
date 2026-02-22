@@ -9,29 +9,27 @@
       @for (contact of dbService.contacts(); track contact.id; let i = $index){
       <div>
         <div>
-          @let currentLetter = contact.name[0].toUpperCase(); @let previousContact =
-          dbService.contacts()[i - 1]; @if (i === 0 || currentLetter !==
-          previousContact.name[0].toUpperCase()) {
-          <div>
-            <h2 class="letter">{{ currentLetter }}</h2>
-            <div class="line-contacts"></div>
-          </div>
+          @let currentLetter = contact.name[0].toUpperCase();
+          @let previousContact = dbService.contacts()[i - 1];
+          @if (i === 0 || currentLetter !== previousContact.name[0].toUpperCase()) {
+            <div>
+              <h2 class="letter">{{ currentLetter }}</h2>
+              <div class="line-contacts"></div>
+            </div>
           }
         </div>
         <div
           class="simple-info"
           (click)="contact.id !== undefined && openDetailWindow(contact.id)"
-          [class.active]="selectedContactId() === contact.id"
-        >
-          <span class="roundContact" [style.background-color]="contact.color"
-            >{{ contact.name[0].toUpperCase() }}{{ getSecondInitial(contact.name) }}</span
-          >
+          [class.active]="selectedContactId() === contact.id">
+          <span class="roundContact" [style.background-color]="contact.color">
+            {{ contact.name[0].toUpperCase() }}{{ getSecondInitial(contact.name) }}
+          </span>
           <div>
-            <span>{{ contact.name }}</span
-            ><br />
-            <span class="email"
-              ><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></span
-            >
+            <span>{{ contact.name }}</span><br />
+            <span class="email">
+              <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
+            </span>
           </div>
         </div>
       </div>
@@ -92,10 +90,7 @@
 
   <dialog #contactDialog (click)="onBackdropClick($event)">
     <div (click)="$event.stopPropagation()">
-      <button id="close" (click) = "closeDialog()" >
-        <img id="default-close" src="assets/icons/close-blue.png" alt="Close" />
-        <img id="hover-close" src="assets/icons/close-light-blue.png" alt="Close-Blue" />
-      </button>
+      <button id="close" (click) = "closeDialog()"></button>
       <section id="left-section">
         <img id="logo" src="assets/icons/logo-light.png" alt="Logo" />
         <h3>{{ isEditMode() ? 'Edit contact' : 'Add contact' }}</h3>
@@ -139,17 +134,13 @@
               }
             </div>
             <div id="dialog-buttons">
-              <button id="cancel" (click) = "isEditMode() ? openDialogWindow('deleteContact') : closeDialog()">
-                @if(isEditMode()){Delete} @else{
-                  Cancel
-                  <img id="cancel-default" src="assets/icons/close-blue.png" alt="Cancel" />
-                  <img id="cancel-hover" src="assets/icons/close-light-blue.png" alt="Cancel" />
-                }
-              </button>
-              <button id="create-contact" type="submit" [disabled]="userForm.invalid">
-                @if(isEditMode()){ Save } @else{ Create contact }
-                <img src="assets/icons/check.png" alt="Check" />
-              </button>
+              @if(isEditMode()){
+                <button id="delete" (click)="openDialogWindow('deleteContact')">Delete</button>
+                <button id="save" (click)="openDialogWindow('editContact')" [disabled]="userForm.invalid">Save</button>
+              } @else {
+                <button id="cancel" (click)="closeDialog()">Cancel</button>
+                <button id="create-contact" (click)="openDialogWindow('addContact')" [disabled]="userForm.invalid">Create</button>
+              }
             </div>
           </form>
         </div>

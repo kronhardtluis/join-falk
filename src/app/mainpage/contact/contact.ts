@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { inject, signal, OnInit } from '@angular/core';
+import { inject, signal, OnInit, computed } from '@angular/core';
 import { Supabase } from '../../services/supabase';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HostListener } from '@angular/core';
@@ -30,7 +30,10 @@ export class Contact implements OnInit {
   @ViewChild('contactDialog') dialog!: ElementRef<HTMLDialogElement>;
 
   public selectedContactId = signal<number | null>(null);
-  public selectedContactData = signal<ContactData | null>(null);
+  public selectedContactData = computed(() => {
+    const ID = this.selectedContactId();
+    return ID ? this.dbService.contacts().find(c => c.id === ID) || null : null;
+  });
   public isVisible = signal(false);
   public isEditMode = signal(false);
   public isMobileMenuOpen = signal(false);
@@ -260,11 +263,11 @@ export class Contact implements OnInit {
 
   /**
   * Opens the contact detail view with a smooth transition effect.
-  * If a contact is already displayed, it triggers an exit animation, waits for its completion,
-  * then fetches new contact data from the database and triggers an entry animation.
+  * It manages the entry and exit animations by toggling visibility state and
+  * updates the selected contact ID to trigger reactive data updates via computed signals.
   * * @param {number} id - The unique identifier of the contact to be displayed.
-  * @returns {Promise<void>} A promise that resolves once the animations are sequenced
-  * and the new data is rendered.
+  * @returns {Promise<void>} A promise that resolves after handling exit animations
+  * (if any) and initiating the display of the new contact.
   */
   async openDetailWindow(id: number) {
     if (this.isVisible()) {
@@ -272,11 +275,7 @@ export class Contact implements OnInit {
       await new Promise(resolve => setTimeout(resolve, 250));
     }
     this.selectedContactId.set(id);
-    const data = await this.dbService.getContactById(id);
-    if (data) {
-      this.selectedContactData.set(data);
-      this.isVisible.set(true);
-    }
+    this.isVisible.set(true);
   }
 
   /**
@@ -286,7 +285,6 @@ export class Contact implements OnInit {
   closeDetailView(keepSelection: boolean = false) {
     this.isVisible.set(false);
     setTimeout(() => {
-      this.selectedContactData.set(null);
       if (!keepSelection) {
         this.selectedContactId.set(null);
       }

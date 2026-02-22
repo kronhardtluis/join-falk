@@ -2,12 +2,9 @@
 
 .contact-site {
   width: 100%;
-  display: flex;
-  flex-direction: row;
+  @include all.flexi($jc: flex-start, $fd: row, $ai: flex-start, $gap: none);
   flex-wrap: nowrap;
   align-content: flex-start;
-  justify-content: flex-start;
-  align-items: flex-start;
   @media (max-width: 1024px) {
     &.mobile-details-open {
       .main-contacts-list {
@@ -40,13 +37,10 @@
     .letter {
       width: 100%;
       height: 58px;
-      display: flex;
-      align-items: flex-start;
       padding-left: 20px;
       font-size: 20px;
-      flex-direction: column;
+      @include all.flexi($jc: center, $fd: column, $ai: flex-start, $gap: none);
       align-content: flex-start;
-      justify-content: center;
     }
 
     .line-contacts {
@@ -60,13 +54,9 @@
       height: 58px;
       padding-left: 20px;
       font-size: 20px;
-      display: flex;
-      flex-direction: row;
+      @include all.flexi($jc: flex-start, $fd: row, $ai: center, $gap: 16px);
       flex-wrap: nowrap;
       align-content: center;
-      justify-content: flex-start;
-      align-items: center;
-      gap: 16px;
       margin: 16px 0px;
       border-radius: 10px;
       cursor: pointer;
@@ -89,18 +79,15 @@
       height: 75%;
       aspect-ratio: 1;
       text-align: center;
-      display: flex;
-      flex-direction: row;
+      @include all.flexi($jc: center, $fd: row, $ai: center, $gap: none);
       align-content: center;
-      justify-content: center;
-      align-items: center;
       color: white;
       border: medium solid white;
     }
   }
 
   .add-contact-btn {
-    background-image: url(/assets/icons/add-person.png);
+    background-image: url("/assets/icons/add-person.png");
     background-repeat: no-repeat;
     background-position: 90%;
     background-color: all.$blue;
@@ -123,12 +110,8 @@
     @media (min-width: 1024px) {display: none !important;}
     width: 100%;
     height: auto;
-    display: flex;
-    flex-direction: row;
+    @include all.flexi($jc: flex-end, $fd: row, $ai: center, $gap: none);
     flex-wrap: nowrap;
-    align-content: center;
-    justify-content: flex-end;
-    align-items: center;
 
     .add-contact-btn-mobile{
       height: 56px;
@@ -156,14 +139,10 @@
 
   .contact-header {
     margin: 40px 0px;
-    display: flex;
-    flex-direction: row;
+    @include all.flexi($jc: flex-start, $fd: row, $ai: center, $gap: 30px);
     flex-wrap: nowrap;
     align-content: center;
-    justify-content: flex-start;
-    align-items: center;
     height: 60px;
-    gap: 30px;
     @media (max-width: 1024px) {
       height: unset;
       flex-direction: column;
@@ -195,12 +174,9 @@
   }
 
   .contact-description {
-    display: flex;
-    flex-direction: column;
+    @include all.flexi($jc: center, $fd: column, $ai: flex-start, $gap: none);
     flex-wrap: nowrap;
     align-content: flex-start;
-    justify-content: center;
-    align-items: flex-start;
     transform: translateX(100%);
     opacity: 0;
     transition: transform 0.2s ease-in, opacity 0.2s ease-in;
@@ -212,12 +188,8 @@
     .header-details {
       width: 100%;
       height: 140px;
-      display: flex;
-      flex-direction: row;
+      @include all.flexi($jc: flex-start, $fd: row, $ai: center, $gap: 10px);
       flex-wrap: nowrap;
-      justify-content: flex-start;
-      align-items: center;
-      gap: 10px;
 
       .name-container {
         padding-left: 20px;
@@ -227,29 +199,16 @@
         }
         .action-buttons {
           @media (max-width: 1024px) {display: none !important;}
-          display: flex;
-          flex-direction: row;
+          @include all.flexi($jc: flex-start, $fd: row, $ai: center, $gap: 16px);
           flex-wrap: nowrap;
-          align-content: center;
-          justify-content: flex-start;
-          align-items: center;
-          gap: 16px;
           .btn-edit {
             padding-left: 10px;
             width: 54px;
             height: 24px;
             background-image: url(/assets/icons/edit-blue.png);
-            background-repeat: no-repeat;
-            background-position: left;
-            background-color: transparent;
             background-size: 30%;
-            cursor: pointer;
-            color: black;
-            font-size: 18px;
-            z-index: 90;
             &:hover {
               background-image: url(/assets/icons/edit-light-blue.png);
-              color: all.$blueLight;
             }
           }
           .btn-delete {
@@ -257,16 +216,20 @@
             width: 70px;
             height: 24px;
             background-image: url(/assets/icons/delete-blue.png);
+            background-size: 25%;
+            &:hover {
+              background-image: url(/assets/icons/delete-light-blue.png);
+            }
+          }
+          .btn-edit,.btn-delete{
+            background-color: transparent;
             background-repeat: no-repeat;
             background-position: left;
-            background-color: transparent;
-            background-size: 25%;
             cursor: pointer;
             color: black;
             font-size: 18px;
             z-index: 90;
             &:hover {
-              background-image: url(/assets/icons/delete-light-blue.png);
               color: all.$blueLight;
             }
           }
@@ -297,12 +260,10 @@
     @media (min-width: 1024px) {display: none !important;}
     width: 100%;
     height: auto;
-    display: flex;
-    flex-direction: row;
+    @include all.flexi($jc: flex-end, $fd: row, $ai: center, $gap: none);
     flex-wrap: nowrap;
     align-content: center;
-    justify-content: flex-end;
-    align-items: center;
+
     .mobile-menu-btn{
       height: 56px;
       width: 56px;
@@ -335,22 +296,18 @@
       .btn-edit-mobile{
         padding-left: 10px;
         background-image: url(/assets/icons/edit-blue.png);
-        background-repeat: no-repeat;
-        background-position: left;
-        background-color: transparent;
-        background-size: 25%;
-        cursor: pointer;
-        color: black;
-        font-size: 18px;
-        z-index: 90;
         &:hover {
           background-image: url(/assets/icons/edit-light-blue.png);
-          color: all.$blueLight;
         }
       }
       .btn-delete-mobile{
         padding-left: 25px;
         background-image: url(/assets/icons/delete-blue.png);
+        &:hover {
+          background-image: url(/assets/icons/delete-light-blue.png);
+        }
+      }
+      .btn-edit-mobile,.btn-delete-mobile{
         background-repeat: no-repeat;
         background-position: left;
         background-color: transparent;
@@ -359,8 +316,7 @@
         color: black;
         font-size: 18px;
         z-index: 90;
-        &:hover {
-          background-image: url(/assets/icons/delete-light-blue.png);
+        &:hover{
           color: all.$blueLight;
         }
       }
@@ -374,12 +330,9 @@
   border-radius: 50%;
   text-align: center;
   font-size: 47px;
-  display: flex;
-  flex-direction: row;
+  @include all.flexi($jc: center, $fd: row, $ai: center, $gap: none);
   flex-wrap: nowrap;
   align-content: center;
-  justify-content: center;
-  align-items: center;
   color: white;
   border: medium solid white;
 }
@@ -424,56 +377,70 @@ dialog {
     top: 5%;
     right: 5%;
     padding: 8px;
+    height: 32px;
+    width: 32px;
+    z-index: 999;
+    cursor: pointer;
     background-color: transparent;
-    z-index: 110;
-
-    #hover-close {
-      display: none;
+    background-image: url("/assets/icons/close-blue.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto;
+    &:hover{
+      background-image: url("/assets/icons/close-light-blue.png");
     }
-
-    &:hover {
-      cursor: pointer;
-      #default-close {
-        display: none;
-      }
-      #hover-close {
-        display: block;
+    @media (max-width: 1024px){
+      background-image: url("/assets/icons/close-white.png");
+      &:hover{
+        background-image: url("/assets/icons/close-white.png");
       }
     }
   }
 
   > div {
     display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
     width: 100%;
     height: 100%;
+    @media (max-width: 1024px) {flex-direction: column; justify-content: flex-start;}
   }
 
   #left-section {
     padding-left: 40px;
     width: 40%;
+    height: 100%;
     background-color: all.$blue;
     color: white;
     @include all.flexi($fd: column, $ai: flex-start);
+    @media (max-width: 1024px) {width: 100%; height: 40%; padding-right: 40px;}
 
     #logo {
       width: 57px;
       height: 67px;
+      @media (max-width: 1024px) {display: none;}
     }
 
     h3 {
       font-size: 6rem;
       margin-top: 10px;
+      @media (max-width: 1024px){font-size: 40px;}
     }
 
     p {
       margin: 22.5px 0px;
       font-size: 2.8rem;
+      @media (max-width: 1024px){font-size: 16px;}
     }
   }
 
   #right-section {
     width: 60%;
     @include all.flexi($jc: flex-start);
+    @media (max-width: 1024px){flex-direction: column; top: -50px; width: 100%;}
 
     #user {
       width: 30%;
@@ -520,43 +487,67 @@ dialog {
     width: 100%;
     @include all.flexi($jc: center, $gap: 24px);
 
-    #cancel {
-      @include all.flexi($jc: center, $ai: center, $gap: 8px);
-      background-color: transparent;
-      border: 1px solid black;
-      padding: 16px 16px;
-      border-radius: 8px;
-      font-size: 2rem;
-
-      #cancel-hover {
-        display: none;
-      }
-
-      &:hover {
-        cursor: pointer;
-        color: all.$blueLight;
+    #create-contact{
+      color: white;
+      width: 45%;
+      @include all.flexi($jc: flex-start, $fd: row, $ai: center, $gap: 0);
+      @media (max-width: 1024px){justify-content: center; padding: 6px; width: 60%;}
+      background-color: all.$blue;
+      background-image: url("/assets/icons/check.png");
+      background-position: 95%;
+      background-size: 24px;
+      &:hover{
         border-color: all.$blueLight;
-
-        #cancel-default {
-          display: none;
-        }
-        #cancel-hover {
-          display: block;
-        }
+        background-color: all.$blueLight;
       }
     }
 
-    #create-contact {
-      @include all.flexi($jc: center, $ai: center, $gap: 8px);
-      background-color: all.$blue;
-      padding: 16px 16px;
-      border-radius: 8px;
-      font-size: 2rem;
-      color: white;
+    #cancel{
+      color: black;
+      width: 30%;
+      @include all.flexi($jc: flex-start, $fd: row, $ai: center, $gap: 0);
+      background-color: transparent;
+      background-image: url("/assets/icons/close-blue.png");
+      background-position: 90%;
+      background-size: auto;
+      &:hover{
+        background-image: url("/assets/icons/close-light-blue.png");
+        border-color: all.$blueLight;
+        color: all.$blueLight;
+      }
+      @media (max-width: 1024px){display: none;}
+    }
 
-      &:hover {
+    #delete{
+      width: 25%;
+      color: black;
+      background-color: transparent;
+      &:hover{
+        border-color: all.$blueLight;
+        color: all.$blueLight;
+      }
+    }
+
+    #save{
+      width: 25%;
+      color: white;
+      background-color: all.$blue;
+      background-image: url("/assets/icons/check.png");
+      background-position: 95%;
+      background-size: 24px;
+      &:hover{
+        border-color: all.$blueLight;
         background-color: all.$blueLight;
       }
+    }
+
+    #delete, #save, #cancel, #create-contact{
+      padding: 16px;
+      border: solid 1px all.$blue;
+      border-radius: 10px;
+      font-size: 20px;
+      background-repeat: no-repeat;
+      cursor: pointer;
     }
   }
 }
