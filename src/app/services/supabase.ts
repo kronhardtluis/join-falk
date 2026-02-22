@@ -23,8 +23,8 @@ export class Supabase {
   contacts = signal<Contact[]>([]);
 
   /**
-   * Fetches all contacts from the database, sorted alphabetically by name.
-   */
+  * Fetches all contacts from the database, sorted alphabetically by name.
+  */
   async getContacts() {
     const { data, error } = await this.supabase
       .from('contacts')
@@ -79,9 +79,9 @@ export class Supabase {
   }
 
   /**
-   * Adds a new contact to the database.
-   * @param contact - The contact data to insert.
-   */
+  * Adds a new contact to the database.
+  * @param contact - The contact data to insert.
+  */
   async addContact(contact: Contact) {
     const { data, error } = await this.supabase
       .from('contacts')

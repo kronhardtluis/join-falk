@@ -3,22 +3,7 @@ import { inject, signal, OnInit, computed } from '@angular/core';
 import { Supabase } from '../../services/supabase';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HostListener } from '@angular/core';
-
-interface ContactData {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  color: string;
-}
-
-interface FormData {
-  id?: number;
-  name: string;
-  email: string;
-  phone: string;
-  color?: string;
-}
+import { ContactFormData } from '../../interfaces/contact.interface';
 
 @Component({
   selector: 'app-contact',
@@ -69,7 +54,7 @@ export class Contact implements OnInit {
   /**
   * Orchestrates the opening of dialog windows and triggers the contact deletion process.
   * Depending on the 'type', it prepares the form for adding/editing or executes deletion.
-  * * @param {'addContact' | 'editContact' | 'deleteContact'} type - The action type to perform.
+  * @param {'addContact' | 'editContact' | 'deleteContact'} type - The action type to perform.
   * @param {number} [id] - Optional contact identifier (required for 'editContact').
   * @returns {void}
   */
@@ -98,9 +83,9 @@ export class Contact implements OnInit {
   */
   private prepareEditForm(id?: number) {
     if (!id) return;
-    const contact = this.dbService.contacts().find(contact => contact.id === id);
-    if (contact) {
-      this.userForm.patchValue(contact);
+    const CONTACT = this.dbService.contacts().find(contact => contact.id === id);
+    if (CONTACT) {
+      this.userForm.patchValue(CONTACT);
     }
   }
 
@@ -108,7 +93,7 @@ export class Contact implements OnInit {
   * Closes the contact dialog window using the native HTML dialog API.
   * This method resets the visual state of the modal without necessarily
   * clearing the form data.
-  * * @returns {void}
+  * @returns {void}
   */
   closeDialog() {
     this.dialog.nativeElement.close();
@@ -118,15 +103,15 @@ export class Contact implements OnInit {
   * Handles the contact deletion process.
   * If a contact ID is selected, it calls the database service to remove the record,
   * closes active UI views (details and dialog), and displays a success notification.
-  * * @async
+  * @async
   * @private
   * @returns {Promise<void>} Resolves when the deletion and UI updates are complete.
   */
   async handleDelete() {
-   const id = this.selectedContactId();
-    if (id) {
+   const ID = this.selectedContactId();
+    if (ID) {
       try {
-        await this.dbService.deleteContact(id);
+        await this.dbService.deleteContact(ID);
         this.closeDetailView();
         this.closeDialog();
         this.showNotification('Contact succesfully deleted.');
@@ -139,7 +124,7 @@ export class Contact implements OnInit {
   /**
   * Main form submission handler. Validates the form, processes the data,
   * and handles UI finalization or error reporting.
-  * * @returns {Promise<void>}
+  * @returns {Promise<void>}
   */
   async formSubmit(){
     if (this.userForm.invalid) return;
@@ -155,7 +140,7 @@ export class Contact implements OnInit {
   /**
   * Determines whether to create a new contact or update an existing one
   * based on the current component state.
-  * * @private
+  * @private
   * @returns {Promise<void>}
   */
   private async processContactData() {
@@ -169,34 +154,34 @@ export class Contact implements OnInit {
 
   /**
   * Updates an existing contact record in the database using the selected ID.
-  * * @private
-  * @param {FormData} formData - The validated data from userForm.
+  * @private
+  * @param {ContactFormData} formData - The validated data from userForm.
   * @throws {Error} If no contact ID is selected for the update.
   * @returns {Promise<void>}
   */
-  private async updateExistingContact(formData: FormData) {
-    const id = this.selectedContactId();
-    if (!id) throw new Error('No contact ID selected for update');
-      await this.dbService.updateContact(id, formData);
+  private async updateExistingContact(formData: ContactFormData) {
+    const ID = this.selectedContactId();
+    if (!ID) throw new Error('No contact ID selected for update');
+      await this.dbService.updateContact(ID, formData);
   }
 
   /**
   * Assigns a random color to new contact data and sends it to the database service.
-  * * @private
-  * @param {FormData} formData - The validated data from userForm.
+  * @private
+  * @param {ContactFormData} formData - The validated data from userForm.
   * @returns {Promise<void>}
   */
-  private async createNewContact(formData: FormData) {
-    const newContact = {
+  private async createNewContact(formData: ContactFormData) {
+    const NEW_CONTACT = {
       ...formData,
       color: this.getRandomColor()
     };
-    await this.dbService.addContact(newContact);
+    await this.dbService.addContact(NEW_CONTACT);
   }
 
   /**
   * Cleans up the UI by resetting the form state and closing the active dialog.
-  * * @private
+  * @private
   * @returns {void}
   */
   private finalizeForm() {
@@ -207,7 +192,7 @@ export class Contact implements OnInit {
   /**
   * Centralized error handler for form submission failures.
   * Logs the provided error to the console for debugging purposes.
-  * * @private
+  * @private
   * @param {unknown} error - The error object or message captured during the submission process.
   * @returns {void}
   */
@@ -219,7 +204,7 @@ export class Contact implements OnInit {
   * Triggers the notification toast by setting the message signal.
   * The UI reacts by adding the '.show' class, which initiates a CSS transition
   * for opacity and right-positioning.
-  * * @param {string} message - The text to be displayed.
+  * @param {string} message - The text to be displayed.
   */
   showNotification(message:string){
     this.notificationMessage.set(message);
@@ -228,24 +213,25 @@ export class Contact implements OnInit {
 
   /**
   * Selects a random hex color code from a predefined professional color palette.
-  * These colors are intended to be used as background colors for contact avatars.
-  * * @returns {string} A string representing a hex color code (e.g., '#FF7A00').
+  * These colors are used as background colors for contact avatars.
+  * @private
+  * @returns {string} A string representing a hex color code (e.g., '#FF7A00').
   */
-  getRandomColor():string{
-    const colors = [
+  private getRandomColor():string{
+    const COLORS = [
     '#FF7A00', '#FF5EB3', '#6E52FF', '#9327FF',
     '#00BEE8', '#1FD7C1', '#FFBB2B', '#462F8A',
     '#FF4646', '#0038FF'
     ];
-    const randomIndex = Math.floor(Math.random() * colors.length);
-    return colors[randomIndex];
+    const INDEX = Math.floor(Math.random() * COLORS.length);
+    return COLORS[INDEX];
   }
 
   /**
   * Detects clicks on the dialog's backdrop and closes the UI components accordingly.
   * It calculates the bounding box of the dialog and compares it with the mouse click
   * coordinates to determine if the click occurred outside the dialog's boundaries.
-  * * @param {MouseEvent} event - The mouse event triggered by clicking.
+  * @param {MouseEvent} event - The mouse event triggered by clicking.
   * @returns {void}
   */
   onBackdropClick(event: MouseEvent) {
@@ -267,7 +253,7 @@ export class Contact implements OnInit {
   * Opens the contact detail view with a smooth transition effect.
   * It manages the entry and exit animations by toggling visibility state and
   * updates the selected contact ID to trigger reactive data updates via computed signals.
-  * * @param {number} id - The unique identifier of the contact to be displayed.
+  * @param {number} id - The unique identifier of the contact to be displayed.
   * @returns {Promise<void>} A promise that resolves after handling exit animations
   * (if any) and initiating the display of the new contact.
   */
@@ -297,7 +283,7 @@ export class Contact implements OnInit {
   * Toggles the visibility state of the mobile menu.
   * It prevents the event from bubbling up to parent elements and stops default
   * browser behavior to ensure a clean UI transition.
-  * * @param {Event} event - The trigger event (e.g., click or touch).
+  * @param {Event} event - The trigger event (e.g., click or touch).
   * @returns {void}
   */
   toggleMobileMenu(event: Event) {
@@ -310,7 +296,7 @@ export class Contact implements OnInit {
   * Executes contact actions (edit or delete) specifically from the mobile interface.
   * It retrieves the currently selected contact ID, triggers the appropriate
   * dialog window, and automatically closes the mobile menu to clean up the UI.
-  * * @param {'editContact' | 'deleteContact'} type - The specific action to perform on the selected contact.
+  * @param {'editContact' | 'deleteContact'} type - The specific action to perform on the selected contact.
   * @returns {void}
   */
   handleMobileAction(type: 'editContact' | 'deleteContact') {
@@ -325,15 +311,14 @@ export class Contact implements OnInit {
   * Globally listens for click events to detect if the user clicked outside the mobile menu.
   * If the menu is open and the click target is not within the '.mobile-menu-container',
   * the menu is automatically closed.
-  * * @param {Event} event - The global document click event.
+  * @param {Event} event - The global document click event.
   * @returns {void}
   */
   @HostListener('document:click', ['$event'])
   clickOutsideMenu(event: Event) {
-    const clickedElement = event.target as HTMLElement;
-    if (this.isMobileMenuOpen() && !clickedElement.closest('.mobile-menu-container')) {
+    const CLICKED_ELEMENT = event.target as HTMLElement;
+    if (this.isMobileMenuOpen() && !CLICKED_ELEMENT.closest('.mobile-menu-container')) {
       this.isMobileMenuOpen.set(false);
     }
   }
 }
-
