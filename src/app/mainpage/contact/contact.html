@@ -136,10 +136,10 @@
             <div id="dialog-buttons">
               @if(isEditMode()){
                 <button id="delete" (click)="openDialogWindow('deleteContact')">Delete</button>
-                <button id="save" (click)="openDialogWindow('editContact')" [disabled]="userForm.invalid">Save</button>
+                <button id="save" (click)="formSubmit()" [disabled]="userForm.invalid">Save</button>
               } @else {
                 <button id="cancel" (click)="closeDialog()">Cancel</button>
-                <button id="create-contact" (click)="openDialogWindow('addContact')" [disabled]="userForm.invalid">Create</button>
+                <button id="create-contact" (click)="formSubmit()" [disabled]="userForm.invalid">Create</button>
               }
             </div>
           </form>
@@ -147,5 +147,9 @@
       </section>
     </div>
   </dialog>
+
+  <div id="notification" [class.show]="notificationMessage()">
+    <span>{{ notificationMessage() }}</span>
+  </div>
 
 </div>

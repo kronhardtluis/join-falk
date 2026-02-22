@@ -37,6 +37,7 @@ export class Contact implements OnInit {
   public isVisible = signal(false);
   public isEditMode = signal(false);
   public isMobileMenuOpen = signal(false);
+  public notificationMessage = signal<string>('');
   dbService = inject(Supabase);
   private fb = inject(FormBuilder);
   public userForm: FormGroup = this.fb.group({
@@ -215,13 +216,14 @@ export class Contact implements OnInit {
   }
 
   /**
-  * Displays a temporary toast notification message on the screen.
-  * * @param {string} message - The text content to display in the toast.
-  * @returns {void}
+  * Triggers the notification toast by setting the message signal.
+  * The UI reacts by adding the '.show' class, which initiates a CSS transition
+  * for opacity and right-positioning.
+  * * @param {string} message - The text to be displayed.
   */
   showNotification(message:string){
-    console.log(message);
-    ////to do ...
+    this.notificationMessage.set(message);
+    setTimeout(() => {this.notificationMessage.set('');}, 1250);
   }
 
   /**
