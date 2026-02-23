@@ -321,4 +321,15 @@ export class Contact implements OnInit {
       this.isMobileMenuOpen.set(false);
     }
   }
+
+  /**
+  * Truncates a string to a specified length and appends an ellipsis if it exceeds the limit.
+  * Useful for maintaining UI consistency in contact lists.
+  * @param {string} text - The string to be truncated.
+  * @param {number} [limit=14] - The maximum number of characters allowed.
+  * @returns {string} The truncated string or the original string if within the limit.
+  */
+  truncateName(text: string, limit: number = 14): string {
+    return text.length > limit ? text.substring(0, limit) + '...' : text;
+  }
 }
