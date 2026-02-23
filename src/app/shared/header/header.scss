@@ -92,8 +92,8 @@ p {
 @include all.notebook {
   main > section {
     padding: 0px;
-    padding-left: clamp(10px, 2vw, 30px);
-    padding-right: clamp(10px, 2vw, 30px);
+    padding-left: clamp(10px, 3vw, 30px);
+    padding-right: clamp(10px, 3vw, 30px);
   }
 
   p {
@@ -102,6 +102,15 @@ p {
 
   #logo {
     display: flex;
+  }
+
+  #user {
+    width: 46px;
+    height: 46px;
+  }
+
+  #header-navigation {
+    width: 80px;
   }
 }
 
