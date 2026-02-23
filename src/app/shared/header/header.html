@@ -1,20 +1,20 @@
 <main>
   <section>
     <div>
-      <img id="logo" src="assets/icons/logo.png" alt="Logo">
+      <img id="logo" src="assets/icons/logo.png" alt="Logo" />
       <p>Kanban Project Management Tool</p>
     </div>
     <div id="header-navigation">
       <a id="help" routerLink="help"><img src="assets/icons/help.png" alt="Help" /></a>
       <button id="user" (click)="toggleMenu(); $event.stopPropagation()">G</button>
     </div>
-  </section>
 
-  <div class="dropdown" (click)="$event.stopPropagation()" [class.open]="isMenuOpen">
-    <div class="dropdown-content">
-      <a routerLink="legal-notice" (click)="closeMenu()">Legal Notice</a>
-      <a routerLink="privacy-policy" (click)="closeMenu()">Privacy Policy</a>
-      <a routerLink="" (click)="closeMenu()">Log out</a>
+    <div class="dropdown" (click)="$event.stopPropagation()" [class.open]="isMenuOpen">
+      <div class="dropdown-content">
+        <a routerLink="legal-notice" (click)="closeMenu()">Legal Notice</a>
+        <a routerLink="privacy-policy" (click)="closeMenu()">Privacy Policy</a>
+        <a routerLink="" (click)="closeMenu()">Log out</a>
+      </div>
     </div>
-  </div>
+  </section>
 </main>

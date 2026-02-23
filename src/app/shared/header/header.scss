@@ -59,6 +59,7 @@ p {
   width: 170px;
   height: 157px;
   right: 10px;
+  top: 96px;
   background-color: all.$blue;
   padding: 10px;
   color: all.$greyMid;
@@ -111,6 +112,10 @@ p {
 
   #header-navigation {
     width: 80px;
+  }
+
+  .dropdown{
+    top: 75px;
   }
 }
 
