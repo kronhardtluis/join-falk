@@ -118,7 +118,7 @@
               @if (userForm.get('name')?.hasError('required') && userForm.get('name')?.touched) {
                 <span class="error-msg">This field is required.</span>
               }
-              @if (userForm.get('name')?.hasError('minLength') || userForm.get('name')?.hasError('pattern')) {
+              @if (userForm.get('name')?.hasError('minlength') || userForm.get('name')?.hasError('pattern')) {
                 <span class="error-msg">Please enter data in the following format: Name Surname</span>
               }
             </div>
@@ -144,11 +144,11 @@
             </div>
             <div id="dialog-buttons">
               @if(isEditMode()){
-                <button id="delete" (click)="openDialogWindow('deleteContact')">Delete</button>
-                <button id="save" (click)="formSubmit()" [disabled]="userForm.invalid">Save</button>
+                <button id="delete" type="button" (click)="openDialogWindow('deleteContact')">Delete</button>
+                <button id="save" [disabled]="userForm.invalid">Save</button>
               } @else {
-                <button id="cancel" (click)="closeDialog()">Cancel</button>
-                <button id="create-contact" (click)="formSubmit()" [disabled]="userForm.invalid">Create</button>
+                <button id="cancel" type="button" (click)="closeDialog()">Cancel</button>
+                <button id="create-contact" [disabled]="userForm.invalid">Create</button>
               }
             </div>
           </form>

@@ -114,7 +114,7 @@ export class Contact implements OnInit {
         await this.dbService.deleteContact(ID);
         this.closeDetailView();
         this.closeDialog();
-        this.showNotification('Contact succesfully deleted.');
+        this.showNotification('Contact successfully deleted.');
       } catch (error) {
       console.error('Error deleting contact:', error);
       }
@@ -131,7 +131,7 @@ export class Contact implements OnInit {
     try {
       await this.processContactData();
       this.finalizeForm();
-      this.showNotification(this.isEditMode() ? 'Contact succesfully saved.' : 'Contact succesfully created.');
+      this.showNotification(this.isEditMode() ? 'Contact successfully saved.' : 'Contact successfully created.');
     } catch (error) {
       this.handleError(error);
     }
