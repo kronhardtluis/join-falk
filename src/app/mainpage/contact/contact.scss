@@ -89,7 +89,7 @@
   }
 
   .add-contact-btn {
-    background-image: url("/assets/icons/add-person.png");
+    background-image: url("../../../../public/assets/icons/add-person.png");
     background-repeat: no-repeat;
     background-position: 90%;
     background-color: all.$blue;
@@ -120,7 +120,7 @@
       width: 56px;
       border-radius: 50%;
       background-color: all.$blue;
-      background-image: url(/assets/icons/add-person.png);
+      background-image: url("../../../../public/assets/icons/add-person.png");
       background-position: center;
       background-repeat: no-repeat;
       background-size: 75%;
@@ -207,20 +207,20 @@
             padding-left: 10px;
             width: 54px;
             height: 24px;
-            background-image: url(/assets/icons/edit-blue.png);
+            background-image: url("../../../../public/assets/icons/edit-blue.png");
             background-size: 30%;
             &:hover {
-              background-image: url(/assets/icons/edit-light-blue.png);
+              background-image: url("../../../../public/assets/icons/edit-light-blue.png");
             }
           }
           .btn-delete {
             padding-left: 20px;
             width: 70px;
             height: 24px;
-            background-image: url(/assets/icons/delete-blue.png);
+            background-image: url("../../../../public/assets/icons/delete-blue.png");
             background-size: 25%;
             &:hover {
-              background-image: url(/assets/icons/delete-light-blue.png);
+              background-image: url("../../../../public/assets/icons/delete-light-blue.png");
             }
           }
           .btn-edit,.btn-delete{
@@ -271,14 +271,14 @@
       width: 56px;
       border-radius: 50%;
       background-color: transparent;
-      background-image: url(/assets/icons/menu-blue.png);
+      background-image: url("../../../../public/assets/icons/menu-blue.png");
       background-position: center;
       background-repeat: no-repeat;
       background-size: contain;
       cursor: pointer;
       order: 2;
       &:hover{
-        background-image: url(/assets/icons/menu-light-blue.png);
+        background-image: url("../../../../public/assets/icons/menu-light-blue.png");
       }
     }
     .mobile-options-menu{
@@ -297,16 +297,16 @@
       gap: 10px;
       .btn-edit-mobile{
         padding-left: 10px;
-        background-image: url(/assets/icons/edit-blue.png);
+        background-image: url("../../../../public/assets/icons/edit-blue.png");
         &:hover {
-          background-image: url(/assets/icons/edit-light-blue.png);
+          background-image: url("../../../../public/assets/icons/edit-light-blue.png");
         }
       }
       .btn-delete-mobile{
         padding-left: 25px;
-        background-image: url(/assets/icons/delete-blue.png);
+        background-image: url("../../../../public/assets/icons/delete-blue.png");
         &:hover {
-          background-image: url(/assets/icons/delete-light-blue.png);
+          background-image: url("../../../../public/assets/icons/delete-light-blue.png");
         }
       }
       .btn-edit-mobile,.btn-delete-mobile{
@@ -351,7 +351,7 @@
     cursor: pointer;
     width: 32px;
     height: 32px;
-    background-image: url(/assets/icons/arrow.png);
+    background-image: url("../../../../public/assets/icons/arrow.png");
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
