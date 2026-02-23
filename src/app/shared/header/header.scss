@@ -8,8 +8,15 @@ main {
     width: 100%;
     height: 100%;
     padding: 20px 40px 20px 116px;
+    max-width: calc(1440px - all.$nav-width);
     @include all.flexi($ai: center, $jc: space-between);
   }
+}
+
+#logo {
+  display: none;
+  width: 32px;
+  height: 39px;
 }
 
 p {
@@ -58,7 +65,7 @@ p {
   border-top-left-radius: 20px;
   border-top-right-radius: 0;
   border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px; 
+  border-bottom-right-radius: 20px;
 
   .dropdown-content {
     width: 100%;
@@ -77,5 +84,25 @@ p {
 }
 
 .dropdown.open {
-  display: flex; 
+  display: flex;
 }
+
+//#region mediaquerries
+
+@include all.notebook {
+  main > section {
+    padding: 0px;
+    padding-left: clamp(10px, 2vw, 30px);
+    padding-right: clamp(10px, 2vw, 30px);
+  }
+
+  p {
+    display: none;
+  }
+
+  #logo {
+    display: flex;
+  }
+}
+
+//#endregion
