@@ -39,41 +39,51 @@ section {
     #descrition {
       flex: 1;
     }
-  }
 
-  #line {
-    height: auto;
-    width: 2px;
-    background-color: all.$greyMid;
-    margin-inline: 32px;
-  }
+    #priorities {
+      @include all.flexi($gap: 16px);
 
-  #priorities {
-    @include all.flexi($gap: 16px);
+      .importance {
+        @include all.flexi($gap: 8px);
+        background-color: white;
+        box-shadow: 0px 0px 3px all.$greyMid;
+        border-radius: 8px;
+        padding: 10px;
 
-    .importance {
-      @include all.flexi($gap: 8px);
-      background-color: white;
-      box-shadow: 0px 0px 3px all.$greyMid;
-      border-radius: 8px;
-      padding: 10px;
+        &:hover {
+          cursor: pointer;
+          box-shadow: 0px 4px 3px all.$greyMid;
+        }
 
-      &:hover{
-        cursor: pointer;
-        box-shadow: 0px 4px 3px all.$greyMid;
-      }
+        p {
+          margin: 0;
+        }
 
-      p {
-        margin: 0;
-      }
-
-      img {
-        width: 21px;
+        img {
+          width: 21px;
+        }
       }
     }
 
     #plus {
       position: absolute;
+      right: 24px;
+      top: 12px;
+      padding: 8px;
+      background: none;
+
+      &:hover {
+        cursor: pointer;
+        border-radius: 50%;
+        background-color: all.$greyMid;
+      }
     }
   }
+}
+
+#line {
+  height: auto;
+  width: 2px;
+  background-color: all.$greyMid;
+  margin-inline: 32px;
 }

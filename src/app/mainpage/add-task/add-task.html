@@ -35,7 +35,6 @@
     </datalist>
     <!-- #endregion -->
 
-    
     <p>Category<span>*</span></p>
     <input placeholder="Add new Task" list="categorys" name="categorys" />
     <datalist id="categorys">
@@ -44,8 +43,8 @@
     </datalist>
     <p>Subtasks</p>
     <div>
-      <input type="text" placeholder="Add new Subtask">
-      <button id="plus"><img src="assets/icons/plus.png" alt="plus"></button>
+      <input id="add-subtask" type="text" placeholder="Add new Subtask">
+      <button (click)="addSubtask()" id="plus"><img src="assets/icons/plus.png" alt="plus"></button>
     </div>
   </div>
 </section>
