@@ -7,7 +7,7 @@
   flex-wrap: nowrap;
   align-content: flex-start;
   max-width: calc(1440px - 232px);
-  @media (max-width: 1024px) {
+  @include all.notebook {
     &.mobile-details-open {
       .main-contacts-list {
         display: none;
@@ -28,7 +28,7 @@
 .main-contacts-list {
   width: 40%;
   height: calc(100vh - 96px);
-  @media (max-width: 1024px) {height: calc(100vh - 96px - 80px); width: 100%;}
+  @include all.notebook {height: calc(100vh - 96px - 80px); width: 100%;}
   padding: 0px 20px;
 
   .list {
@@ -105,11 +105,11 @@
     &:hover {
       background-color: all.$blueLight;
     }
-    @media (max-width: 1024px) {display: none;}
+    @include all.notebook {display: none;}
   }
 
   .mobile-add-contact-btn-div{
-    @media (min-width: 1024px) {display: none !important;}
+    @include all.desktop {display: none !important;}
     width: 100%;
     height: auto;
     @include all.flexi($jc: flex-end, $fd: row, $ai: center, $gap: none);
@@ -137,7 +137,7 @@
   height: 100%;
   padding: 0px 40px;
   overflow: hidden;
-  @media (max-width: 1024px) {display: none; width: 100%;}
+  @include all.notebook {display: none; width: 100%;}
 
   .contact-header {
     margin: 40px 0px;
@@ -145,7 +145,7 @@
     flex-wrap: nowrap;
     align-content: center;
     height: 60px;
-    @media (max-width: 1024px) {
+    @include all.notebook {
       height: unset;
       flex-direction: column;
       align-items: flex-start;
@@ -155,13 +155,13 @@
       font-size: clamp(40px, 10vw, 60px);
       width: 70%;
       font-weight: 700;
-      @media (max-width: 1024px) { order: 1; width: 100%;}
+      @include all.notebook { order: 1; width: 100%;}
     }
     &__separator {
       height: 100%;
       width: 2px;
       background-color: all.$blueLight;
-      @media (max-width: 1024px) {
+      @include all.notebook {
         height: 2px;
         width: 90px;
         order: 3;
@@ -171,7 +171,7 @@
       width: 30%;
       font-size: 18px;
       font-weight: 400px;
-      @media (max-width: 1024px) { order: 2;}
+      @include all.notebook { order: 2;}
     }
   }
 
@@ -200,7 +200,7 @@
           font-weight: 500;
         }
         .action-buttons {
-          @media (max-width: 1024px) {display: none !important;}
+          @include all.notebook {display: none !important;}
           @include all.flexi($jc: flex-start, $fd: row, $ai: center, $gap: 16px);
           flex-wrap: nowrap;
           .btn-edit {
@@ -259,7 +259,7 @@
   }
 
   .mobile-menu-btn-div{
-    @media (min-width: 1024px) {display: none !important;}
+    @include all.desktop {display: none !important;}
     width: 100%;
     height: auto;
     @include all.flexi($jc: flex-end, $fd: row, $ai: center, $gap: none);
@@ -341,7 +341,7 @@
 
 .mobile-back-btn {
   display: none;
-  @media (max-width: 1024px) {
+  @include all.notebook {
     display: block;
     position: absolute;
     top: 0px;
