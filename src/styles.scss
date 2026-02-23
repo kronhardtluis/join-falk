@@ -24,7 +24,7 @@ app-root {
     'content'
     'navbar';
   // --- Desktop ---
-  @media (min-width: 1024px) {
+  @include all.notebook {
     grid-template-columns: 232px 1fr;
     grid-template-rows: 96px 1fr;
     grid-template-areas:
