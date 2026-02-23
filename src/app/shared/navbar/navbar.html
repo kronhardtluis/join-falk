@@ -1,5 +1,5 @@
 <main>
-  <section id="non-responsive">
+  <section>
     <section id="menu">
       <div id="logo">
         <img src="assets/icons/logo-light.png" alt="Logo" />
@@ -61,52 +61,4 @@
     </section>
   </section>
 
-  <section id="responsive">
-    <nav>
-      <a
-        href=""
-        routerLink="summary"
-        id="summary"
-        (click)="setActiveNav('summary')"
-        class="navigation"
-        [class.active]="activeNav === 'summary'"
-      >
-        <img src="assets/icons/summary.png" alt="Summary" />
-        <span>Summary</span>
-      </a>
-
-      <a
-        href=""
-        routerLink="add-task"
-        (click)="setActiveNav('add-task')"
-        class="navigation"
-        [class.active]="activeNav === 'add-task'"
-      >
-        <img src="assets/icons/add-task.png" alt="Add Task" />
-        <span>Add Task</span>
-      </a>
-
-      <a
-        href=""
-        routerLink="board"
-        (click)="setActiveNav('board')"
-        class="navigation"
-        [class.active]="activeNav === 'board'"
-      >
-        <img src="assets/icons/board.png" alt="Board" />
-        <span>Board</span>
-      </a>
-
-      <a
-        href=""
-        routerLink="contacts"
-        (click)="setActiveNav('contacts')"
-        class="navigation"
-        [class.active]="activeNav === 'contacts'"
-      >
-        <img src="assets/icons/contacts.png" alt="Contacts" />
-        <span>Contacts</span>
-      </a>
-    </nav>
-  </section>
 </main>

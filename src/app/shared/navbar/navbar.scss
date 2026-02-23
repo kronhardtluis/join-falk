@@ -80,105 +80,57 @@ nav {
 //#region Mediaquerries
 
 @include all.notebook {
-  // #logo {
-  //   display: none;
-  // }
+  #logo {
+    display: none;
+  }
 
-  // #legal-links {
-  //   display: none;
-  // }
-
-  // main {
-  //   padding: 0;
-
-  //   > section {
-  //     display: flex;
-  //     align-items: flex-start;
-  //   }
-  // }
-
-  // #menu {
-  //   width: 100%;
-  //   padding: 10px 4px;
-
-  //   > div {
-  //     width: 100%;
-  //     // display: flex;
-  //     // align-items: center;
-  //     // justify-content: space-between;
-  //   }
-  // }
-
-  // nav {
-  //   // wieso schrumpft der platz zwischen drin nicht wenn ich verkleinere?
-  //   @include all.flexi($jc: space-between, $gap: 0px);
-  //   width: 100%;
-
-  //   //innerhalb meines a-tag
-  //   .navigation {
-  //     @include all.flexi($fd: column, $gap: 4px);
-  //     width: clamp(70px, 15vw, 232px);
-  //     padding: 0px 0px;
-  //     margin: 0;
-
-  //     > img {
-  //       width: clamp(20px, 4vw, 25px);
-  //       height: clamp(21px, 4vw, 26px);
-  //     }
-
-  //     span {
-  //       font-size: clamp(1.4rem, 3vw, 2rem);
-  //     }
-  //   }
-  // }
-
-  #non-responsive {
+  #legal-links {
     display: none;
   }
 
   main {
-    // @include all.flexi($ai: flex-start,$jc: flex-start);
     padding: 0;
-    margin: 0;
+
+    > section {
+      display: flex;
+      align-items: flex-start;
+    }
   }
 
-  #responsive {
-    @include all.flexi($ai: flex-start, $jc: flex-start);
-    padding: 0;
-    margin: 0;
+  #menu {
+    width: 100%;
+    padding: 10px 4px;
+
+    > div {
+      width: 100%;
+      padding: 0px 10px;
+    }
+  }
+
+  nav {
+    @include all.flexi($jc: space-between, $gap: 0px);
     width: 100%;
 
-    nav {
-      @include all.flexi($jc: space-between, $ai: center);
-      padding-top: 10px;
-      width: 100%;
+    //innerhalb meines a-tag
+    .navigation {
+      @include all.flexi($fd: column, $gap: 4px);
+      width: clamp(70px, 15vw, 232px);
+      padding: 8px 0px;
+      margin: 0;
+      border-radius: 8px;
 
-      .navigation {
-        padding: 0;
-        margin: 0;
-        width: 20%;
-        display: flex;
-        flex-direction: column;
+      > img {
+        width: clamp(20px, 4vw, 25px);
+        height: clamp(21px, 4vw, 26px);
+      }
 
-        > img {
-          width: clamp(20px, 4vw, 25px);
-          height: clamp(21px, 4vw, 26px);
-        }
-
-        span {
-          font-size: clamp(1.4rem, 3vw, 2rem);
-        }
+      span {
+        font-size: clamp(1.4rem, 3vw, 2rem);
       }
     }
   }
-}
-
-@media (max-width: 400px){
-  #responsive>nav{
-    width: 100%;
-    @include all.flexi($jc: center);
-  }
 
 }
+
 
 //#endregion
