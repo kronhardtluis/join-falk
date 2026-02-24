@@ -13,7 +13,8 @@
         display: none;
       }
       .main-contact-info {
-        display: block;
+        display: flex;
+        flex-direction: column;
         width: 100%;
         padding: 0 20px;
         .contact-description {
@@ -132,35 +133,32 @@
     }
   }
 
-  .mobile-add-contact-btn-div {
+  .add-contact-btn-mobile {
+    position: sticky;
+    bottom: 8px;
+    align-self: flex-end;
+    margin-right: 16px;
+    height: 56px;
+    width: 56px;
+    border-radius: 50%;
+    background-color: all.$blue;
+    background-image: url('../../../../public/assets/icons/add-person.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 75%;
+    cursor: pointer;
     @include all.desktop {
-      display: none !important;
-    }
-    width: 100%;
-    height: auto;
-    @include all.flexi($jc: flex-end, $fd: row, $ai: center, $gap: 0);
-    flex-wrap: nowrap;
-
-    .add-contact-btn-mobile {
-      height: 56px;
-      width: 56px;
-      border-radius: 50%;
-      background-color: all.$blue;
-      background-image: url('../../../../public/assets/icons/add-person.png');
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: 75%;
-      cursor: pointer;
-      &:hover {
-        background-color: all.$blueLight;
-      }
+    display: none;
+  }
+    &:hover {
+      background-color: all.$blueLight;
     }
   }
 }
 
 .main-contact-info {
   width: 60%;
-  height: 100%;
+  height: calc(100dvh - 75px - 90px);
   padding: 0px 40px;
   overflow: hidden;
   @include all.notebook {
@@ -235,11 +233,11 @@
           font-weight: 500;
         }
         .action-buttons {
-          @include all.notebook {
-            display: none !important;
-          }
           @include all.flexi($jc: flex-start, $fd: row, $ai: center, $gap: 16px);
           flex-wrap: nowrap;
+          @include all.notebook {
+            display: none;
+          }
           .btn-edit {
             padding-left: 10px;
             width: 54px;
@@ -296,72 +294,68 @@
     }
   }
 
-  .mobile-menu-btn-div {
-    @include all.desktop {
-      display: none !important;
+  .mobile-menu-btn {
+    height: 56px;
+    width: 56px;
+    position: sticky;
+    top: 100%;
+    align-self: flex-end;
+    margin-right: 16px;
+    border-radius: 50%;
+    background-color: transparent;
+    background-image: url('../../../../public/assets/icons/menu-blue.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    order: 2;
+  @include all.desktop {
+    display: none;
+  }
+    &:hover {
+      background-image: url('../../../../public/assets/icons/menu-light-blue.png');
     }
-    width: 100%;
-    height: auto;
-    @include all.flexi($jc: flex-end, $fd: row, $ai: center, $gap: unset);
-    flex-wrap: nowrap;
-    align-content: center;
-
-    .mobile-menu-btn {
-      height: 56px;
-      width: 56px;
-      border-radius: 50%;
-      background-color: transparent;
-      background-image: url('../../../../public/assets/icons/menu-blue.png');
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: contain;
-      cursor: pointer;
-      order: 2;
+  }
+  .mobile-options-menu {
+    position: absolute;
+    bottom: 5px;
+    right: 56px;
+    background: white;
+    border-radius: 20px 20px 0px 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    width: 92px;
+    height: 68px;
+    z-index: 100;
+    gap: 10px;
+    .btn-edit-mobile {
+      padding-left: 10px;
+      background-image: url('../../../../public/assets/icons/edit-blue.png');
       &:hover {
-        background-image: url('../../../../public/assets/icons/menu-light-blue.png');
+        background-image: url('../../../../public/assets/icons/edit-light-blue.png');
       }
     }
-    .mobile-options-menu {
-      position: absolute;
-      bottom: 5px;
-      right: 56px;
-      background: white;
-      border-radius: 20px 20px 0px 20px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
-      display: flex;
-      flex-direction: column;
-      padding: 10px;
-      width: 92px;
-      height: 68px;
-      z-index: 100;
-      gap: 10px;
-      .btn-edit-mobile {
-        padding-left: 10px;
-        background-image: url('../../../../public/assets/icons/edit-blue.png');
-        &:hover {
-          background-image: url('../../../../public/assets/icons/edit-light-blue.png');
-        }
+    .btn-delete-mobile {
+      padding-left: 25px;
+      background-image: url('../../../../public/assets/icons/delete-blue.png');
+      &:hover {
+        background-image: url('../../../../public/assets/icons/delete-light-blue.png');
       }
-      .btn-delete-mobile {
-        padding-left: 25px;
-        background-image: url('../../../../public/assets/icons/delete-blue.png');
-        &:hover {
-          background-image: url('../../../../public/assets/icons/delete-light-blue.png');
-        }
-      }
-      .btn-edit-mobile,
-      .btn-delete-mobile {
-        background-repeat: no-repeat;
-        background-position: left;
-        background-color: transparent;
-        background-size: 25%;
-        cursor: pointer;
-        color: black;
-        font-size: 18px;
-        z-index: 90;
-        &:hover {
-          color: all.$blueLight;
-        }
+    }
+    .btn-edit-mobile,
+    .btn-delete-mobile {
+      background-repeat: no-repeat;
+      background-position: left;
+      background-color: transparent;
+      background-size: 25%;
+      cursor: pointer;
+      color: black;
+      font-size: 18px;
+      z-index: 90;
+      &:hover {
+        color: all.$blueLight;
       }
     }
   }
