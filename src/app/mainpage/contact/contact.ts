@@ -90,13 +90,19 @@ export class Contact implements OnInit {
   }
 
   /**
-  * Closes the contact dialog window using the native HTML dialog API.
-  * This method resets the visual state of the modal without necessarily
-  * clearing the form data.
+  * Initiates the closing sequence of the contact dialog with a CSS transition.
+  * It applies a 'closing' class to trigger responsive animations (vertical for mobile,
+  * horizontal for desktop) and uses a timeout to call the native close() method
+  * only after the animation has completed.
   * @returns {void}
   */
   closeDialog() {
-    this.dialog.nativeElement.close();
+    const DIALOG_ELEMENT = this.dialog.nativeElement;
+    DIALOG_ELEMENT.classList.add('closing');
+    setTimeout(() => {
+      DIALOG_ELEMENT.close();
+      DIALOG_ELEMENT.classList.remove('closing');
+    }, 400);
   }
 
   /**

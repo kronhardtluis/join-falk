@@ -16,11 +16,23 @@ dialog {
   overflow: hidden;
   &::backdrop {
     background: rgba(0, 0, 0, 0.3);
+    animation: fade-in 0.4s ease-out;
   }
-
-  @include all.notebook{
-    dialog{
-      min-width: 300px;
+  @include all.notebook {
+    min-width: 300px;
+    &[open] {
+      animation: slide-in-up 0.4s ease-out forwards;
+    }
+    &.closing {
+      animation: slide-out-down 0.4s ease-in forwards;
+    }
+  }
+  @include all.desktop {
+    &[open] {
+      animation: slide-in-right 0.4s ease-out forwards;
+    }
+    &.closing {
+      animation: slide-out-left 0.4s ease-in forwards;
     }
   }
 
