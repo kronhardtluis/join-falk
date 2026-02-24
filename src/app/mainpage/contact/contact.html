@@ -28,7 +28,7 @@
           <div>
             <span>{{ truncateName(contact.name, 14) }}</span><br />
             <span class="email">
-              <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
+              <a href="mailto:{{ contact.email }}">{{ truncateName(contact.email, 18) }}</a>
             </span>
           </div>
         </div>
@@ -55,7 +55,7 @@
         </div>
 
         <div class="name-container">
-          <h3>{{ truncateName(contact.name, 30) }}</h3>
+          <h3>{{ truncateName(contact.name, 20) }}</h3>
           <div class="action-buttons">
             <button class="btn-edit" (click)="openDialogWindow('editContact', contact.id)">
               Edit
@@ -69,7 +69,7 @@
       <h4>Contact Information</h4>
       <h5 class="label">Email</h5>
       <p>
-        <a href="mailto:{{ contact.email }}">{{ truncateName(contact.email, 30) }}</a>
+        <a href="mailto:{{ contact.email }}">{{ truncateName(contact.email, 26) }}</a>
       </p>
       <h5 class="label">Phone</h5>
       <p class="value">{{ contact.phone || 'No phone number' }}</p>
