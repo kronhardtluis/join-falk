@@ -6,14 +6,21 @@ dialog {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 100;
-  width: 90%;
+  min-width: 1000px;
+  width: 65%;
+  height: 85%;
   max-width: 1440px;
-  height: 90%;
   background-color: white;
   border-radius: 30px;
   overflow: hidden;
   &::backdrop {
     background: rgba(0, 0, 0, 0.3);
+  }
+
+  @include all.notebook{
+    dialog{
+      min-width: 300px;
+    }
   }
 
   #close {
@@ -141,7 +148,8 @@ dialog {
 
   #dialog-buttons {
     width: 100%;
-    @include all.flexi($jc: center, $gap: 24px);
+    @include all.flexi($jc: center, $gap: 16px);
+    padding: 0px 16px;
 
     #create-contact{
       color: white;

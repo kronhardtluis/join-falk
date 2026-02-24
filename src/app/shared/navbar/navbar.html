@@ -8,46 +8,25 @@
       <div>
         <nav>
           <a
-            href=""
             routerLink="summary"
-            id="summary"
-            (click)="setActiveNav('summary')"
+            routerLinkActive="active"
             class="navigation"
-            [class.active]="activeNav === 'summary'"
           >
             <img src="assets/icons/summary.png" alt="Summary" />
             <span>Summary</span>
           </a>
 
-          <a
-            href=""
-            routerLink="add-task"
-            (click)="setActiveNav('add-task')"
-            class="navigation"
-            [class.active]="activeNav === 'add-task'"
-          >
+          <a routerLink="add-task" routerLinkActive="active" class="navigation">
             <img src="assets/icons/add-task.png" alt="Add Task" />
             <span>Add Task</span>
           </a>
 
-          <a
-            href=""
-            routerLink="board"
-            (click)="setActiveNav('board')"
-            class="navigation"
-            [class.active]="activeNav === 'board'"
-          >
+          <a routerLink="board" routerLinkActive="active" class="navigation">
             <img src="assets/icons/board.png" alt="Board" />
             <span>Board</span>
           </a>
 
-          <a
-            href=""
-            routerLink="contacts"
-            (click)="setActiveNav('contacts')"
-            class="navigation"
-            [class.active]="activeNav === 'contacts'"
-          >
+          <a routerLink="contacts" routerLinkActive="active" class="navigation">
             <img src="assets/icons/contacts.png" alt="Contacts" />
             <span>Contacts</span>
           </a>
@@ -60,5 +39,4 @@
       <a routerLink="legal-notice" href="">Legal Notice</a>
     </section>
   </section>
-
 </main>

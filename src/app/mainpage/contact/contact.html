@@ -89,13 +89,13 @@
   </div>
 
   <dialog #contactDialog (click)="onBackdropClick($event)">
-    <div (click)="$event.stopPropagation()">
+    <div id="content-wrapper" (click)="$event.stopPropagation()">
       <button id="close" (click) = "closeDialog()"></button>
       <section id="left-section">
         <img id="logo" src="assets/icons/logo-light.png" alt="Logo" />
         <h3>{{ isEditMode() ? 'Edit contact' : 'Add contact' }}</h3>
         @if(!isEditMode()){
-          <p>Tasks are better with a team</p>
+          <p>Tasks are better with a team!</p>
         }
         <img src="assets/icons/blue-underline.png" alt="Underline" />
       </section>
@@ -148,7 +148,7 @@
                 <button id="save" [disabled]="userForm.invalid">Save</button>
               } @else {
                 <button id="cancel" type="button" (click)="closeDialog()">Cancel</button>
-                <button id="create-contact" [disabled]="userForm.invalid">Create</button>
+                <button id="create-contact" [disabled]="userForm.invalid">Create contact</button>
               }
             </div>
           </form>
