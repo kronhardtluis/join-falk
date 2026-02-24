@@ -119,7 +119,7 @@
                 <span class="error-msg">This field is required.</span>
               }
               @if (userForm.get('name')?.hasError('minlength') || userForm.get('name')?.hasError('pattern')) {
-                <span class="error-msg">Please enter data in the following format: Name Surname</span>
+                <span class="error-msg">Please enter a valid name (e.g. Name Surname).</span>
               }
             </div>
             <div class="input-icons">
@@ -128,8 +128,8 @@
               @if (userForm.get('email')?.hasError('required') && userForm.get('email')?.touched) {
                 <span class="error-msg">This field is required.</span>
               }
-              @if (userForm.get('email')?.hasError('email')) {
-                <span class="error-msg">Please enter a valid email address.</span>
+              @if (userForm.get('email')?.hasError('pattern')) {
+                <span class="error-msg">Please enter a valid email address (e.g. name@domain.com).</span>
               }
             </div>
             <div class="input-icons">
@@ -139,7 +139,7 @@
                 <span class="error-msg">This field is required.</span>
               }
               @if(userForm.get('phone')?.hasError('pattern')){
-                <span class="error-msg">Please enter a valid phone number.</span>
+                <span class="error-msg">Please enter a valid phone number (e.g. +48 123 456 789).</span>
               }
             </div>
             <div id="dialog-buttons">

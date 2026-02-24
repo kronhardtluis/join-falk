@@ -27,7 +27,7 @@ export class Contact implements OnInit {
   private fb = inject(FormBuilder);
   public userForm: FormGroup = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z]+\s+[a-zA-Z]+.*$/)]],
-    email: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
     phone: ['', [Validators.required, Validators.pattern(/^[0-9+ ]{9,15}$/)]]
   });
 
