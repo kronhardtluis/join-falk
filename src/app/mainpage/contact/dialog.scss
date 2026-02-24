@@ -7,8 +7,9 @@ dialog {
   transform: translate(-50%, -50%);
   z-index: 100;
   min-width: 1000px;
+  @include all.notebook{width: 85%; min-width: 300px;}
   width: 65%;
-  height: 85%;
+  height: 75%;
   max-width: 1440px;
   background-color: white;
   border-radius: 30px;
@@ -40,7 +41,7 @@ dialog {
     &:hover{
       background-image: url("../../../../public/assets/icons/close-light-blue.png");
     }
-    @media (max-width: 1024px){
+    @include all.notebook{
       background-image: url("../../../../public/assets/icons/close-white.png");
       &:hover{
         background-image: url("../../../../public/assets/icons/close-white.png");
@@ -57,7 +58,7 @@ dialog {
     flex-wrap: nowrap;
     width: 100%;
     height: 100%;
-    @media (max-width: 1024px) {flex-direction: column; justify-content: flex-start;}
+    @include all.notebook {flex-direction: column; justify-content: flex-start;}
   }
 
   #left-section {
@@ -67,31 +68,31 @@ dialog {
     background-color: all.$blue;
     color: white;
     @include all.flexi($fd: column, $ai: flex-start);
-    @media (max-width: 1024px) {width: 100%; height: 40%; padding-right: 40px;}
+   @include all.notebook {width: 100%; height: 40%; padding-right: 40px;}
 
     #logo {
       width: 57px;
       height: 67px;
-      @media (max-width: 1024px) {display: none;}
+      @include all.notebook {display: none;}
     }
 
     h3 {
       font-size: 6rem;
       margin-top: 10px;
-      @media (max-width: 1024px){font-size: 40px;}
+      @include all.notebook {font-size: clamp(24px, 8vw, 40px);}
     }
 
     p {
-      margin: 22.5px 0px;
+      margin: clamp(8px, 3vw, 22.5px) 0px;
       font-size: 2.8rem;
-      @media (max-width: 1024px){font-size: 16px;}
+      @include all.notebook {font-size: 16px;}
     }
   }
 
   #right-section {
     width: 60%;
     @include all.flexi($jc: flex-start);
-    @media (max-width: 1024px){flex-direction: column; top: -50px; width: 100%;}
+    @include all.notebook {flex-direction: column; top: -50px; width: 100%;}
 
     #user {
       width: 30%;
@@ -155,9 +156,9 @@ dialog {
 
     #create-contact{
       color: white;
-      width: 45%;
+      width: 200px;
       @include all.flexi($jc: flex-start, $fd: row, $ai: center, $gap: 0);
-      @media (max-width: 1024px){justify-content: center; padding: 6px; width: 60%;}
+      @include all.notebook{padding: 6px;}
       background-color: all.$blue;
       background-image: url("../../../../public/assets/icons/check.png");
       background-position: 95%;
@@ -170,7 +171,7 @@ dialog {
 
     #cancel{
       color: black;
-      width: 30%;
+      width: 120px;
       @include all.flexi($jc: flex-start, $fd: row, $ai: center, $gap: 0);
       background-color: transparent;
       background-image: url("../../../../public/assets/icons/close-blue.png");
@@ -181,11 +182,11 @@ dialog {
         border-color: all.$blueLight;
         color: all.$blueLight;
       }
-      @media (max-width: 1024px){display: none;}
+     @include all.notebook{display: none;}
     }
 
     #delete{
-      width: 25%;
+      width: 100px;
       color: black;
       background-color: transparent;
       &:hover{
@@ -195,8 +196,9 @@ dialog {
     }
 
     #save{
-      width: 25%;
+      width: 100px;
       color: white;
+      text-align: left;
       background-color: all.$blue;
       background-image: url("../../../../public/assets/icons/check.png");
       background-position: 95%;
