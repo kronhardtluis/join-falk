@@ -7,6 +7,16 @@ app-mainpage {
 app-add-task {
   padding: 4% 6%;
   height: calc(100dvh - all.$header-height);
+
+  @media (max-width: 1250px) {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  @include all.notebook {
+    padding-inline: 0%;
+  }
 }
 
 app-root {
