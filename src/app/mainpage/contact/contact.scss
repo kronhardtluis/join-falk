@@ -30,7 +30,7 @@
   min-width: 356px;
   height: calc(100vh - 96px);
   @include all.notebook {
-    height: calc(100vh - 96px - 80px);
+    height: calc(100% - 96px - 80px);
     width: 100%;
   }
   padding: 0px 20px;
