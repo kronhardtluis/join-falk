@@ -1,18 +1,40 @@
 @use '../../../../public/assets/styles/all-styles.scss' as all;
 
+h2 {
+  margin-left: 5%;
+  font-size: 6rem;
+  margin-top: 3%;
+}
+
+span {
+  color: red;
+}
+
 section {
   display: flex;
   justify-content: space-between;
   min-height: 50%;
-  max-width: 1070px;
+  max-width: calc(1440px - 232px);
   width: 100%;
-  margin-top: 32px;
+  padding-block: 16px;
+  padding-inline: 5%;
   overflow-y: auto;
 
+  @media (max-width: 1250px) {
+    flex-direction: column;
+    align-items: center;
+    padding-inline: 0%;
+  }
+
   .content {
-    width: 100%;
+    width: 45%;
     max-width: 1060px;
     @include all.flexi($fd: column, $ai: flex-start);
+    overflow: hidden;
+
+    @media (max-width: 1250px) {
+      width: clamp(300px, 90%, 400px);
+    }
 
     p {
       margin-block: 16px 8px;
@@ -24,16 +46,13 @@ section {
       box-shadow: 0px 0px 2px;
       padding: 12px 8px;
       background-color: white;
-      width: 90%;
+      width: 98%;
       margin: 3px;
 
       &:focus {
         box-shadow: all.$blueLight;
+        border: none;
       }
-    }
-
-    span {
-      color: red;
     }
 
     #descrition {
@@ -41,14 +60,24 @@ section {
     }
 
     #priorities {
-      @include all.flexi($gap: 16px);
+      @include all.flexi($jc: space-between);
+      margin-left: 4px;
+      width: 98%;
 
       .importance {
         @include all.flexi($gap: 8px);
         background-color: white;
         box-shadow: 0px 0px 3px all.$greyMid;
         border-radius: 8px;
-        padding: 10px;
+        padding: 12px 24px;
+
+        @media (max-width: 1250px) {
+          padding: 8px 16px;
+        }
+
+        @include all.tablet {
+          padding: 8px;
+        }
 
         &:hover {
           cursor: pointer;
@@ -65,9 +94,18 @@ section {
       }
     }
 
+    #subtask-block {
+      width: 98%;
+
+      #add-subtask {
+        width: 100%;
+        padding-right: 36px;
+      }
+    }
+
     #plus {
       position: absolute;
-      right: 24px;
+      right: 0;
       top: 12px;
       padding: 8px;
       background: none;
@@ -85,5 +123,48 @@ section {
   height: auto;
   width: 2px;
   background-color: all.$greyMid;
-  margin-inline: 32px;
+}
+
+#bottom {
+  @include all.flexi($jc: space-between, $ai: center);
+  width: clamp(300px, 90%, 400px);
+  margin-top: 40px;
+
+  #declaration {
+    font-size: 16px;
+  }
+
+  button {
+    @include all.flexi($ai: center, $gap: 8px);
+    font-size: 1.8rem;
+    color: white;
+    background-color: all.$blue;
+    border-radius: 8px;
+    padding: 12px 24px;
+
+    &:hover {
+      cursor: pointer;
+      background-color: all.$blueLight;
+    }
+
+    img {
+      width: 16px;
+    }
+  }
+}
+
+@include all.notebook {
+  p,
+  input,
+  textarea {
+    font-size: 1.8rem;
+  }
+}
+
+@include all.tablet {
+  p,
+  input,
+  textarea {
+    font-size: 1.6rem;
+  }
 }

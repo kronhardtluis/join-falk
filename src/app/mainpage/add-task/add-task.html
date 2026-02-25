@@ -1,4 +1,4 @@
-<h2><strong>Add Task</strong></h2>
+<h2>Add Task</h2>
 
 <section id="form">
   <div class="content">
@@ -9,7 +9,9 @@
     <p>Due date<span>*</span></p>
     <input type="date" />
   </div>
+
   <div id="line"></div>
+
   <div class="content">
     <p>Prio</p>
     <div id="priorities">
@@ -41,10 +43,16 @@
       <option value="Technical Task"></option>
       <option value="User Story"></option>
     </datalist>
+
     <p>Subtasks</p>
-    <div>
+    <div id="subtask-block">
       <input id="add-subtask" type="text" placeholder="Add new Subtask">
       <button (click)="addSubtask()" id="plus"><img src="assets/icons/plus.png" alt="plus"></button>
     </div>
   </div>
 </section>
+
+<div id="bottom">
+  <p id="declaration"><span>*</span> this field is required</p>
+  <button>Create Task <img src="assets/icons/check-white.png" alt=""></button>
+</div>
