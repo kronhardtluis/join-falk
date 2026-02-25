@@ -5,7 +5,7 @@
       <div class="btn-cover">
         <button (click)="openDialogWindow('addContact')" class="add-contact-btn">
           Add new contact
-          <img src="/assets/icons/add-person.png" alt="" />
+          <img src="assets/icons/add-person.png" alt="Edit-User">
         </button>
       </div>
       @for (contact of dbService.contacts(); track contact.id; let i = $index){
