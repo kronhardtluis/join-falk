@@ -39,6 +39,10 @@ p {
   }
 }
 
+#help-responsive {
+  display: none;
+}
+
 #user {
   width: 56px;
   height: 56px;
@@ -50,6 +54,7 @@ p {
   &:hover {
     background-color: all.$greyLight;
     z-index: 10;
+    cursor: pointer;
   }
 }
 
@@ -57,7 +62,7 @@ p {
   display: none;
   position: absolute;
   width: 170px;
-  height: 157px;
+  height: autox;
   right: 10px;
   top: 96px;
   background-color: all.$blue;
@@ -75,7 +80,7 @@ p {
 
     > a {
       padding: 10px;
-      width: 80%;
+      width: 100%;
 
       &:hover {
         background-color: all.$blueHover;
@@ -110,11 +115,19 @@ p {
     height: 46px;
   }
 
+  #help {
+    display: none;
+  }
+
+  #help-responsive {
+    display: block;
+  }
+
   #header-navigation {
     width: 80px;
   }
 
-  .dropdown{
+  .dropdown {
     top: 75px;
   }
 }
