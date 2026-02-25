@@ -11,6 +11,7 @@
 
     <div class="dropdown" (click)="$event.stopPropagation()" [class.open]="isMenuOpen">
       <div class="dropdown-content">
+        <a id="help-responsive" routerLink="help">Help</a>
         <a routerLink="legal-notice" (click)="closeMenu()">Legal Notice</a>
         <a routerLink="privacy-policy" (click)="closeMenu()">Privacy Policy</a>
         <a routerLink="" (click)="closeMenu()">Log out</a>
