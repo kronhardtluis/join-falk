@@ -88,9 +88,9 @@ app-root {
 }
 
 ::-webkit-scrollbar-button:vertical:start:decrement {
-  background-image: url("/assets/icons/scroll-up.png");
+  background-image: url("../public/assets/icons/scroll-up.png");
 }
 
 ::-webkit-scrollbar-button:vertical:end:increment {
-  background-image: url("/assets/icons/scroll-down.png");
+  background-image: url("../public/assets/icons/scroll-down.png");
 }

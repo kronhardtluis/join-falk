@@ -2,10 +2,12 @@
   <div class="main-contacts-list">
     @if (dbService.contacts().length > 0) {
     <div class="list">
-      <button (click)="openDialogWindow('addContact')" class="add-contact-btn">
-        Add new contact
-        <img src="/assets/icons/add-person.png" alt="">
-      </button>
+      <div class="btn-cover">
+        <button (click)="openDialogWindow('addContact')" class="add-contact-btn">
+          Add new contact
+          <img src="/assets/icons/add-person.png" alt="">
+        </button>
+      </div>
       @for (contact of dbService.contacts(); track contact.id; let i = $index){
       <div>
         <div>
