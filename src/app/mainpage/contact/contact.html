@@ -29,11 +29,14 @@
             {{ contact.name[0].toUpperCase() }}{{ getSecondInitial(contact.name) }}
           </span>
           <div class="text-cut">
-            <span>{{ contact.name }}</span
-            ><br />
-            <span class="email">
-              <a class="blue" href="mailto:{{ contact.email }}">{{ contact.email }}</a>
+            <div class="text-cut">
+            <span>{{ contact.name }}</span>
+            </div>
+            <div class="text-cut-email">
+              <span class="email">
+              <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
             </span>
+            </div>
           </div>
         </div>
       </div>

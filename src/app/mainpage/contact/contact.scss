@@ -93,6 +93,11 @@
       @include all.text-cut;
     }
 
+    .text-cut-email{
+      @include all.text-cut;
+      color: all.$blueLight;
+    }
+
     .active {
       background-color: all.$blue;
       color: all.$grey;
