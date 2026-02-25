@@ -44,7 +44,9 @@
     padding-right: 20px;
     padding-left: 20px;
     width: 95%;
-    @include all.notebook {width: 100%;}
+    @include all.notebook {
+      width: 100%;
+    }
     height: 100%;
     overflow-y: auto;
     margin-top: 20px;
@@ -89,11 +91,7 @@
       }
     }
 
-    .text-cut {
-      @include all.text-cut;
-    }
-
-    .text-cut-email{
+    .text-cut-email {
       @include all.text-cut;
       color: all.$blueLight;
     }
@@ -132,29 +130,29 @@
     z-index: 90;
 
     .add-contact-btn {
-    background-repeat: no-repeat;
-    background-position: 90%;
-    background-color: all.$blue;
-    color: white;
-    border-radius: 10px;
-    border: 1px;
-    width: 96%;
-    height: 56px;
-    cursor: pointer;
-    font-size: 2rem;
-    font-weight: bold;
-    text-align: center;
-    @include all.flexi();
+      background-repeat: no-repeat;
+      background-position: 90%;
+      background-color: all.$blue;
+      color: white;
+      border-radius: 10px;
+      border: 1px;
+      width: 96%;
+      height: 56px;
+      cursor: pointer;
+      font-size: 2rem;
+      font-weight: bold;
+      text-align: center;
+      @include all.flexi();
 
-    >img{
-      margin-left: 12px;
-    }
-    &:hover {
-      background-color: all.$blueLight;
-    }
-    @include all.notebook {
-      display: none;
-    }
+      > img {
+        margin-left: 12px;
+      }
+      &:hover {
+        background-color: all.$blueLight;
+      }
+      @include all.notebook {
+        display: none;
+      }
     }
   }
 
@@ -173,10 +171,10 @@
     background-size: contain;
     cursor: pointer;
     @include all.desktop {
-    display: none;
-  }
+      display: none;
+    }
     &:hover {
-    background-image: url('../../../../public/assets/icons/add-contact-light-blue.png');
+      background-image: url('../../../../public/assets/icons/add-contact-light-blue.png');
     }
   }
 }
@@ -235,6 +233,7 @@
   }
 
   .contact-description {
+    width: 100%;
     @include all.flexi($jc: center, $fd: column, $ai: flex-start, $gap: unset);
     flex-wrap: nowrap;
     align-content: flex-start;
@@ -253,11 +252,15 @@
       flex-wrap: nowrap;
 
       .name-container {
+        width: calc(100% - 100px - 10px);
         padding-left: 20px;
+
         h3 {
           font-size: clamp(20px, 3.5vw, 48px);
           font-weight: 500;
+          margin-bottom: 8px;
         }
+
         .action-buttons {
           @include all.flexi($jc: flex-start, $fd: row, $ai: center, $gap: 24px);
           flex-wrap: nowrap;
@@ -335,9 +338,9 @@
     background-size: contain;
     cursor: pointer;
     order: 2;
-  @include all.desktop {
-    display: none;
-  }
+    @include all.desktop {
+      display: none;
+    }
     &:hover {
       background-image: url('../../../../public/assets/icons/menu-light-blue.png');
     }
@@ -443,4 +446,12 @@
     height: 100%;
     width: 100%;
   }
+}
+
+.text-cut {
+  @include all.text-cut;
+}
+
+.text-cut-wrap{
+  @include all.text-cut-wrap;
 }

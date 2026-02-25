@@ -27,3 +27,8 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+@mixin text-cut-wrap {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

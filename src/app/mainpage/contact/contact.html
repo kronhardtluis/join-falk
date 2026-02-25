@@ -5,7 +5,7 @@
       <div class="btn-cover">
         <button (click)="openDialogWindow('addContact')" class="add-contact-btn">
           Add new contact
-          <img src="/assets/icons/add-person.png" alt="">
+          <img src="/assets/icons/add-person.png" alt="" />
         </button>
       </div>
       @for (contact of dbService.contacts(); track contact.id; let i = $index){
@@ -30,12 +30,12 @@
           </span>
           <div class="text-cut">
             <div class="text-cut">
-            <span>{{ contact.name }}</span>
+              <span>{{ contact.name }}</span>
             </div>
             <div class="text-cut-email">
               <span class="email">
-              <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
-            </span>
+                <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
+              </span>
             </div>
           </div>
         </div>
@@ -62,7 +62,7 @@
         </div>
 
         <div class="name-container">
-          <h3>{{ truncateName(contact.name, 20) }}</h3>
+          <h3 class="text-cut-wrap">{{ contact.name }}</h3>
           <div class="action-buttons">
             <button class="btn-edit" (click)="openDialogWindow('editContact', contact.id)">
               Edit
@@ -72,6 +72,7 @@
             </button>
           </div>
         </div>
+
       </div>
       <h4>Contact Information</h4>
       <h5 class="label">Email</h5>
