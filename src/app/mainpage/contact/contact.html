@@ -1,32 +1,34 @@
 <div class="contact-site" [class.mobile-details-open]="isVisible()">
   <div class="main-contacts-list">
-    <button (click)="openDialogWindow('addContact')" class="add-contact-btn">
-      Add new contact
-    </button>
-
     @if (dbService.contacts().length > 0) {
     <div class="list">
+      <button (click)="openDialogWindow('addContact')" class="add-contact-btn">
+        Add new contact
+        <img src="/assets/icons/add-person.png" alt="">
+      </button>
       @for (contact of dbService.contacts(); track contact.id; let i = $index){
       <div>
         <div>
-          @let currentLetter = contact.name[0].toUpperCase();
-          @let previousContact = dbService.contacts()[i - 1];
-          @if (i === 0 || currentLetter !== previousContact.name[0].toUpperCase()) {
-            <div>
-              <h2 class="letter">{{ currentLetter }}</h2>
-              <div class="line-contacts"></div>
-            </div>
+          @let currentLetter = contact.name[0].toUpperCase(); @let previousContact =
+          dbService.contacts()[i - 1]; @if (i === 0 || currentLetter !==
+          previousContact.name[0].toUpperCase()) {
+          <div>
+            <h2 class="letter">{{ currentLetter }}</h2>
+            <div class="line-contacts"></div>
+          </div>
           }
         </div>
         <div
           class="simple-info"
           (click)="contact.id !== undefined && openDetailWindow(contact.id)"
-          [class.active]="selectedContactId() === contact.id">
+          [class.active]="selectedContactId() === contact.id"
+        >
           <span class="roundContact" [style.background-color]="contact.color">
             {{ contact.name[0].toUpperCase() }}{{ getSecondInitial(contact.name) }}
           </span>
           <div>
-            <span>{{ truncateName(contact.name, 14) }}</span><br />
+            <span>{{ truncateName(contact.name, 14) }}</span
+            ><br />
             <span class="email">
               <a href="mailto:{{ contact.email }}">{{ truncateName(contact.email, 18) }}</a>
             </span>
@@ -41,7 +43,9 @@
 
   <div class="main-contact-info">
     <div class="contact-header">
-      <p class="contact-header__title">Contacts <button class="mobile-back-btn" (click)="closeDetailView(true)"></button></p>
+      <p class="contact-header__title">
+        Contacts <button class="mobile-back-btn" (click)="closeDetailView(true)"></button>
+      </p>
       <div class="contact-header__separator"></div>
       <p class="contact-header__description">Better with a team</p>
     </div>
@@ -74,24 +78,25 @@
       }
     </div>
     @if (!isMobileMenuOpen()) {
-      <button (click)="toggleMobileMenu($event)" class="mobile-menu-btn"></button>
-    }
-    @if (isMobileMenuOpen()) {
-      <div class="mobile-options-menu" (click)="$event.stopPropagation()">
-        <button (click)="handleMobileAction('editContact')" class="btn-edit-mobile">Edit</button>
-        <button (click)="handleMobileAction('deleteContact')" class="btn-delete-mobile">Delete</button>
-      </div>
+    <button (click)="toggleMobileMenu($event)" class="mobile-menu-btn"></button>
+    } @if (isMobileMenuOpen()) {
+    <div class="mobile-options-menu" (click)="$event.stopPropagation()">
+      <button (click)="handleMobileAction('editContact')" class="btn-edit-mobile">Edit</button>
+      <button (click)="handleMobileAction('deleteContact')" class="btn-delete-mobile">
+        Delete
+      </button>
+    </div>
     }
   </div>
 
   <dialog #contactDialog (click)="onBackdropClick($event)">
     <div id="content-wrapper" (click)="$event.stopPropagation()">
-      <button id="close" (click) = "closeDialog()"></button>
+      <button id="close" (click)="closeDialog()"></button>
       <section id="left-section">
         <img id="logo" src="assets/icons/logo-light.png" alt="Logo" />
         <h3>{{ isEditMode() ? 'Edit contact' : 'Add contact' }}</h3>
         @if(!isEditMode()){
-          <p>Tasks are better with a team!</p>
+        <p>Tasks are better with a team!</p>
         }
         <img src="assets/icons/blue-underline.png" alt="Underline" />
       </section>
@@ -99,11 +104,11 @@
       <section id="right-section">
         <div id="user">
           @if(isEditMode() && selectedContactData(); as contact){
-            <div class="roundContact-large" [style.background-color]="selectedContactData()?.color">
-              {{ contact.name[0].toUpperCase() }}{{ getSecondInitial(contact.name) }}
-            </div>
+          <div class="roundContact-large" [style.background-color]="selectedContactData()?.color">
+            {{ contact.name[0].toUpperCase() }}{{ getSecondInitial(contact.name) }}
+          </div>
           } @else {
-            <img src="assets/icons/unknown-user.png" alt="User" />
+          <img src="assets/icons/unknown-user.png" alt="User" />
           }
         </div>
         <div id="form-container">
@@ -112,39 +117,43 @@
               <img class="icon" src="assets/icons/person.png" alt="User" />
               <input id="name" formControlName="name" type="text" placeholder="Name" />
               @if (userForm.get('name')?.hasError('required') && userForm.get('name')?.touched) {
-                <span class="error-msg">This field is required.</span>
-              }
-              @if (userForm.get('name')?.hasError('minlength') || userForm.get('name')?.hasError('pattern')) {
-                <span class="error-msg">Please enter a valid name (e.g. Name Surname).</span>
+              <span class="error-msg">This field is required.</span>
+              } @if (userForm.get('name')?.hasError('minlength') ||
+              userForm.get('name')?.hasError('pattern')) {
+              <span class="error-msg">Please enter a valid name (e.g. Name Surname).</span>
               }
             </div>
             <div class="input-icons">
               <img class="icon" src="assets/icons/mail.png" alt="Mail" />
               <input id="mail" formControlName="email" type="text" placeholder="E-Mail" />
               @if (userForm.get('email')?.hasError('required') && userForm.get('email')?.touched) {
-                <span class="error-msg">This field is required.</span>
-              }
-              @if (userForm.get('email')?.hasError('pattern')) {
-                <span class="error-msg">Please enter a valid email address (e.g. name@domain.com).</span>
+              <span class="error-msg">This field is required.</span>
+              } @if (userForm.get('email')?.hasError('pattern')) {
+              <span class="error-msg"
+                >Please enter a valid email address (e.g. name@domain.com).</span
+              >
               }
             </div>
             <div class="input-icons">
               <img class="icon" src="assets/icons/phone.png" alt="Phone" />
               <input id="phone" formControlName="phone" type="text" placeholder="Phone" />
               @if (userForm.get('phone')?.hasError('required') && userForm.get('phone')?.touched) {
-                <span class="error-msg">This field is required.</span>
-              }
-              @if(userForm.get('phone')?.hasError('pattern')){
-                <span class="error-msg">Please enter a valid phone number (e.g. +48 123 456 789).</span>
+              <span class="error-msg">This field is required.</span>
+              } @if(userForm.get('phone')?.hasError('pattern')){
+              <span class="error-msg"
+                >Please enter a valid phone number (e.g. +48 123 456 789).</span
+              >
               }
             </div>
             <div id="dialog-buttons">
               @if(isEditMode()){
-                <button id="delete" type="button" (click)="openDialogWindow('deleteContact')">Delete</button>
-                <button id="save" [disabled]="userForm.invalid">Save</button>
+              <button id="delete" type="button" (click)="openDialogWindow('deleteContact')">
+                Delete
+              </button>
+              <button id="save" [disabled]="userForm.invalid">Save</button>
               } @else {
-                <button id="cancel" type="button" (click)="closeDialog()">Cancel</button>
-                <button id="create-contact" [disabled]="userForm.invalid">Create contact</button>
+              <button id="cancel" type="button" (click)="closeDialog()">Cancel</button>
+              <button id="create-contact" [disabled]="userForm.invalid">Create contact</button>
               }
             </div>
           </form>
@@ -156,5 +165,4 @@
   <div id="notification" [class.show]="notificationMessage()">
     <span>{{ notificationMessage() }}</span>
   </div>
-
 </div>
