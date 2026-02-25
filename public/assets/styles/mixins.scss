@@ -21,3 +21,9 @@
     align-items: $ai;
     gap: $gap;
 }
+
+@mixin text-cut {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

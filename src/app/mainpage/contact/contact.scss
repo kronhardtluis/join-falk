@@ -80,15 +80,17 @@
       &:hover {
         background-color: all.$greyMid;
       }
-
-      // Kontakt daten
-      // >div{
-      //   @include all.flexi($fd:column, $ai:flex-start, $gap:0px);
-      // }
+      @include all.mobile {
+        padding-left: 0;
+      }
 
       span {
         font-size: 1.6rem;
       }
+    }
+
+    .text-cut {
+      @include all.text-cut;
     }
 
     .active {
@@ -252,14 +254,14 @@
           font-weight: 500;
         }
         .action-buttons {
-          @include all.flexi($jc: flex-start, $fd: row, $ai: center, $gap: 16px);
+          @include all.flexi($jc: flex-start, $fd: row, $ai: center, $gap: 24px);
           flex-wrap: nowrap;
           @include all.notebook {
             display: none;
           }
           .btn-edit {
-            padding-left: 10px;
-            width: 54px;
+            padding-left: 20px;
+            width: 64px;
             height: 24px;
             background-image: url('../../../../public/assets/icons/edit-blue.png');
             background-size: 30%;
@@ -268,8 +270,8 @@
             }
           }
           .btn-delete {
-            padding-left: 20px;
-            width: 70px;
+            padding-left: 27px;
+            width: 80px;
             height: 24px;
             background-image: url('../../../../public/assets/icons/delete-blue.png');
             background-size: 25%;

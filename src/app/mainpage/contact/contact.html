@@ -28,11 +28,11 @@
           <span class="roundContact" [style.background-color]="contact.color">
             {{ contact.name[0].toUpperCase() }}{{ getSecondInitial(contact.name) }}
           </span>
-          <div>
-            <span>{{ truncateName(contact.name, 14) }}</span
+          <div class="text-cut">
+            <span>{{ contact.name }}</span
             ><br />
             <span class="email">
-              <a href="mailto:{{ contact.email }}">{{ truncateName(contact.email, 18) }}</a>
+              <a class="blue" href="mailto:{{ contact.email }}">{{ contact.email }}</a>
             </span>
           </div>
         </div>
