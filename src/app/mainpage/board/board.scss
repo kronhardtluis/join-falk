@@ -1,5 +1,7 @@
 @use '../../../../public/assets/styles/all-styles.scss' as all;
 
+
+//#region fixed
 .board-container {
   height: 100%;
   width: 100%;
@@ -10,6 +12,8 @@
     width: 100%;
   }
 }
+
+/* Header-Layout */
 
 #board-header {
   @include all.flexi($jc: space-between);
@@ -133,6 +137,64 @@
   }
 }
 
+/* Spalten-Layout */
+
+.board-columns {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  overflow-x: auto;
+}
+
+.add-button {
+  background-color: transparent;
+  cursor: pointer;
+
+  > img {
+    display: block;
+  }
+
+  .add-button-hover {
+    display: none;
+  }
+  &:hover {
+    .add-button-hover {
+      display: block;
+    }
+    .add-button-default {
+      display: none;
+    }
+  }
+}
+
+.column-header {
+  @include all.flexi($jc: space-between, $ai: center);
+  margin-bottom: 15px;
+
+  p {
+    font-weight: 600;
+    color: all.$blue;
+  }
+}
+
+.board-column {
+  border-radius: 8px;
+}
+
+.no-tasks-placeholder {
+  background-color: #E7E7E7;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  color: #B6A8A8;
+  margin-top: 10px;
+  border: 2px dashed all.$greyMid;
+  box-shadow: 0 2px 4px rgba(9, 30, 66, 0.08);
+  p{
+    font-size: 1.8rem;
+  }
+}
+
 //#region Mediaquerries
 
 @include all.notebook {
@@ -180,6 +242,12 @@
       }
     }
   }
+
+  .column-header {
+    p {
+      font-size: 24px;
+    }
+  }
 }
 
 @media (max-width: 1200px) {
@@ -194,50 +262,48 @@
 
 //#endregion
 
-/* Spalten-Layout */
+dialog{
+  // display: block;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  width: 75%;
+  height: 80%;
+  border-radius: 30px;
+  border: 2px solid black;
+  overflow: hidden;
+  overflow-y: auto;
 
+  button{
+    background-color: transparent;
+    position: absolute;
+    top: 3%;
+    right: 3%;
+    border-radius: 50%;
+    padding: 8px;
+    @include all.flexi($ai:center, $jc:center);
+    z-index: 999;
 
-.board-columns {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  overflow-x: auto;
+    &:hover{
+      background-color: all.$greyLight;
+      cursor: pointer;
+    }
+  }
+
+    &::backdrop {
+    background: rgba(0, 0, 0, 0.3);
+  }
 }
 
 
+//#endregion
 
 
 
 
 
-.board-column {
-  border-radius: 8px;
-  padding: 15px;
-  // box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
-}
-
-.column-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.column-header h2 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #5e6c84;
-}
-
-.no-tasks-placeholder {
-  background-color: #f0f0f0;
-  border-radius: 6px;
-  padding: 20px;
-  text-align: center;
-  color: #7f8c8d;
-  font-style: italic;
-  margin-top: 10px;
-}
 
 /* Task Card Styles */
 .task-card {

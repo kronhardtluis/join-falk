@@ -28,13 +28,20 @@
     <div class="board-columns">
       <div class="board-column">
         <div class="column-header">
-          <h2>To Do</h2>
-          <button>
-            <img src="assets/icons/plus-button.png" alt="Add-Button" />
+          <p>To do</p>
+          <button class="add-button">
+            <img class="add-button-default" src="assets/icons/add-task-blue.png" alt="Add-Button" />
+            <img
+              class="add-button-hover"
+              src="assets/icons/add-task-light-blue.png"
+              alt="Add-Button"
+            />
           </button>
         </div>
         <div class="column-content">
-          <div class="no-tasks-placeholder">No tasks To Do</div>
+          <div class="no-tasks-placeholder">
+            <p>No tasks to do</p>
+          </div>
         </div>
         <!-- Test card -->
         <!-- <div class="column-content">
@@ -58,9 +65,14 @@
       <!-- Spalte: In Progress -->
       <div class="board-column">
         <div class="column-header">
-          <h2>In Progress</h2>
-          <button>
-            <img src="assets/icons/plus-button.png" alt="Add-Button" />
+          <p>In progress</p>
+          <button class="add-button">
+            <img class="add-button-default" src="assets/icons/add-task-blue.png" alt="Add-Button" />
+            <img
+              class="add-button-hover"
+              src="assets/icons/add-task-light-blue.png"
+              alt="Add-Button"
+            />
           </button>
         </div>
         <div class="column-content">
@@ -85,9 +97,14 @@
       <!-- Spalte: Await Feedback -->
       <div class="board-column">
         <div class="column-header">
-          <h2>Await Feedback</h2>
-          <button>
-            <img src="assets/icons/plus-button.png" alt="Add-Button" />
+          <p>Await feedback</p>
+          <button class="add-button">
+            <img class="add-button-default" src="assets/icons/add-task-blue.png" alt="Add-Button" />
+            <img
+              class="add-button-hover"
+              src="assets/icons/add-task-light-blue.png"
+              alt="Add-Button"
+            />
           </button>
         </div>
         <div class="column-content">
@@ -112,9 +129,14 @@
       <!-- Spalte: Done -->
       <div class="board-column">
         <div class="column-header">
-          <h2>Done</h2>
-          <button>
-            <img src="assets/icons/plus-button.png" alt="Add-Button" />
+          <p>Done</p>
+          <button class="add-button">
+            <img class="add-button-default" src="assets/icons/add-task-blue.png" alt="Add-Button" />
+            <img
+              class="add-button-hover"
+              src="assets/icons/add-task-light-blue.png"
+              alt="Add-Button"
+            />
           </button>
         </div>
         <div class="column-content">
@@ -138,4 +160,12 @@
       </div>
     </div>
   </section>
+
+<dialog>
+  <button>
+    <img src="assets/icons/close-blue.png" alt="Close">
+  </button>
+  <app-add-task></app-add-task>
+</dialog>
+
 </main>
