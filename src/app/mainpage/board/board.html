@@ -1,34 +1,37 @@
 <main class="board-container">
   <section id="board-header">
-    <h2>Board</h2>
+    <div id="header">
+      <h2>Board</h2>
+      <button id="add-task-button-responsive">
+        <img class="add-default" src="assets/icons/add-board-blue.png" alt="Add Icon" />
+        <img class="add-hover" src="assets/icons/add-board-light-blue.png" alt="Add Icon" />
+      </button>
+    </div>
+
     <div class="search-add-section">
       <div id="input-wrapper">
         <input id="input-search" type="text" placeholder="Find Task" />
         <button>
           <img src="assets/icons/search.png" alt="Search Icon" />
         </button>
-        
       </div>
       <button id="add-task-button">
-        <span>Add Task</span>
-        <img id="add-default" src="assets/icons/add-board-blue.png" alt="Add Icon" />
-        <img id="add-hover" src="assets/icons/add-board-light-blue.png" alt="Add Icon" />
+        <span id="add-span">Add Task</span>
+        <img class="add-default" src="assets/icons/add-board-blue.png" alt="Add Icon" />
+        <img class="add-hover" src="assets/icons/add-board-light-blue.png" alt="Add Icon" />
       </button>
     </div>
   </section>
 
-
-
-
-
-
   <!-- Spalte: To Do -->
-  <section>
+  <section id="board-content">
     <div class="board-columns">
       <div class="board-column">
         <div class="column-header">
           <h2>To Do</h2>
-          <span class="add-column-button">+</span>
+          <button>
+            <img src="assets/icons/plus-button.png" alt="Add-Button" />
+          </button>
         </div>
         <div class="column-content">
           <div class="no-tasks-placeholder">No tasks To Do</div>
@@ -56,7 +59,9 @@
       <div class="board-column">
         <div class="column-header">
           <h2>In Progress</h2>
-          <span class="add-column-button">+</span>
+          <button>
+            <img src="assets/icons/plus-button.png" alt="Add-Button" />
+          </button>
         </div>
         <div class="column-content">
           <div class="task-card">
@@ -81,7 +86,9 @@
       <div class="board-column">
         <div class="column-header">
           <h2>Await Feedback</h2>
-          <span class="add-column-button">+</span>
+          <button>
+            <img src="assets/icons/plus-button.png" alt="Add-Button" />
+          </button>
         </div>
         <div class="column-content">
           <div class="task-card">
@@ -106,7 +113,9 @@
       <div class="board-column">
         <div class="column-header">
           <h2>Done</h2>
-          <span class="add-column-button">+</span>
+          <button>
+            <img src="assets/icons/plus-button.png" alt="Add-Button" />
+          </button>
         </div>
         <div class="column-content">
           <div class="task-card">
