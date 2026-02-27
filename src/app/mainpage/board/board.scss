@@ -1,3 +1,5 @@
+@use '../../../../public/assets/styles/all-styles.scss' as all;
+
 .board-container {
   padding: 24px;
   background-color: #f9f9f9;
@@ -52,7 +54,7 @@
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  background-color: rgb(42,54,71);
+  background-color: rgb(42, 54, 71);
   color: white;
   border: none;
   border-radius: 8px;
@@ -74,10 +76,10 @@
 
 .board-column {
   flex: 0 0 280px; /* Feste Breite der Spalten */
- /* background-color: #ebecf0; /* Hintergrundfarbe der Spalten */
+  /* background-color: #ebecf0; /* Hintergrundfarbe der Spalten */
   border-radius: 8px;
   padding: 15px;
-  box-shadow: 0 1px 0 rgba(9,30,66,.25);
+  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
 }
 
 .column-header {
@@ -117,28 +119,62 @@
 }
 
 /* Task Card Styles */
-.task-card {
-  background-color: #fff;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 10px;
-  box-shadow: 4px 2px 4px rgba(9,30,66,.25);
-  cursor: grab;
-}
+.task-library {
+  @include all.flexi($jc: flex-start, $gap: 4%);
+  max-width: calc(1440px - 232px);
 
-.task-card h3 {
-  font-size: 16px;
-  font-weight: 600;
-  color: #2c3e50;
-  margin-top: 10px;
-  margin-bottom: 5px;
-}
+  .task-card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 4px 2px 4px rgba(9, 30, 66, 0.25);
+    cursor: grab;
+    width: 20%;
 
-.task-card p {
-  font-size: 14px;
-  color: #7f8c8d;
-  margin-bottom: 15px;
-  line-height: 1.4;
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-top: 10px;
+      margin-bottom: 5px;
+    }
+
+    p {
+      font-size: 14px;
+      color: #7f8c8d;
+      margin-bottom: 15px;
+      line-height: 1.4;
+    }
+
+    .subtask {
+      @include all.flexi($jc: flex-end);
+      .subtask-done {
+        position: absolute;
+        left: 0;
+        background: rgb(69, 137, 255);
+        width: calc(48% / 3 * 2);
+        height: 6px;
+        border-radius: 3px;
+      }
+
+      .subtask-undone {
+        position: absolute;
+        left: 0;
+        background: white;
+        box-shadow: 0px 0px 3px rgb(111, 111, 111);
+        width: 48%;
+        height: 6px;
+        border-radius: 3px;
+      }
+
+      .subtasks-nummery {
+        width: 48%;
+        font-size: 12px;
+        color: #7f8c8d;
+      }
+    }
+  }
 }
 
 .task-type {
@@ -166,11 +202,10 @@
   margin-top: 15px;
   border-top: 1px solid #eee;
   padding-top: 10px;
-}
 
-.subtasks {
-  font-size: 12px;
-  color: #7f8c8d;
+  img {
+    width: 20px;
+  }
 }
 
 .assignees {
@@ -195,15 +230,21 @@
 }
 
 /* Farben für die Initialen der Benutzer - WIEDER ENTFERNEN */
-.initial-bg-purple { background-color: #8e44ad; }
-.initial-bg-blue { background-color: #3498db; }
-.initial-bg-orange { background-color: #f39c12; }
-.initial-bg-pink { background-color: #e91e63; }
-.initial-bg-green { background-color: #27ae60; }
-.initial-bg-red { background-color: #e74c3c; }
-
-.task-footer img {
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
+.initial-bg-purple {
+  background-color: #8e44ad;
+}
+.initial-bg-blue {
+  background-color: #3498db;
+}
+.initial-bg-orange {
+  background-color: #f39c12;
+}
+.initial-bg-pink {
+  background-color: #e91e63;
+}
+.initial-bg-green {
+  background-color: #27ae60;
+}
+.initial-bg-red {
+  background-color: #e74c3c;
 }
