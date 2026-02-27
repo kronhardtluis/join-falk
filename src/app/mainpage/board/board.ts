@@ -28,13 +28,35 @@ export class Board {
     },
   ];
 
-  @ViewChild('taskDialog') dialog!: ElementRef<HTMLDialogElement>;
+  // @ViewChild('taskDialog') dialog!: ElementRef<HTMLDialogElement>;
 
-  openDialog() {
+  // openDialog() {
+  //   this.dialog.nativeElement.showModal();
+  // }
+
+  // closeDialog() {
+  //   this.dialog.nativeElement.close();
+  // }
+
+
+
+  // Zugriff auf das native <dialog> Element
+  @ViewChild('dialog') dialog!: ElementRef<HTMLDialogElement>;
+
+  open() {
     this.dialog.nativeElement.showModal();
   }
 
-  closeDialog() {
+  close() {
     this.dialog.nativeElement.close();
+  }
+
+  // Best Practice für "Klick daneben": 
+  // Das <dialog> Element füllt bei showModal() das gesamte Overlay aus. 
+  // Ein Klick auf das Element selbst (nicht den Inhalt) schließt es.
+  checkClickOutside(event: MouseEvent) {
+    if (event.target === this.dialog.nativeElement) {
+      this.close();
+    }
   }
 }

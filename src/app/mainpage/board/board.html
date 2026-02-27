@@ -15,7 +15,7 @@
           <img src="assets/icons/search.png" alt="Search Icon" />
         </button>
       </div>
-      <button id="add-task-button">
+      <button (click)="open()" id="add-task-button">
         <span id="add-span">Add Task</span>
         <img class="add-default" src="assets/icons/add-board-blue.png" alt="Add Icon" />
         <img class="add-hover" src="assets/icons/add-board-light-blue.png" alt="Add Icon" />
@@ -188,8 +188,8 @@
     </div>
   </section>
 
-  <dialog>
-    <button>
+  <dialog #dialog (click)="checkClickOutside($event)">
+    <button (click)="close()">
       <img src="assets/icons/close-blue.png" alt="Close" />
     </button>
     <app-add-task></app-add-task>
