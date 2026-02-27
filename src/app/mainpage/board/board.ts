@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { AddTask } from '../add-task/add-task';
 
 interface cardTemplate {
   type: string;
@@ -11,15 +12,11 @@ interface cardTemplate {
 
 @Component({
   selector: 'app-board',
-  imports: [],
+  imports: [AddTask],
   templateUrl: './board.html',
   styleUrl: './board.scss',
 })
-
 export class Board {
-  // Logik und Eigenschaften
-  title = 'Board';
-  columns: string[] = ['To Do', 'In Progress', 'Await Feedback', 'Done'];
   cards: cardTemplate[] = [
     {
       type: 'Technical Task',
@@ -30,4 +27,14 @@ export class Board {
       contacts: ['MT', 'LA', 'AT'],
     },
   ];
+
+  @ViewChild('taskDialog') dialog!: ElementRef<HTMLDialogElement>;
+
+  openDialog() {
+    this.dialog.nativeElement.showModal();
+  }
+
+  closeDialog() {
+    this.dialog.nativeElement.close();
+  }
 }
