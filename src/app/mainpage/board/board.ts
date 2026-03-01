@@ -31,21 +31,26 @@ export class Board {
   ];
   dbService = inject(Supabase);
 
+  //JSDoc...???
   ngOnInit(){
     this.dbService.loadBoardData();
     this.dbService.subscribeToChanges();
   }
 
-  // @ViewChild('taskDialog') dialog!: ElementRef<HTMLDialogElement>;
+  //JSDoc...???
+  @ViewChild('taskDetailDialog') taskDetailDialog!: ElementRef<HTMLDialogElement>;
 
-  // openDialog() {
-  //   this.dialog.nativeElement.showModal();
-  // }
+  //JSDoc...???
+  openTaskDetails(task:FullTask) {
+    this.dbService.selectedTask.set(task);
+    this.taskDetailDialog.nativeElement.showModal();
+  }
 
-  // closeDialog() {
-  //   this.dialog.nativeElement.close();
-  // }
-
+  //JSDoc...???
+  closeTaskDetails() {
+    this.taskDetailDialog.nativeElement.close();
+    this.dbService.selectedTask.set(null);
+  }
 
 
   // Zugriff auf das native <dialog> Element
@@ -67,11 +72,5 @@ export class Board {
       this.close();
     }
   }
-
-  openTaskDetails(task:FullTask){
-    console.log(task);
-  }
-
-
 
 }

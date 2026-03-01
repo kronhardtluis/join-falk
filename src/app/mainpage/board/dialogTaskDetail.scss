@@ -1,0 +1,22 @@
+@use '../../../../public/assets/styles/all-styles.scss' as all;
+
+dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  min-width: 650px;
+  @include all.notebook{width: 85%; min-width: 300px;}
+  width: 65%;
+  height: 75%;
+  max-width: 1440px;
+  background-color: white;
+  border-radius: 30px;
+  overflow: hidden;
+  padding: 16px;
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.3);
+    animation: fade-in 0.4s ease-out;
+  }
+}

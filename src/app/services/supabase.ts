@@ -176,4 +176,16 @@ export class Supabase {
     return (DONE / subtasks.length) * 100;
   }
 
+  // JSDoc...???
+  async toggleSubtaskStatus(subtask: Subtask) {
+    const NEW_STATUS = !subtask.is_done;
+    const { error } = await this.supabase
+      .from('subtasks')
+      .update({ is_done: NEW_STATUS })
+      .eq('id', subtask.id);
+    if (error) {
+      console.error('Error updating subtask:', error.message);
+    }
+  }
+
 }

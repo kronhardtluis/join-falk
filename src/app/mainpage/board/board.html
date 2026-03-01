@@ -30,7 +30,7 @@
       <div class="board-column">
         <div class="column-header">
           <p>To do</p>
-          <button class="add-button">
+          <button class="add-button" (click)="open()">
             <img class="add-button-default" src="assets/icons/add-task-blue.png" alt="Add-Button" />
             <img
               class="add-button-hover"
@@ -40,9 +40,9 @@
           </button>
         </div>
         @if(dbService.todoTasks().length > 0){
-          @for (task of dbService.todoTasks(); track task.id) {
-            <div class="task-library">
-              <div class="task-card">
+          <div class="task-library">
+            @for (task of dbService.todoTasks(); track task.id) {
+              <div class="task-card" (click)="openTaskDetails(task)">
                 <div class="task-type technical">{{task.category}}</div>
                 <h3>{{task.title}}</h3>
                 <p>{{task.description}}</p>
@@ -66,8 +66,8 @@
                   }
                 </div>
               </div>
-            </div>
-          }
+            }
+          </div>
         } @else {
           <div class="no-tasks-placeholder">
             <p>No tasks to do</p>
@@ -79,7 +79,7 @@
       <div class="board-column">
         <div class="column-header">
           <p>In progress</p>
-          <button class="add-button">
+          <button class="add-button" (click)="open()">
             <img class="add-button-default" src="assets/icons/add-task-blue.png" alt="Add-Button" />
             <img
               class="add-button-hover"
@@ -89,9 +89,9 @@
           </button>
         </div>
         @if(dbService.inProgressTasks().length > 0){
-          @for (task of dbService.inProgressTasks(); track task.id) {
-            <div class="task-library">
-              <div class="task-card">
+          <div class="task-library">
+            @for (task of dbService.inProgressTasks(); track task.id) {
+              <div class="task-card" (click)="openTaskDetails(task)">
                 <div class="task-type technical">{{task.category}}</div>
                 <h3>{{task.title}}</h3>
                 <p>{{task.description}}</p>
@@ -115,8 +115,8 @@
                   }
                 </div>
               </div>
-            </div>
-          }
+            }
+          </div>
         }
         @else {
           <div class="no-tasks-placeholder">
@@ -129,7 +129,7 @@
       <div class="board-column">
         <div class="column-header">
           <p>Await feedback</p>
-          <button class="add-button">
+          <button class="add-button" (click)="open()">
             <img class="add-button-default" src="assets/icons/add-task-blue.png" alt="Add-Button" />
             <img
               class="add-button-hover"
@@ -139,9 +139,9 @@
           </button>
         </div>
         @if(dbService.awaitingFeedbackTasks().length > 0){
-          @for (task of dbService.awaitingFeedbackTasks(); track task.id) {
-            <div class="task-library" (click)="openTaskDetails(task)">
-              <div class="task-card">
+          <div class="task-library">
+            @for (task of dbService.awaitingFeedbackTasks(); track task.id) {
+              <div class="task-card" (click)="openTaskDetails(task)">
                 <div class="task-type technical">{{task.category}}</div>
                 <h3>{{task.title}}</h3>
                 <p>{{task.description}}</p>
@@ -165,8 +165,8 @@
                   }
                 </div>
               </div>
-            </div>
-          }
+            }
+          </div>
         } @else {
           <div class="no-tasks-placeholder">
             <p>No tasks to do</p>
@@ -180,9 +180,9 @@
           <p>Done</p>
         </div>
         @if(dbService.doneTasks().length > 0){
-          @for (task of dbService.doneTasks(); track task.id) {
-            <div class="task-library">
-              <div class="task-card">
+          <div class="task-library">
+            @for (task of dbService.doneTasks(); track task.id) {
+              <div class="task-card" (click)="openTaskDetails(task)">
                 <div class="task-type technical">{{task.category}}</div>
                 <h3>{{task.title}}</h3>
                 <p>{{task.description}}</p>
@@ -206,8 +206,8 @@
                   }
                 </div>
               </div>
-            </div>
-          }
+            }
+          </div>
         } @else {
           <div class="no-tasks-placeholder">
             <p>No tasks to do</p>
@@ -222,5 +222,51 @@
       <img src="assets/icons/close-blue.png" alt="Close" />
     </button>
     <app-add-task></app-add-task>
+  </dialog>
+
+  <dialog #taskDetailDialog>
+    @if (dbService.selectedTask(); as task) {
+    <div (click)="$event.stopPropagation()">
+      <div>
+        <span>{{ task.category }}</span>
+        <button (click)="closeTaskDetails()">X</button>
+      </div>
+      <h3>{{ task.title }}</h3>
+      <p>{{ task.description }}</p>
+      <div>
+        <strong>Due date:</strong> {{ task.due_date }}
+      </div>
+      <div>
+        <strong>Priority:</strong> {{ task.priority }}
+      </div>
+      <!-- "assigned-to-section" -->
+      <div>
+        <h3>Assigned To:</h3>
+        @for (assignment of task.task_assignments; track assignment.contacts.id) {
+          <div>
+            <div style="height: 30px; aspect-ratio: 1; border-radius: 50%; color: white; font-size: 16px; display: flex; justify-content: center; align-items: center;" [style.background-color]="assignment.contacts.color">
+              {{ dbService.getInitials(assignment.contacts.name) }}
+            </div>
+            <span>{{ assignment.contacts.name }}</span>
+          </div>
+        }
+      </div>
+      <!-- Subtask section -->
+      <div>
+        <h3>Subtasks:</h3>
+        @for (subtask of task.subtasks; track subtask.id) {
+          <div>
+            <input type="checkbox" [checked]="subtask.is_done" (change)="dbService.toggleSubtaskStatus(subtask)">
+            <span>{{ subtask.title }}</span>
+          </div>
+        }
+      </div>
+      <!-- Buttons section -->
+      <div>
+        <button>Delete</button>
+        <button>Edit</button>
+      </div>
+    </div>
+  }
   </dialog>
 </main>
