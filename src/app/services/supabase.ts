@@ -1,26 +1,24 @@
 import { createClient, RealtimeChannel } from '@supabase/supabase-js';
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, computed } from '@angular/core';
 import { environment } from '../environments/environment.example';
-
-export interface Contact {
-  id?: number;
-  created_at?: string;
-  name: string;
-  email: string;
-  phone: string;
-  color: string;
-}
+import { Contact } from '../interfaces/contact.interface';
+import { Task, Subtask, FullTask } from '../interfaces/task.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Supabase {
-
   private superbaseURL = environment.supabaseUrl;
   private supabaseKEY = environment.supabaseKey;
   private supabase = createClient(this.superbaseURL, this.supabaseKEY);
   channels: RealtimeChannel | undefined;
-  contacts = signal<Contact[]>([]);
+  public contacts = signal<Contact[]>([]);
+  public tasks = signal<FullTask[]>([]);
+  public todoTasks = computed(() => this.tasks().filter(t => t.status === 'ToDo'));
+  public inProgressTasks = computed(() => this.tasks().filter(t => t.status === 'In Progress'));
+  public awaitingFeedbackTasks = computed(() => this.tasks().filter(t => t.status === 'Awaiting Feedback'));
+  public doneTasks = computed(() => this.tasks().filter(t => t.status === 'Done'));
+  public selectedTask = signal<FullTask | null>(null);
 
   /**
   * Fetches all contacts from the database, sorted alphabetically by name.
@@ -39,13 +37,14 @@ export class Supabase {
   * to ensure the local UI state is synchronized with the database.
   * @returns {void}
   */
-  subscribeToContactsChanges(){
+  subscribeToChanges(){
     this.channels = this.supabase.channel('custom-all-channel')
       .on(
         'postgres_changes',
-        {event: '*', schema: 'public', table: 'contacts'},
+        {event: '*', schema: 'public'},
         () => {
           this.getContacts();
+          this.getTasks();
         }
       )
       .subscribe();
@@ -114,4 +113,66 @@ export class Supabase {
       .eq('id', id);
     if (!error) await this.getContacts();
   }
+
+  /**
+  * Generates initials from a given full name.
+  * Extracts the first letter of the first and second name parts and converts them to uppercase.
+  * * @param name - The full name string to process (e.g., "John Doe").
+  * @returns A string containing up to two uppercase initials (e.g., "JD").
+  * Returns an empty string if the input is empty or invalid.
+  */
+  getInitials(name: string): string {
+    const NAME = name.trim().split(/\s+/);
+    const FIRST_LETTER = NAME.length > 0 ? NAME[0][0].toUpperCase() : '';
+    const SECOND_LETTER = NAME.length > 1 ? NAME[1][0].toUpperCase() : '';
+    return FIRST_LETTER + SECOND_LETTER;
+  }
+
+//TASK ---------------------------------------------
+
+  /**
+  * Fetches all tasks from the database including their related subtasks and assigned contacts.
+  * Uses PostgREST resource embedding to join four tables in a single request.
+  * * @returns {Promise<FullTask[]>} A promise that resolves to an array of full task objects.
+  * @throws Will throw an error if the Supabase request fails.
+  */
+  async getTasks(): Promise<FullTask[]> {
+    const { data, error } = await this.supabase
+      .from('tasks')
+      .select(`
+        *,
+        subtasks (*),
+        task_assignments (
+          contacts (*)
+        )
+      `);
+    if (error) {
+      console.error('Error fetching tasks:', error.message);
+      throw error;
+    }
+    return data as FullTask[];
+  }
+
+  //JSDoc...???
+  async loadBoardData() {
+    try {
+      const TASK_DATA = await this.getTasks();
+      this.tasks.set(TASK_DATA);
+    } catch (error) {
+      console.error('Board loading failed', error);
+    }
+  }
+
+  //JSDoc...???
+  getDoneSubtasksCount(subtasks: Subtask[]): number {
+    return subtasks.filter(s => s.is_done).length;
+  }
+
+  //JSDoc...???
+  getPercentage(subtasks: Subtask[]): number {
+    if (subtasks.length === 0) return 0;
+    const DONE = this.getDoneSubtasksCount(subtasks);
+    return (DONE / subtasks.length) * 100;
+  }
+
 }
