@@ -1,5 +1,7 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, inject } from '@angular/core';
 import { AddTask } from '../add-task/add-task';
+import { Supabase } from '../../services/supabase';
+import { FullTask } from '../../interfaces/task.interface';
 
 interface cardTemplate {
   type: string;
@@ -27,6 +29,12 @@ export class Board {
       contacts: ['MT', 'LA', 'AT'],
     },
   ];
+  dbService = inject(Supabase);
+
+  ngOnInit(){
+    this.dbService.loadBoardData();
+    this.dbService.subscribeToChanges();
+  }
 
   // @ViewChild('taskDialog') dialog!: ElementRef<HTMLDialogElement>;
 
@@ -59,4 +67,11 @@ export class Board {
       this.close();
     }
   }
+
+  openTaskDetails(task:FullTask){
+    console.log(task);
+  }
+
+
+
 }

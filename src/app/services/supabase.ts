@@ -150,6 +150,7 @@ export class Supabase {
       console.error('Error fetching tasks:', error.message);
       throw error;
     }
+    this.tasks.set(data as FullTask[]);
     return data as FullTask[];
   }
 

@@ -23,9 +23,10 @@
     </div>
   </section>
 
-  <!-- Spalte: To Do -->
+  <!-- Board -->
   <section id="board-content">
     <div class="board-columns">
+      <!-- Spalte: To Do -->
       <div class="board-column">
         <div class="column-header">
           <p>To do</p>
@@ -38,31 +39,40 @@
             />
           </button>
         </div>
-        <div class="no-tasks-placeholder">
-          <p>No tasks to do</p>
-        </div>
-        <!-- Test card -->
-        <div class="task-library">
-          <div class="task-card">
-            <div class="task-type technical">Technical Task</div>
-            <h3>Implementierung</h3>
-            <p>Ein sicheres Login-System für die Benutzer erstellen.</p>
-            <div class="subtask">
-              <div class="subtask-undone"></div>
-              <div class="subtask-done"></div>
-              <span class="subtasks-nummery">2/3 Subtasks</span>
-            </div>
-            <div class="task-footer">
-              <!-- Platzhalter -->
-              <div class="assignees">
-                <span class="assignee initial-bg-purple">MT</span>
-                <span class="assignee initial-bg-blue">LA</span>
-                <span class="assignee initial-bg-orange">AT</span>
+        @if(dbService.todoTasks().length > 0){
+          @for (task of dbService.todoTasks(); track task.id) {
+            <div class="task-library">
+              <div class="task-card">
+                <div class="task-type technical">{{task.category}}</div>
+                <h3>{{task.title}}</h3>
+                <p>{{task.description}}</p>
+                <div class="subtask">
+                  <div class="subtask-undone"></div>
+                  <div class="subtask-done" [style.--progress]="dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length"></div>
+                  <span class="subtasks-nummery">{{dbService.getDoneSubtasksCount(task.subtasks)}}/{{ task.subtasks.length }} Subtasks</span>
+                </div>
+                <div class="task-footer">
+                  <div class="assignees">
+                    @for (assignment of task.task_assignments; track assignment.contacts.id) {
+                      <span class="assignee" [style.background-color]="assignment.contacts.color">
+                        {{ dbService.getInitials(assignment.contacts.name) }}
+                      </span>
+                    }
+                  </div>
+                  @switch (task.priority) {
+                    @case ('Urgent') {<img src="assets/icons/urgent-red.png" alt="Priority Up" />}
+                    @case ('Medium') {<img src="assets/icons/medium-orange.png" alt="Priority Up" />}
+                    @case ('Low') {<img src="assets/icons/low-green.png" alt="Priority Up" />}
+                  }
+                </div>
               </div>
-              <img src="assets/icons/urgent-red.png" alt="Priority Up" />
             </div>
+          }
+        } @else {
+          <div class="no-tasks-placeholder">
+            <p>No tasks to do</p>
           </div>
-        </div>
+        }
       </div>
 
       <!-- Spalte: In Progress -->
@@ -78,27 +88,41 @@
             />
           </button>
         </div>
-        <div class="task-library">
-          <div class="task-card">
-            <div class="task-type technical">Technical Task</div>
-            <h3>Implementierung des Login-Systems</h3>
-            <p>Ein sicheres Login-System für die Benutzer erstellen.</p>
-            <div class="subtask">
-              <div class="subtask-undone"></div>
-              <div class="subtask-done"></div>
-              <span class="subtasks-nummery">2/3 Subtasks</span>
-            </div>
-            <div class="task-footer">
-              <!--Platzhalter-->
-              <div class="assignees">
-                <span class="assignee initial-bg-purple">MT</span>
-                <span class="assignee initial-bg-blue">LA</span>
-                <span class="assignee initial-bg-orange">AT</span>
+        @if(dbService.inProgressTasks().length > 0){
+          @for (task of dbService.inProgressTasks(); track task.id) {
+            <div class="task-library">
+              <div class="task-card">
+                <div class="task-type technical">{{task.category}}</div>
+                <h3>{{task.title}}</h3>
+                <p>{{task.description}}</p>
+                <div class="subtask">
+                  <div class="subtask-undone"></div>
+                  <div class="subtask-done" [style.--progress]="dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length"></div>
+                  <span class="subtasks-nummery">{{dbService.getDoneSubtasksCount(task.subtasks)}}/{{ task.subtasks.length }} Subtasks</span>
+                </div>
+                <div class="task-footer">
+                  <div class="assignees">
+                    @for (assignment of task.task_assignments; track assignment.contacts.id) {
+                      <span class="assignee" [style.background-color]="assignment.contacts.color">
+                        {{ dbService.getInitials(assignment.contacts.name) }}
+                      </span>
+                    }
+                  </div>
+                  @switch (task.priority) {
+                    @case ('Urgent') {<img src="assets/icons/urgent-red.png" alt="Priority Up" />}
+                    @case ('Medium') {<img src="assets/icons/medium-orange.png" alt="Priority Up" />}
+                    @case ('Low') {<img src="assets/icons/low-green.png" alt="Priority Up" />}
+                  }
+                </div>
               </div>
-              <img src="assets/icons/urgent-red.png" alt="Priority Up" />
             </div>
+          }
+        }
+        @else {
+          <div class="no-tasks-placeholder">
+            <p>No tasks to do</p>
           </div>
-        </div>
+        }
       </div>
 
       <!-- Spalte: Await Feedback -->
@@ -114,47 +138,40 @@
             />
           </button>
         </div>
-        <div class="task-library">
-          <div class="task-card">
-            <div class="task-type technical">Technical Task</div>
-            <h3>Implementierung des Login-Systems</h3>
-            <p>Ein sicheres Login-System für die Benutzer erstellen.</p>
-            <div class="subtask">
-              <div class="subtask-undone"></div>
-              <div class="subtask-done"></div>
-              <span class="subtasks-nummery">2/3 Subtasks</span>
-            </div>
-            <div class="task-footer">
-              <!--Platzhalter-->
-              <div class="assignees">
-                <span class="assignee initial-bg-purple">MT</span>
-                <span class="assignee initial-bg-blue">LA</span>
-                <span class="assignee initial-bg-orange">AT</span>
+        @if(dbService.awaitingFeedbackTasks().length > 0){
+          @for (task of dbService.awaitingFeedbackTasks(); track task.id) {
+            <div class="task-library" (click)="openTaskDetails(task)">
+              <div class="task-card">
+                <div class="task-type technical">{{task.category}}</div>
+                <h3>{{task.title}}</h3>
+                <p>{{task.description}}</p>
+                <div class="subtask">
+                  <div class="subtask-undone"></div>
+                  <div class="subtask-done" [style.--progress]="dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length"></div>
+                  <span class="subtasks-nummery">{{dbService.getDoneSubtasksCount(task.subtasks)}}/{{ task.subtasks.length }} Subtasks</span>
+                </div>
+                <div class="task-footer">
+                  <div class="assignees">
+                    @for (assignment of task.task_assignments; track assignment.contacts.id) {
+                      <span class="assignee" [style.background-color]="assignment.contacts.color">
+                        {{ dbService.getInitials(assignment.contacts.name) }}
+                      </span>
+                    }
+                  </div>
+                  @switch (task.priority) {
+                    @case ('Urgent') {<img src="assets/icons/urgent-red.png" alt="Priority Up" />}
+                    @case ('Medium') {<img src="assets/icons/medium-orange.png" alt="Priority Up" />}
+                    @case ('Low') {<img src="assets/icons/low-green.png" alt="Priority Up" />}
+                  }
+                </div>
               </div>
-              <img src="assets/icons/urgent-red.png" alt="Priority Up" />
             </div>
+          }
+        } @else {
+          <div class="no-tasks-placeholder">
+            <p>No tasks to do</p>
           </div>
-
-          <div class="task-card">
-            <div class="task-type technical">Technical Task</div>
-            <h3>Implementierung</h3>
-            <p>Ein sicheres Login-System für die Benutzer erstellen.</p>
-            <div class="subtask">
-              <div class="subtask-undone"></div>
-              <div class="subtask-done"></div>
-              <span class="subtasks-nummery">2/3 Subtasks</span>
-            </div>
-            <div class="task-footer">
-              <!--Platzhalter-->
-              <div class="assignees">
-                <span class="assignee initial-bg-purple">MT</span>
-                <span class="assignee initial-bg-blue">LA</span>
-                <span class="assignee initial-bg-orange">AT</span>
-              </div>
-              <img src="assets/icons/urgent-red.png" alt="Priority Up" />
-            </div>
-          </div>
-        </div>
+        }
       </div>
 
       <!-- Spalte: Done -->
@@ -162,28 +179,40 @@
         <div class="column-header">
           <p>Done</p>
         </div>
-
-        <div class="task-library">
-          <div class="task-card">
-            <div class="task-type technical">Technical Task</div>
-            <h3>Implementierung des Login-Systems</h3>
-            <p>Ein sicheres Login-System für die Benutzer erstellen.</p>
-            <div class="subtask">
-              <div class="subtask-undone"></div>
-              <div class="subtask-done"></div>
-              <span class="subtasks-nummery">2/3 Subtasks</span>
-            </div>
-            <div class="task-footer">
-              <!--Platzhalter-->
-              <div class="assignees">
-                <span class="assignee initial-bg-purple">MT</span>
-                <span class="assignee initial-bg-blue">LA</span>
-                <span class="assignee initial-bg-orange">AT</span>
+        @if(dbService.doneTasks().length > 0){
+          @for (task of dbService.doneTasks(); track task.id) {
+            <div class="task-library">
+              <div class="task-card">
+                <div class="task-type technical">{{task.category}}</div>
+                <h3>{{task.title}}</h3>
+                <p>{{task.description}}</p>
+                <div class="subtask">
+                  <div class="subtask-undone"></div>
+                  <div class="subtask-done" [style.--progress]="dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length"></div>
+                  <span class="subtasks-nummery">{{dbService.getDoneSubtasksCount(task.subtasks)}}/{{ task.subtasks.length }} Subtasks</span>
+                </div>
+                <div class="task-footer">
+                  <div class="assignees">
+                    @for (assignment of task.task_assignments; track assignment.contacts.id) {
+                      <span class="assignee" [style.background-color]="assignment.contacts.color">
+                        {{ dbService.getInitials(assignment.contacts.name) }}
+                      </span>
+                    }
+                  </div>
+                  @switch (task.priority) {
+                    @case ('Urgent') {<img src="assets/icons/urgent-red.png" alt="Priority Up" />}
+                    @case ('Medium') {<img src="assets/icons/medium-orange.png" alt="Priority Up" />}
+                    @case ('Low') {<img src="assets/icons/low-green.png" alt="Priority Up" />}
+                  }
+                </div>
               </div>
-              <img src="assets/icons/urgent-red.png" alt="Priority Up" />
             </div>
+          }
+        } @else {
+          <div class="no-tasks-placeholder">
+            <p>No tasks to do</p>
           </div>
-        </div>
+        }
       </div>
     </div>
   </section>
