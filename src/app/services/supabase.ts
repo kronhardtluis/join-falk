@@ -2,7 +2,7 @@ import { createClient, RealtimeChannel } from '@supabase/supabase-js';
 import { Injectable, signal, computed } from '@angular/core';
 import { environment } from '../environments/environment.example';
 import { Contact } from '../interfaces/contact.interface';
-import { Task, Subtask, FullTask } from '../interfaces/task.interface';
+import { Subtask, FullTask } from '../interfaces/task.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -117,7 +117,7 @@ export class Supabase {
   /**
   * Generates initials from a given full name.
   * Extracts the first letter of the first and second name parts and converts them to uppercase.
-  * * @param name - The full name string to process (e.g., "John Doe").
+  * @param name - The full name string to process (e.g., "John Doe").
   * @returns A string containing up to two uppercase initials (e.g., "JD").
   * Returns an empty string if the input is empty or invalid.
   */
@@ -133,7 +133,7 @@ export class Supabase {
   /**
   * Fetches all tasks from the database including their related subtasks and assigned contacts.
   * Uses PostgREST resource embedding to join four tables in a single request.
-  * * @returns {Promise<FullTask[]>} A promise that resolves to an array of full task objects.
+  * @returns {Promise<FullTask[]>} A promise that resolves to an array of full task objects.
   * @throws Will throw an error if the Supabase request fails.
   */
   async getTasks(): Promise<FullTask[]> {
@@ -154,7 +154,12 @@ export class Supabase {
     return data as FullTask[];
   }
 
-  //JSDoc...???
+  /**
+  * Orchestrates the initial loading of board data.
+  * Fetches tasks from the database and updates the reactive 'tasks' signal.
+  * Catches and logs any errors occurring during the asynchronous fetch process.
+  * @returns {Promise<void>}
+  */
   async loadBoardData() {
     try {
       const TASK_DATA = await this.getTasks();
@@ -164,19 +169,23 @@ export class Supabase {
     }
   }
 
-  //JSDoc...???
+  /**
+  * Calculates the number of completed subtasks within a given array.
+  * Filters the subtasks based on their 'is_done' boolean status.
+  * @param subtasks - An array of subtask objects to be evaluated.
+  * @returns The total count of subtasks marked as completed.
+  */
   getDoneSubtasksCount(subtasks: Subtask[]): number {
     return subtasks.filter(s => s.is_done).length;
   }
 
-  //JSDoc...???
-  getPercentage(subtasks: Subtask[]): number {
-    if (subtasks.length === 0) return 0;
-    const DONE = this.getDoneSubtasksCount(subtasks);
-    return (DONE / subtasks.length) * 100;
-  }
-
-  // JSDoc...???
+  /**
+  * Toggles the completion status of a specific subtask in the database.
+  * Inverts the current 'is_done' value and performs an asynchronous update in Supabase.
+  * Error handling is included to log failed database operations.
+  * @param subtask - The subtask object to be toggled and updated.
+  * @returns {Promise<void>}
+  */
   async toggleSubtaskStatus(subtask: Subtask) {
     const NEW_STATUS = !subtask.is_done;
     const { error } = await this.supabase
