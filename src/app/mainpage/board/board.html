@@ -224,12 +224,14 @@
     <app-add-task></app-add-task>
   </dialog>
 
-  <dialog #taskDetailDialog>
+  <dialog #taskDetailDialog (click)="checkClickOutside($event, 'taskDetailDialog')">
     @if (dbService.selectedTask(); as task) {
     <div (click)="$event.stopPropagation()">
-      <div>
-        <span>{{ task.category }}</span>
-        <button (click)="closeTaskDetails()">X</button>
+      <div class="task-detail-header">
+        <span class="category">{{ task.category }}</span>
+        <button (click)="closeTaskDetails()">
+          <img src="assets/icons/close-blue.png" alt="Close">
+        </button>
       </div>
       <h3>{{ task.title }}</h3>
       <p>{{ task.description }}</p>

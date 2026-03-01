@@ -1,6 +1,6 @@
 @use '../../../../public/assets/styles/all-styles.scss' as all;
 
-dialog {
+.taskDetailDialog {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -8,8 +8,9 @@ dialog {
   z-index: 100;
   min-width: 650px;
   @include all.notebook{width: 85%; min-width: 300px;}
-  width: 65%;
-  height: 75%;
+  height: 65%;
+  max-height: 900px;
+  width: 40%;
   max-width: 1440px;
   background-color: white;
   border-radius: 30px;
@@ -18,5 +19,30 @@ dialog {
   &::backdrop {
     background: rgba(0, 0, 0, 0.3);
     animation: fade-in 0.4s ease-out;
+  }
+}
+
+
+.task-detail-header{
+  width: 100%;
+  height: 35px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  .category{
+    background-color: #1FD7C1;
+    padding: 4px 24px 4px 24px;
+    border-radius: 8px;
+    color: white;
+    font-size: 23px;
+    font-weight: 400;
+    margin-left: 32px;
+  }
+  img{
+    width: 24px;
+    height: 24px;
   }
 }

@@ -31,22 +31,36 @@ export class Board {
   ];
   dbService = inject(Supabase);
 
-  //JSDoc...???
+  /**
+  * Initializes the component by fetching initial board data and
+  * setting up real-time database subscriptions.
+  * Part of the Angular Lifecycle hook.
+  */
   ngOnInit(){
     this.dbService.loadBoardData();
     this.dbService.subscribeToChanges();
   }
 
-  //JSDoc...???
+  /**
+  * Reference to the native HTML dialog element used for displaying task details.
+  * Injected via ViewChild after the view is initialized.
+  */
   @ViewChild('taskDetailDialog') taskDetailDialog!: ElementRef<HTMLDialogElement>;
 
-  //JSDoc...???
+  /**
+  * Opens the task detail modal and populates it with the provided task data.
+  * Updates the global state via the dbService signal to trigger the detail view rendering.
+  * @param task - The full task object (including subtasks and assignments) to be displayed.
+  */
   openTaskDetails(task:FullTask) {
     this.dbService.selectedTask.set(task);
     this.taskDetailDialog.nativeElement.showModal();
   }
 
-  //JSDoc...???
+  /**
+  * Closes the task detail modal and clears the selected task from the global state.
+  * Resets the dbService signal to null to prevent stale data on next opening.
+  */
   closeTaskDetails() {
     this.taskDetailDialog.nativeElement.close();
     this.dbService.selectedTask.set(null);
@@ -64,10 +78,17 @@ export class Board {
     this.dialog.nativeElement.close();
   }
 
-  // Best Practice für "Klick daneben":
-  // Das <dialog> Element füllt bei showModal() das gesamte Overlay aus.
-  // Ein Klick auf das Element selbst (nicht den Inhalt) schließt es.
-  checkClickOutside(event: MouseEvent) {
+  /**
+  * Handles click events on the dialog backdrop to close the modal.
+  * Logic differentiates between the task detail view and the general task creation dialog.
+  * @param event - The native MouseEvent triggered by the click.
+  * @param dialogTarget - Optional identifier to specify which dialog is being targeted (e.g., 'taskDetailDialog').
+  * @returns void
+  */
+  checkClickOutside(event: MouseEvent, dialogTarget?:string) {
+    if(dialogTarget === "taskDetailDialog"){
+      this.closeTaskDetails();
+    }
     if (event.target === this.dialog.nativeElement) {
       this.close();
     }
