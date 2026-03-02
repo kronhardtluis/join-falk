@@ -10,7 +10,7 @@ span {
   color: red;
 }
 
-section {
+form {
   display: flex;
   justify-content: space-between;
   min-height: 50%;
@@ -126,29 +126,64 @@ section {
 }
 
 #bottom {
-  @include all.flexi($jc: space-between, $ai: center);
-  width: clamp(300px, 90%, 400px);
+  @include all.flexi($jc: space-between);
   margin-top: 40px;
+  max-width: calc(1440px - 232px);
+  width: 100%;
+  padding-block: 16px;
+  padding-inline: 5%;
 
   #declaration {
     font-size: 16px;
   }
 
-  button {
-    @include all.flexi($ai: center, $gap: 8px);
-    font-size: 1.8rem;
-    color: white;
-    background-color: all.$blue;
-    border-radius: 8px;
-    padding: 12px 24px;
+  #buttons {
+    @include all.flexi($gap: 16px);
 
-    &:hover {
-      cursor: pointer;
-      background-color: all.$blueLight;
-    }
+    button {
+      @include all.flexi($gap: 8px);
+      font-size: 1.8rem;
+      border-radius: 8px;
+      padding: 12px 24px;
 
-    img {
-      width: 16px;
+      &#create {
+        color: white;
+        background-color: all.$blue;
+
+        &:hover {
+          cursor: pointer;
+          background-color: all.$blueLight;
+        }
+      }
+
+      &#clear {
+        color: all.$blue;
+        border: 1px solid all.$blue;
+        background: transparent;
+
+        #hovered {
+          display: none;
+        }
+
+        &:hover {
+          cursor: pointer;
+          color: all.$blueLight;
+          box-shadow: 0px 3px 3px all.$greyMid;
+          border-color: all.$blueLight;
+
+          #hovered {
+            display: block;
+          }
+
+          #unhovered {
+            display: none;
+          }
+        }
+      }
+
+      img {
+        width: 16px;
+      }
     }
   }
 }
