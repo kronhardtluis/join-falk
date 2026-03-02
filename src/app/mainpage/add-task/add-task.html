@@ -1,13 +1,13 @@
 <h2>Add Task</h2>
 
-<section id="form">
+<form id="form">
   <div class="content">
     <p>Title <span>*</span></p>
     <input placeholder="Enter a Title" type="text" />
     <p>Description</p>
     <textarea placeholder="Enter a Description" name="description" id="description"></textarea>
     <p>Due date<span>*</span></p>
-    <input type="date" />
+    <input id="due-date" type="date" [min]="minDate" />
   </div>
 
   <div id="line"></div>
@@ -50,9 +50,16 @@
       <button (click)="addSubtask()" id="plus"><img src="assets/icons/plus.png" alt="plus"></button>
     </div>
   </div>
-</section>
+</form>
 
 <div id="bottom">
   <p id="declaration"><span>*</span> this field is required</p>
-  <button>Create Task <img src="assets/icons/check-white.png" alt=""></button>
+  <div id="buttons">
+    <button id="clear">
+      Clear
+      <img id="unhovered" src="assets/icons/close-blue.png" alt="">
+      <img id="hovered" src="assets/icons/close-light-blue.png" alt="">
+    </button>
+    <button id="create">Create Task <img src="assets/icons/check-white.png" alt=""></button>
+  </div>
 </div>
