@@ -38,17 +38,7 @@ export class Contact implements OnInit {
   */
   ngOnInit(){
     this.dbService.getContacts();
-    this.dbService.subscribeToContactsChanges();
-  }
-
-  /**
-  * Gets the first letter of the second word (usually the last name) from a string.
-  * @param {string} name - The full name string.
-  * @returns {string} The second initial or an empty string if not found.
-  */
-  getSecondInitial(name: string): string {
-    const PARTS = name.trim().split(/\s+/);
-    return PARTS.length > 1 ? PARTS[1][0].toUpperCase() : '';
+    this.dbService.subscribeToChanges();
   }
 
   /**

@@ -26,7 +26,7 @@
           [class.active]="selectedContactId() === contact.id"
         >
           <span class="roundContact" [style.background-color]="contact.color">
-            {{ contact.name[0].toUpperCase() }}{{ getSecondInitial(contact.name) }}
+            {{dbService.getInitials(contact.name)}}
           </span>
           <div class="text-cut">
             <div class="text-cut">
@@ -58,7 +58,7 @@
       @if (selectedContactData(); as contact) {
       <div class="header-details">
         <div class="roundContact-large" [style.background-color]="contact.color">
-          {{ contact.name[0].toUpperCase() }}{{ getSecondInitial(contact.name) }}
+          {{dbService.getInitials(contact.name)}}
         </div>
 
         <div class="name-container">
@@ -111,7 +111,7 @@
         <div id="user">
           @if(isEditMode() && selectedContactData(); as contact){
           <div class="roundContact-large" [style.background-color]="selectedContactData()?.color">
-            {{ contact.name[0].toUpperCase() }}{{ getSecondInitial(contact.name) }}
+            {{dbService.getInitials(contact.name)}}
           </div>
           } @else {
           <img src="assets/icons/unknown-user.png" alt="User" />
