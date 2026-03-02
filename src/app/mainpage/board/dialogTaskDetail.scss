@@ -8,33 +8,28 @@
   z-index: 999;
   width: 525px;
   height: 930px;
-  @include all.notebook{width: 40%; min-width: 300px;}
+  @include all.notebook {
+    width: 40%;
+    min-width: 300px;
+  }
   background-color: white;
   border-radius: 30px;
   overflow: hidden;
   padding: 48px 40px;
+
   &::backdrop {
     background: rgba(0, 0, 0, 0.3);
     animation: fade-in 0.4s ease-out;
   }
 
-  button{
-    &:hover{
-      background-color: unset;
-      background-image: unset;
-    }
-  }
-
-  .task-detail-header{
+  .task-detail-header {
     width: 100%;
     height: 35px;
-    display: flex;
+    @include all.flexi($jc: space-between);
     flex-wrap: nowrap;
     align-content: center;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: row;
-    .category{
+
+    .category {
       padding: 4px 24px;
       border-radius: 8px;
       color: white;
@@ -45,18 +40,49 @@
       width: auto;
       height: auto;
     }
-    .user-story{
-      background-color: #3498db;
+    .user-story {
+      background-color: #1385d1;
     }
-    .technical{
+    .technical {
       background-color: #27ae60;
     }
-    img{
-      width: 24px;
-      height: 24px;
+  }
+
+  .title-description {
+    h2 {
+      font-size: 4rem;
+    }
+
+    p{
+      font-size: 2.4rem;
     }
   }
+
+  .date-priority{
+  display: grid;
+  /* Die erste Spalte bekommt 25%, die zweite nimmt den Rest (75%) */
+  grid-template-columns: 25% 1fr; 
+  /* Erstellt zwei Zeilen (optional, passt sich sonst dem Inhalt an) */
+  grid-template-rows: auto auto; 
+  gap: 10px; /* Optionaler Abstand zwischen den Boxen */
+
+  >div{
+    display: flex;
+    align-items: center;
+   
+
+    >img{
+      margin-left: 8px;
+      width: 10px;
+      height: 10px;
+    }
+  }
+    strong{
+      font-size: 2rem;
+    }
+    span{
+      font-size: 1.8rem;
+    }
+  }
+
 }
-
-
-
