@@ -43,7 +43,9 @@
           <div class="task-library">
             @for (task of dbService.todoTasks(); track task.id) {
               <div class="task-card" (click)="openTaskDetails(task)">
-                <div class="task-type technical">{{task.category}}</div>
+                <div [class]="task.category === 'Technical Task' ? 'task-type technical' : 'task-type user-story'">
+                  {{task.category}}
+                </div>
                 <h3>{{task.title}}</h3>
                 <p>{{task.description}}</p>
                 <div class="subtask">
@@ -92,7 +94,9 @@
           <div class="task-library">
             @for (task of dbService.inProgressTasks(); track task.id) {
               <div class="task-card" (click)="openTaskDetails(task)">
-                <div class="task-type technical">{{task.category}}</div>
+                <div [class]="task.category === 'Technical Task' ? 'task-type technical' : 'task-type user-story'">
+                  {{task.category}}
+                </div>
                 <h3>{{task.title}}</h3>
                 <p>{{task.description}}</p>
                 <div class="subtask">
@@ -142,7 +146,9 @@
           <div class="task-library">
             @for (task of dbService.awaitingFeedbackTasks(); track task.id) {
               <div class="task-card" (click)="openTaskDetails(task)">
-                <div class="task-type technical">{{task.category}}</div>
+                <div [class]="task.category === 'Technical Task' ? 'task-type technical' : 'task-type user-story'">
+                  {{task.category}}
+                </div>
                 <h3>{{task.title}}</h3>
                 <p>{{task.description}}</p>
                 <div class="subtask">
@@ -183,7 +189,9 @@
           <div class="task-library">
             @for (task of dbService.doneTasks(); track task.id) {
               <div class="task-card" (click)="openTaskDetails(task)">
-                <div class="task-type technical">{{task.category}}</div>
+                <div [class]="task.category === 'Technical Task' ? 'task-type technical' : 'task-type user-story'">
+                  {{task.category}}
+                </div>
                 <h3>{{task.title}}</h3>
                 <p>{{task.description}}</p>
                 <div class="subtask">
