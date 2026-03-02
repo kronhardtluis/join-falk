@@ -48,11 +48,13 @@
                 </div>
                 <h3>{{task.title}}</h3>
                 <p>{{task.description}}</p>
-                <div class="subtask">
-                  <div class="subtask-undone"></div>
-                  <div class="subtask-done" [style.--progress]="dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length"></div>
-                  <span class="subtasks-nummery">{{dbService.getDoneSubtasksCount(task.subtasks)}}/{{ task.subtasks.length }} Subtasks</span>
-                </div>
+                @if(task.subtasks.length != 0){
+                  <div class="subtask">
+                    <div class="subtask-undone"></div>
+                    <div class="subtask-done" [style.--progress]="dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length"></div>
+                    <span class="subtasks-nummery">{{dbService.getDoneSubtasksCount(task.subtasks)}}/{{ task.subtasks.length }} Subtasks</span>
+                  </div>
+                }
                 <div class="task-footer">
                   <div class="assignees">
                     @for (assignment of task.task_assignments; track assignment.contacts.id) {
@@ -99,11 +101,13 @@
                 </div>
                 <h3>{{task.title}}</h3>
                 <p>{{task.description}}</p>
-                <div class="subtask">
+                @if(task.subtasks.length != 0){
+                  <div class="subtask">
                   <div class="subtask-undone"></div>
                   <div class="subtask-done" [style.--progress]="dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length"></div>
                   <span class="subtasks-nummery">{{dbService.getDoneSubtasksCount(task.subtasks)}}/{{ task.subtasks.length }} Subtasks</span>
-                </div>
+                  </div>
+                }
                 <div class="task-footer">
                   <div class="assignees">
                     @for (assignment of task.task_assignments; track assignment.contacts.id) {
@@ -151,11 +155,13 @@
                 </div>
                 <h3>{{task.title}}</h3>
                 <p>{{task.description}}</p>
-                <div class="subtask">
+                @if(task.subtasks.length != 0){
+                  <div class="subtask">
                   <div class="subtask-undone"></div>
                   <div class="subtask-done" [style.--progress]="dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length"></div>
                   <span class="subtasks-nummery">{{dbService.getDoneSubtasksCount(task.subtasks)}}/{{ task.subtasks.length }} Subtasks</span>
-                </div>
+                  </div>
+                }
                 <div class="task-footer">
                   <div class="assignees">
                     @for (assignment of task.task_assignments; track assignment.contacts.id) {
@@ -194,11 +200,13 @@
                 </div>
                 <h3>{{task.title}}</h3>
                 <p>{{task.description}}</p>
-                <div class="subtask">
+                @if(task.subtasks.length != 0){
+                  <div class="subtask">
                   <div class="subtask-undone"></div>
                   <div class="subtask-done" [style.--progress]="dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length"></div>
                   <span class="subtasks-nummery">{{dbService.getDoneSubtasksCount(task.subtasks)}}/{{ task.subtasks.length }} Subtasks</span>
-                </div>
+                  </div>
+                }
                 <div class="task-footer">
                   <div class="assignees">
                     @for (assignment of task.task_assignments; track assignment.contacts.id) {
@@ -232,11 +240,11 @@
     <app-add-task></app-add-task>
   </dialog>
 
-  <dialog #taskDetailDialog (click)="checkClickOutside($event, 'taskDetailDialog')">
+  <dialog #taskDetailDialog id="taskDetailDialog" (click)="checkClickOutside($event, 'taskDetailDialog')">
     @if (dbService.selectedTask(); as task) {
     <div (click)="$event.stopPropagation()">
       <div class="task-detail-header">
-        <span class="category">{{ task.category }}</span>
+        <span [class]="task.category === 'Technical Task' ? 'category technical' : 'category user-story'">{{ task.category }}</span>
         <button (click)="closeTaskDetails()">
           <img src="assets/icons/close-blue.png" alt="Close">
         </button>
@@ -248,6 +256,11 @@
       </div>
       <div>
         <strong>Priority:</strong> {{ task.priority }}
+        @switch (task.priority) {
+          @case ('Urgent') {<img src="assets/icons/urgent-red.png" alt="Priority Up" />}
+          @case ('Medium') {<img src="assets/icons/medium-orange.png" alt="Priority Up" />}
+          @case ('Low') {<img src="assets/icons/low-green.png" alt="Priority Up" />}
+        }
       </div>
       <!-- "assigned-to-section" -->
       <div>
