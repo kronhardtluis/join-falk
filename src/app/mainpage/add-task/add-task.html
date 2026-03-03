@@ -4,8 +4,10 @@
   <div class="content">
     <p>Title <span>*</span></p>
     <input placeholder="Enter a Title" type="text" />
+
     <p>Description</p>
     <textarea placeholder="Enter a Description" name="description" id="description"></textarea>
+
     <p>Due date<span>*</span></p>
     <input id="due-date" type="date" [min]="minDate" />
   </div>
@@ -28,13 +30,17 @@
         <img src="assets/icons/low-green.png" alt="" />
       </button>
     </div>
-    <p>Assigned to</p>
 
+    <p>Assigned to</p>
     <!-- #region - Kontakte laden. Wie? -->
-    <input placeholder="Select contacts to assign" list="contacts" name="contacts" />
-    <datalist id="contacts">
-      <option value="test"></option>
-    </datalist>
+    <div id="assign-contacts">
+      <input placeholder="Select contacts to assign" id="select-contact" />
+      <ul id="contacts">
+        <li>Herbert Schröde</li>
+        <li>Angelo Mertel</li>
+        <li>Max Mustermann</li>
+      </ul>
+    </div>
     <!-- #endregion -->
 
     <p>Category<span>*</span></p>
@@ -46,8 +52,10 @@
 
     <p>Subtasks</p>
     <div id="subtask-block">
-      <input id="add-subtask" type="text" placeholder="Add new Subtask">
-      <button (click)="addSubtask()" id="plus"><img src="assets/icons/plus.png" alt="plus"></button>
+      <input id="add-subtask" type="text" placeholder="Add new Subtask" />
+      <button (click)="addSubtask()" id="plus">
+        <img src="assets/icons/plus.png" alt="plus" />
+      </button>
     </div>
   </div>
 </form>
@@ -57,9 +65,9 @@
   <div id="buttons">
     <button id="clear">
       Clear
-      <img id="unhovered" src="assets/icons/close-blue.png" alt="">
-      <img id="hovered" src="assets/icons/close-light-blue.png" alt="">
+      <img id="unhovered" src="assets/icons/close-blue.png" alt="" />
+      <img id="hovered" src="assets/icons/close-light-blue.png" alt="" />
     </button>
-    <button id="create">Create Task <img src="assets/icons/check-white.png" alt=""></button>
+    <button id="create">Create Task <img src="assets/icons/check-white.png" alt="" /></button>
   </div>
 </div>

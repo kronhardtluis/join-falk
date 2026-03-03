@@ -43,20 +43,21 @@ form {
     input,
     textarea {
       border-radius: 8px;
-      box-shadow: 0px 0px 2px;
+      border: 2px solid all.$greyMid;
       padding: 12px 8px;
       background-color: white;
       width: 98%;
       margin: 3px;
+      outline: none;
+      transition: 0.3s;
 
-      &:focus {
-        box-shadow: all.$blueLight;
-        border: none;
+      &[type="date"]:hover {
+        cursor: pointer;
       }
-    }
 
-    #descrition {
-      flex: 1;
+      &:focus{
+      border-color: all.$blueLight;
+      }
     }
 
     #priorities {
@@ -90,6 +91,34 @@ form {
 
         img {
           width: 21px;
+        }
+      }
+    }
+
+    #assign-contacts {
+      @include all.flexi($fd: column);
+      width: 100%;
+    }
+
+    #contacts {
+      // position: absolute;
+      // top: 100%;
+      // left: 0;
+      width: 98%;
+      background: white;
+      border-radius: 0 0 8px 8px;
+      border: 1px solid all.$greyMid;
+      z-index: 2;
+      font-size: 1.8rem;
+      padding: 2px;
+
+      li {
+        padding: 8px;
+        border-radius: 8px;
+
+        &:hover {
+          cursor: pointer;
+          background-color: all.$greyMid;
         }
       }
     }
