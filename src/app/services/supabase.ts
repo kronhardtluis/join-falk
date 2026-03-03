@@ -14,15 +14,17 @@ export class Supabase {
   channels: RealtimeChannel | undefined;
   public contacts = signal<Contact[]>([]);
   public tasks = signal<FullTask[]>([]);
-  public todoTasks = computed(() => this.tasks().filter(t => t.status === 'ToDo'));
-  public inProgressTasks = computed(() => this.tasks().filter(t => t.status === 'In Progress'));
-  public awaitingFeedbackTasks = computed(() => this.tasks().filter(t => t.status === 'Awaiting Feedback'));
-  public doneTasks = computed(() => this.tasks().filter(t => t.status === 'Done'));
+  public todoTasks = computed(() => this.tasks().filter((t) => t.status === 'ToDo'));
+  public inProgressTasks = computed(() => this.tasks().filter((t) => t.status === 'In Progress'));
+  public awaitingFeedbackTasks = computed(() =>
+    this.tasks().filter((t) => t.status === 'Awaiting Feedback'),
+  );
+  public doneTasks = computed(() => this.tasks().filter((t) => t.status === 'Done'));
   public selectedTask = signal<FullTask | null>(null);
 
   /**
-  * Fetches all contacts from the database, sorted alphabetically by name.
-  */
+   * Fetches all contacts from the database, sorted alphabetically by name.
+   */
   async getContacts() {
     const { data, error } = await this.supabase
       .from('contacts')
@@ -32,44 +34,37 @@ export class Supabase {
   }
 
   /**
-  * Establishes a real-time subscription to the 'contacts' table.
-  * Automatically calls getContacts() whenever an INSERT, UPDATE, or DELETE event occurs
-  * to ensure the local UI state is synchronized with the database.
-  * @returns {void}
-  */
-  subscribeToChanges(){
-    this.channels = this.supabase.channel('custom-all-channel')
-      .on(
-        'postgres_changes',
-        {event: '*', schema: 'public'},
-        () => {
-          this.getContacts();
-          this.getTasks();
-        }
-      )
+   * Establishes a real-time subscription to the 'contacts' table.
+   * Automatically calls getContacts() whenever an INSERT, UPDATE, or DELETE event occurs
+   * to ensure the local UI state is synchronized with the database.
+   * @returns {void}
+   */
+  subscribeToChanges() {
+    this.channels = this.supabase
+      .channel('custom-all-channel')
+      .on('postgres_changes', { event: '*', schema: 'public' }, () => {
+        this.getContacts();
+        this.getTasks();
+      })
       .subscribe();
   }
 
   /**
-  * Lifecycle hook that cleans up resources before the service or component is destroyed.
-  * Unsubscribes from the active Supabase real-time channel to prevent memory leaks.
-  * @returns {void}
-  */
-  ngOnDestroy(){
-    if(this.channels) this.supabase.removeChannel(this.channels);
+   * Lifecycle hook that cleans up resources before the service or component is destroyed.
+   * Unsubscribes from the active Supabase real-time channel to prevent memory leaks.
+   * @returns {void}
+   */
+  ngOnDestroy() {
+    if (this.channels) this.supabase.removeChannel(this.channels);
   }
 
   /**
-  * Fetches a single contact from the database by its unique identifier.
-  * @param {number} id - The ID of the contact to retrieve.
-  * @returns {Promise<Contact | null>} A promise that resolves to the contact object or null if not found.
-  */
+   * Fetches a single contact from the database by its unique identifier.
+   * @param {number} id - The ID of the contact to retrieve.
+   * @returns {Promise<Contact | null>} A promise that resolves to the contact object or null if not found.
+   */
   async getContactById(id: number) {
-    const { data, error } = await this.supabase
-      .from('contacts')
-      .select('*')
-      .eq('id', id)
-      .single();
+    const { data, error } = await this.supabase.from('contacts').select('*').eq('id', id).single();
     if (error) {
       console.error('Error fetching contact:', error.message);
       return null;
@@ -78,49 +73,40 @@ export class Supabase {
   }
 
   /**
-  * Adds a new contact to the database.
-  * @param contact - The contact data to insert.
-  */
+   * Adds a new contact to the database.
+   * @param contact - The contact data to insert.
+   */
   async addContact(contact: Contact) {
-    const { data, error } = await this.supabase
-      .from('contacts')
-      .insert([contact])
-      .select();
+    const { data, error } = await this.supabase.from('contacts').insert([contact]).select();
     if (!error) await this.getContacts();
   }
 
   /**
-  * Updates an existing contact by its ID[cite: 69, 74].
-  * @param id - The unique identifier of the contact.
-  * @param contact - The updated contact data.
-  */
+   * Updates an existing contact by its ID[cite: 69, 74].
+   * @param id - The unique identifier of the contact.
+   * @param contact - The updated contact data.
+   */
   async updateContact(id: number, contact: Partial<Contact>) {
-    const { error } = await this.supabase
-      .from('contacts')
-      .update(contact)
-      .eq('id', id);
+    const { error } = await this.supabase.from('contacts').update(contact).eq('id', id);
     if (!error) await this.getContacts();
   }
 
   /**
-  * Deletes a contact from the database permanently.
-  * @param id - The ID of the contact to be removed.
-  */
+   * Deletes a contact from the database permanently.
+   * @param id - The ID of the contact to be removed.
+   */
   async deleteContact(id: number) {
-    const { error } = await this.supabase
-      .from('contacts')
-      .delete()
-      .eq('id', id);
+    const { error } = await this.supabase.from('contacts').delete().eq('id', id);
     if (!error) await this.getContacts();
   }
 
   /**
-  * Generates initials from a given full name.
-  * Extracts the first letter of the first and second name parts and converts them to uppercase.
-  * @param name - The full name string to process (e.g., "John Doe").
-  * @returns A string containing up to two uppercase initials (e.g., "JD").
-  * Returns an empty string if the input is empty or invalid.
-  */
+   * Generates initials from a given full name.
+   * Extracts the first letter of the first and second name parts and converts them to uppercase.
+   * @param name - The full name string to process (e.g., "John Doe").
+   * @returns A string containing up to two uppercase initials (e.g., "JD").
+   * Returns an empty string if the input is empty or invalid.
+   */
   getInitials(name: string): string {
     const NAME = name.trim().split(/\s+/);
     const FIRST_LETTER = NAME.length > 0 ? NAME[0][0].toUpperCase() : '';
@@ -128,18 +114,16 @@ export class Supabase {
     return FIRST_LETTER + SECOND_LETTER;
   }
 
-//TASK ---------------------------------------------
+  //TASK ---------------------------------------------
 
   /**
-  * Fetches all tasks from the database including their related subtasks and assigned contacts.
-  * Uses PostgREST resource embedding to join four tables in a single request.
-  * @returns {Promise<FullTask[]>} A promise that resolves to an array of full task objects.
-  * @throws Will throw an error if the Supabase request fails.
-  */
+   * Fetches all tasks from the database including their related subtasks and assigned contacts.
+   * Uses PostgREST resource embedding to join four tables in a single request.
+   * @returns {Promise<FullTask[]>} A promise that resolves to an array of full task objects.
+   * @throws Will throw an error if the Supabase request fails.
+   */
   async getTasks(): Promise<FullTask[]> {
-    const { data, error } = await this.supabase
-      .from('tasks')
-      .select(`
+    const { data, error } = await this.supabase.from('tasks').select(`
         *,
         subtasks (*),
         task_assignments (
@@ -155,11 +139,11 @@ export class Supabase {
   }
 
   /**
-  * Orchestrates the initial loading of board data.
-  * Fetches tasks from the database and updates the reactive 'tasks' signal.
-  * Catches and logs any errors occurring during the asynchronous fetch process.
-  * @returns {Promise<void>}
-  */
+   * Orchestrates the initial loading of board data.
+   * Fetches tasks from the database and updates the reactive 'tasks' signal.
+   * Catches and logs any errors occurring during the asynchronous fetch process.
+   * @returns {Promise<void>}
+   */
   async loadBoardData() {
     try {
       const TASK_DATA = await this.getTasks();
@@ -170,22 +154,22 @@ export class Supabase {
   }
 
   /**
-  * Calculates the number of completed subtasks within a given array.
-  * Filters the subtasks based on their 'is_done' boolean status.
-  * @param subtasks - An array of subtask objects to be evaluated.
-  * @returns The total count of subtasks marked as completed.
-  */
+   * Calculates the number of completed subtasks within a given array.
+   * Filters the subtasks based on their 'is_done' boolean status.
+   * @param subtasks - An array of subtask objects to be evaluated.
+   * @returns The total count of subtasks marked as completed.
+   */
   getDoneSubtasksCount(subtasks: Subtask[]): number {
-    return subtasks.filter(s => s.is_done).length;
+    return subtasks.filter((s) => s.is_done).length;
   }
 
   /**
-  * Toggles the completion status of a specific subtask in the database.
-  * Inverts the current 'is_done' value and performs an asynchronous update in Supabase.
-  * Error handling is included to log failed database operations.
-  * @param subtask - The subtask object to be toggled and updated.
-  * @returns {Promise<void>}
-  */
+   * Toggles the completion status of a specific subtask in the database.
+   * Inverts the current 'is_done' value and performs an asynchronous update in Supabase.
+   * Error handling is included to log failed database operations.
+   * @param subtask - The subtask object to be toggled and updated.
+   * @returns {Promise<void>}
+   */
   async toggleSubtaskStatus(subtask: Subtask) {
     const NEW_STATUS = !subtask.is_done;
     const { error } = await this.supabase
@@ -198,62 +182,73 @@ export class Supabase {
   }
 
   /**
-  * Main entry point to create a task with all its dependencies.
-  */
-  async createTask(taskData: TaskFormData, contactIds: number[], subtasks: {title: string}[]) {
+   * Main entry point to create a task with all its dependencies.
+   */
+  async createTask(taskData: TaskFormData, contactIds: number[], subtasks: { title: string }[]) {
     const NEW_TASK = await this.insertTask(taskData);
     await Promise.all([
       this.insertTaskAssignments(NEW_TASK.id, contactIds),
-      this.insertSubtasks(NEW_TASK.id, subtasks)
+      this.insertSubtasks(NEW_TASK.id, subtasks),
     ]);
     await this.loadBoardData();
   }
 
   /**
-  * Inserts the primary task record and returns the created object.
-  */
+   * Inserts the primary task record and returns the created object.
+   */
   async insertTask(taskData: TaskFormData) {
-    const { data, error } = await this.supabase
-      .from('tasks')
-      .insert([taskData])
-      .select()
-      .single();
+    const { data, error } = await this.supabase.from('tasks').insert([taskData]).select().single();
     if (error) throw error;
     return data;
   }
 
   /**
-  * Links contacts to a specific task.
-  */
+   * Links contacts to a specific task.
+   */
   async insertTaskAssignments(taskId: number, contactIds: number[]) {
     if (contactIds.length === 0) return;
-    const ASSIGNMENTS = contactIds.map(contact_id => ({ task_id: taskId, contact_id }));
+    const ASSIGNMENTS = contactIds.map((contact_id) => ({ task_id: taskId, contact_id }));
     const { error } = await this.supabase.from('task_assignments').insert(ASSIGNMENTS);
     if (error) throw new Error(`Failed to assign contacts: ${error.message}`);
   }
 
   /**
-  * Creates subtasks for a specific task.
-  */
-  async insertSubtasks(taskId: number, subtasks: {title: string}[]) {
+   * Creates subtasks for a specific task.
+   */
+  async insertSubtasks(taskId: number, subtasks: { title: string }[]) {
     if (subtasks.length === 0) return;
-    const RECORDS = subtasks.map(subtask => ({ task_id: taskId, title: subtask.title, is_done: false }));
+    const RECORDS = subtasks.map((subtask) => ({
+      task_id: taskId,
+      title: subtask.title,
+      is_done: false,
+    }));
     const { error } = await this.supabase.from('subtasks').insert(RECORDS);
 
     if (error) throw new Error(`Failed to create subtasks: ${error.message}`);
   }
 
   /**
-  * Deletes a task by ID. Database CASCADE should handle subtasks and assignments.
-  * @param taskId - The ID of the task to remove.
-  */
+   * Deletes a task by ID. Database CASCADE should handle subtasks and assignments.
+   * @param taskId - The ID of the task to remove.
+   */
   async deleteTask(taskId: number) {
-    const { error } = await this.supabase
-      .from('tasks')
-      .delete()
-      .eq('id', taskId);
+    const { error } = await this.supabase.from('tasks').delete().eq('id', taskId);
     if (error) throw error;
     await this.loadBoardData();
   }
 
+  //#region testbereich
+
+  async updateTaskStatus(taskId: number, newStatus: string) {
+    const { error } = await this.supabase
+      .from('tasks')
+      .update({ status: newStatus })
+      .eq('id', taskId);
+
+    if (error) {
+      console.error('Update Error:', error);
+    }
+  }
+
+  //#endregion testbereich
 }

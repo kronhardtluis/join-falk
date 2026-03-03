@@ -155,26 +155,41 @@ export class Board {
     this.searchQuery.set(input.value);
   }
 
-  //Testregion
+  //#region Testregion
+
+  // drop(event: CdkDragDrop<FullTask[]>) {
+  //   if (event.previousContainer === event.container) {
+  //     // Nur Sortierung innerhalb der Spalte (optional)
+  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  //   } else {
+  //     // 1. Den Task finden, der bewegt wurde
+  //     const task = event.item.data as FullTask;
+
+  //     // 2. Den neuen Status anhand der Container-ID ermitteln
+  //     // Die IDs setzen wir gleich im HTML (z.B. id="ToDo")
+  //     const newStatus = event.container.id;
+
+  //     // 3. Update an Supabase senden
+  //     // Du brauchst eine Methode in deinem Service, die den Status ändert
+
+  //     this.dbService.updateTaskStatus(task.id!, newStatus);
+
+  //     // Hinweis: transferArrayItem lassen wir hier weg, weil Supabase
+  //     // durch das Real-time Update deine Signals automatisch neu berechnet!
+  //   }
+  // }
+
   drop(event: CdkDragDrop<FullTask[]>) {
-    if (event.previousContainer === event.container) {
-      // Nur Sortierung innerhalb der Spalte (optional)
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      // 1. Den Task finden, der bewegt wurde
-      const task = event.item.data as FullTask;
+  const task = event.item.data as FullTask;
+  const newStatus = event.container.id;
 
-      // 2. Den neuen Status anhand der Container-ID ermitteln
-      // Die IDs setzen wir gleich im HTML (z.B. id="ToDo")
-      const newStatus = event.container.id;
+  console.log(`Verschiebe Task "${task?.id}" nach: ${newStatus}`);
 
-      // 3. Update an Supabase senden
-      // Du brauchst eine Methode in deinem Service, die den Status ändert
-      
-      // this.dbService.updateTaskStatus(task.id, newStatus);
-
-      // Hinweis: transferArrayItem lassen wir hier weg, weil Supabase
-      // durch das Real-time Update deine Signals automatisch neu berechnet!
-    }
+  if (event.previousContainer !== event.container) {
+    this.dbService.updateTaskStatus(task.id!, newStatus);
   }
+}
+
+//#endregion 
+
 }
