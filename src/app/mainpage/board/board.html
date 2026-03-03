@@ -333,7 +333,7 @@
     (click)="checkClickOutside($event, 'taskDetailDialog')"
   >
     @if (dbService.selectedTask(); as task) {
-      <div (click)="$event.stopPropagation()">
+      <div id="stopPropagation" (click)="$event.stopPropagation()">
         <div class="task-detail-header">
           <span
             [class]="
@@ -352,11 +352,11 @@
         </div>
 
         <div class="date-priority">
-          <strong>Due date:</strong>
+          <p>Due date:</p>
           <span>{{ task.due_date }}</span>
-          <strong>Priority:</strong>
+          <p>Priority:</p>
           <div>
-            <p>{{ task.priority }}</p>
+            <span>{{ task.priority }}</span>
             @switch (task.priority) {
               @case ('Urgent') {
                 <img src="assets/icons/urgent-red.png" alt="Priority Up" />
@@ -373,31 +373,22 @@
 
         <!-- "assigned-to-section" -->
         <div>
-          <h3 class="subtitle">Assigned To:</h3>
+          <p class="subtitle">Assigned To:</p>
+          <div class="scroll-div">
           @for (assignment of task.task_assignments; track assignment.contacts.id) {
             <div class="assigned-to-user">
-              <span
-                style="
-                  height: 30px;
-                  aspect-ratio: 1;
-                  border-radius: 50%;
-                  color: white;
-                  font-size: 16px;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                "
-                [style.background-color]="assignment.contacts.color"
-              >
+              <span [style.background-color]="assignment.contacts.color">
                 {{ dbService.getInitials(assignment.contacts.name) }}
               </span>
-              <span>{{ assignment.contacts.name }}</span>
+              <p>{{ assignment.contacts.name }}</p>
             </div>
           }
+          </div>
         </div>
         <!-- Subtask section -->
         <div>
-          <h3 class="subtitle">Subtasks:</h3>
+          <p class="subtitle">Subtasks:</p>
+          <div class="scroll-div scroll-div--subtask">
           @for (subtask of task.subtasks; track subtask.id) {
             <div class="subtasks">
               <input
@@ -408,26 +399,27 @@
               <span>{{ subtask.title }}</span>
             </div>
           }
+          </div>
+        </div>
+        <!-- Buttons section -->
+        <div class="task-buttons">
+          <div>
+            <button class="buttons">
+              <img class="default" src="/assets/icons/delete.png" alt="Delete" />
+              <img class="hover" src="/assets/icons/delete-light-blue.png" alt="Delete" />
+              Delete
+            </button>
+          </div>
+          <span class="seperator"></span>
+          <div>
+            <button class="buttons">
+              <img class="default" src="/assets/icons/edit.png" alt="Edit" />
+              <img class="hover" src="/assets/icons/edit-light-blue.png" alt="Edit" />
+              Edit
+            </button>
+          </div>
         </div>
       </div>
     }
-    <!-- Buttons section -->
-    <div class="task-buttons">
-      <div>
-        <button class="buttons">
-          <img class="default" src="/assets/icons/delete.png" alt="Delete" />
-          <img class="hover" src="/assets/icons/delete-light-blue.png" alt="Delete" />
-          Delete
-        </button>
-      </div>
-      <span class="seperator"></span>
-      <div>
-        <button class="buttons">
-          <img class="default" src="/assets/icons/edit.png" alt="Edit" />
-          <img class="hover" src="/assets/icons/edit-light-blue.png" alt="Edit" />
-          Edit
-        </button>
-      </div>
-    </div>
   </dialog>
 </main>

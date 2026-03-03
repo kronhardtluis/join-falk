@@ -9,17 +9,23 @@
   width: 525px;
   height: 930px;
   @include all.notebook {
-    width: 40%;
+    width: 60%;
     min-width: 300px;
+    height: 75%;
   }
   background-color: white;
   border-radius: 30px;
   overflow: hidden;
-  padding: 48px 40px;
+  padding: clamp(18px, 3vw, 40px);
 
   &::backdrop {
     background: rgba(0, 0, 0, 0.3);
     animation: fade-in 0.4s ease-out;
+  }
+
+  #stopPropagation {
+    height: 100%;
+    width: 100%;
   }
 
   .task-detail-header {
@@ -51,7 +57,7 @@
 
   .title-description {
     h2 {
-      font-size: 6rem;
+      font-size: clamp(3rem, 5vw, 6rem);
       margin-bottom: 16px;
     }
 
@@ -68,20 +74,22 @@
     gap: 10px;
     margin-bottom: 16px;
 
+    @include all.tablet {
+      grid-template-columns: 35% 1fr;
+    }
+
     > div {
       display: flex;
       align-items: center;
-      align-items: center;
 
       > img {
-        aspect-ratio: 1;
         margin-left: 8px;
         width: 15px;
-        height: 15px;
+        height: auto;
+        top: 1.5px;
       }
     }
-    strong {
-      font-size: 2rem;
+    p {
       color: grey;
     }
     span {
@@ -89,8 +97,17 @@
     }
   }
 
+.scroll-div {
+  max-height: 130px;
+  overflow-y: auto;
+
+  &--subtask {
+    max-height: 75px;
+  }
+}
+
+
   .subtitle {
-    font-size: 2.4rem;
     margin-bottom: 6px;
     color: grey;
   }
@@ -98,6 +115,17 @@
   .assigned-to-user {
     @include all.flexi($gap: 10px, $jc: flex-start);
     margin-bottom: 16px;
+
+    span {
+      height: 30px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      color: white;
+      font-size: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 
   .subtasks {
@@ -108,11 +136,11 @@
   .task-buttons {
     width: fit-content;
     position: absolute;
-    bottom: 5%;
-    right: 10%;
+    bottom: 0%;
+    right: 5%;
     @include all.flexi($gap: 8px);
 
-    .seperator{
+    .seperator {
       width: 2px;
       height: 20px;
       background-color: grey;
@@ -120,22 +148,22 @@
   }
 
   .buttons {
-    @include all.flexi($gap:6px);
+    @include all.flexi($gap: 6px);
     background-color: transparent;
     border: none;
     font-size: 2rem;
-    .hover{
+    .hover {
       display: none;
     }
 
-    &:hover{
+    &:hover {
       color: all.$blueLight;
-      .hover{
+      .hover {
         display: block;
       }
 
-      .default{
-        display:none;
+      .default {
+        display: none;
       }
     }
     img {
@@ -143,4 +171,8 @@
       height: 20px;
     }
   }
+}
+
+p {
+  font-size: 2rem;
 }
