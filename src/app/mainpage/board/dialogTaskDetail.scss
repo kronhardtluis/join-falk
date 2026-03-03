@@ -28,6 +28,7 @@
     @include all.flexi($jc: space-between);
     flex-wrap: nowrap;
     align-content: center;
+    margin-bottom: 16px;
 
     .category {
       padding: 4px 24px;
@@ -41,48 +42,105 @@
       height: auto;
     }
     .user-story {
-      background-color: #1385d1;
+      background-color: #0038ff;
     }
     .technical {
-      background-color: #27ae60;
+      background-color: #1fd7c1;
     }
   }
 
   .title-description {
     h2 {
-      font-size: 4rem;
+      font-size: 6rem;
+      margin-bottom: 16px;
     }
 
-    p{
+    p {
       font-size: 2.4rem;
+      margin-bottom: 16px;
     }
   }
 
-  .date-priority{
-  display: grid;
-  /* Die erste Spalte bekommt 25%, die zweite nimmt den Rest (75%) */
-  grid-template-columns: 25% 1fr; 
-  /* Erstellt zwei Zeilen (optional, passt sich sonst dem Inhalt an) */
-  grid-template-rows: auto auto; 
-  gap: 10px; /* Optionaler Abstand zwischen den Boxen */
+  .date-priority {
+    display: grid;
+    grid-template-columns: 25% 1fr;
+    grid-template-rows: auto auto;
+    gap: 10px;
+    margin-bottom: 16px;
 
-  >div{
-    display: flex;
-    align-items: center;
-   
+    > div {
+      display: flex;
+      align-items: center;
+      align-items: center;
 
-    >img{
-      margin-left: 8px;
-      width: 10px;
-      height: 10px;
+      > img {
+        aspect-ratio: 1;
+        margin-left: 8px;
+        width: 15px;
+        height: 15px;
+      }
     }
-  }
-    strong{
+    strong {
       font-size: 2rem;
+      color: grey;
     }
-    span{
+    span {
       font-size: 1.8rem;
     }
   }
 
+  .subtitle {
+    font-size: 2.4rem;
+    margin-bottom: 6px;
+    color: grey;
+  }
+
+  .assigned-to-user {
+    @include all.flexi($gap: 10px, $jc: flex-start);
+    margin-bottom: 16px;
+  }
+
+  .subtasks {
+    display: flex;
+    gap: 10px;
+  }
+
+  .task-buttons {
+    width: fit-content;
+    position: absolute;
+    bottom: 5%;
+    right: 10%;
+    @include all.flexi($gap: 8px);
+
+    .seperator{
+      width: 2px;
+      height: 20px;
+      background-color: grey;
+    }
+  }
+
+  .buttons {
+    @include all.flexi($gap:6px);
+    background-color: transparent;
+    border: none;
+    font-size: 2rem;
+    .hover{
+      display: none;
+    }
+
+    &:hover{
+      color: all.$blueLight;
+      .hover{
+        display: block;
+      }
+
+      .default{
+        display:none;
+      }
+    }
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
 }

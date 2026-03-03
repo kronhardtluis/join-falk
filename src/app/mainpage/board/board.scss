@@ -272,7 +272,7 @@
 
 //#endregion
 
-dialog {
+#add-task-dialog {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -281,7 +281,6 @@ dialog {
   width: 75%;
   height: 80%;
   border-radius: 30px;
-  border: 2px solid black;
   overflow: hidden;
   overflow-y: auto;
   animation: slide-in-right 0.2s forwards;

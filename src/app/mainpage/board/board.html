@@ -320,7 +320,7 @@
     </div>
   </section>
 
-  <dialog #dialog (click)="checkClickOutside($event)">
+  <dialog id="add-task-dialog" #dialog (click)="checkClickOutside($event)">
     <button class="dialog-close-button" (click)="close()">
       <img src="assets/icons/close-blue.png" alt="Close" />
     </button>
@@ -352,31 +352,31 @@
         </div>
 
         <div class="date-priority">
-          <strong>Due date:</strong> 
+          <strong>Due date:</strong>
           <span>{{ task.due_date }}</span>
           <strong>Priority:</strong>
           <div>
-          <p>{{ task.priority }}</p>
-          @switch (task.priority) {
-            @case ('Urgent') {
-              <img src="assets/icons/urgent-red.png" alt="Priority Up" />
+            <p>{{ task.priority }}</p>
+            @switch (task.priority) {
+              @case ('Urgent') {
+                <img src="assets/icons/urgent-red.png" alt="Priority Up" />
+              }
+              @case ('Medium') {
+                <img src="assets/icons/medium-orange.png" alt="Priority Up" />
+              }
+              @case ('Low') {
+                <img src="assets/icons/low-green.png" alt="Priority Up" />
+              }
             }
-            @case ('Medium') {
-              <img src="assets/icons/medium-orange.png" alt="Priority Up" />
-            }
-            @case ('Low') {
-              <img src="assets/icons/low-green.png" alt="Priority Up" />
-            }
-          }
-          </div> 
+          </div>
         </div>
 
         <!-- "assigned-to-section" -->
         <div>
-          <h3>Assigned To:</h3>
+          <h3 class="subtitle">Assigned To:</h3>
           @for (assignment of task.task_assignments; track assignment.contacts.id) {
-            <div>
-              <div
+            <div class="assigned-to-user">
+              <span
                 style="
                   height: 30px;
                   aspect-ratio: 1;
@@ -390,16 +390,16 @@
                 [style.background-color]="assignment.contacts.color"
               >
                 {{ dbService.getInitials(assignment.contacts.name) }}
-              </div>
+              </span>
               <span>{{ assignment.contacts.name }}</span>
             </div>
           }
         </div>
         <!-- Subtask section -->
         <div>
-          <h3>Subtasks:</h3>
+          <h3 class="subtitle">Subtasks:</h3>
           @for (subtask of task.subtasks; track subtask.id) {
-            <div>
+            <div class="subtasks">
               <input
                 type="checkbox"
                 [checked]="subtask.is_done"
@@ -409,12 +409,25 @@
             </div>
           }
         </div>
-        <!-- Buttons section -->
-        <div>
-          <button>Delete</button>
-          <button>Edit</button>
-        </div>
       </div>
     }
+    <!-- Buttons section -->
+    <div class="task-buttons">
+      <div>
+        <button class="buttons">
+          <img class="default" src="/assets/icons/delete.png" alt="Delete" />
+          <img class="hover" src="/assets/icons/delete-light-blue.png" alt="Delete" />
+          Delete
+        </button>
+      </div>
+      <span class="seperator"></span>
+      <div>
+        <button class="buttons">
+          <img class="default" src="/assets/icons/edit.png" alt="Edit" />
+          <img class="hover" src="/assets/icons/edit-light-blue.png" alt="Edit" />
+          Edit
+        </button>
+      </div>
+    </div>
   </dialog>
 </main>
