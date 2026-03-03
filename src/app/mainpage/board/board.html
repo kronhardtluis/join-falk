@@ -10,7 +10,7 @@
 
     <div class="search-add-section">
       <div id="input-wrapper">
-        <input id="input-search" type="text" placeholder="Find Task" />
+        <input id="input-search" type="text" placeholder="Find Task" (input)="onSearch($event)"/>
         <button>
           <img src="assets/icons/search.png" alt="Search Icon" />
         </button>
@@ -39,9 +39,9 @@
             />
           </button>
         </div>
-        @if (dbService.todoTasks().length > 0) {
+        @if (todoTasksFiltred().length > 0) {
           <div class="task-library">
-            @for (task of dbService.todoTasks(); track task.id) {
+            @for (task of todoTasksFiltred(); track task.id) {
               <div class="task-card" (click)="openTaskDetails(task)">
                 <div
                   [class]="
@@ -114,9 +114,9 @@
             />
           </button>
         </div>
-        @if (dbService.inProgressTasks().length > 0) {
+        @if (inProgressTasksFiltred().length > 0) {
           <div class="task-library">
-            @for (task of dbService.inProgressTasks(); track task.id) {
+            @for (task of inProgressTasksFiltred(); track task.id) {
               <div class="task-card" (click)="openTaskDetails(task)">
                 <div
                   [class]="
@@ -189,9 +189,9 @@
             />
           </button>
         </div>
-        @if (dbService.awaitingFeedbackTasks().length > 0) {
+        @if (awaitingFeedbackTasksFiltred().length > 0) {
           <div class="task-library">
-            @for (task of dbService.awaitingFeedbackTasks(); track task.id) {
+            @for (task of awaitingFeedbackTasksFiltred(); track task.id) {
               <div class="task-card" (click)="openTaskDetails(task)">
                 <div
                   [class]="
@@ -256,9 +256,9 @@
         <div class="column-header">
           <p>Done</p>
         </div>
-        @if (dbService.doneTasks().length > 0) {
+        @if (doneTasksFiltred().length > 0) {
           <div class="task-library">
-            @for (task of dbService.doneTasks(); track task.id) {
+            @for (task of doneTasksFiltred(); track task.id) {
               <div class="task-card" (click)="openTaskDetails(task)">
                 <div
                   [class]="
