@@ -1,7 +1,8 @@
-import { Component, ViewChild, ElementRef, inject } from '@angular/core';
+import { Component, ViewChild, ElementRef, inject, signal } from '@angular/core';
 import { AddTask } from '../add-task/add-task';
 import { Supabase } from '../../services/supabase';
 import { FullTask } from '../../interfaces/task.interface';
+import { flush } from '@angular/core/testing';
 
 interface cardTemplate {
   type: string;
@@ -30,6 +31,7 @@ export class Board {
     },
   ];
   dbService = inject(Supabase);
+  isTaskEditMode = signal(false);
 
   /**
   * Initializes the component by fetching initial board data and

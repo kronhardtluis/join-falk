@@ -2,7 +2,7 @@ import { createClient, RealtimeChannel } from '@supabase/supabase-js';
 import { Injectable, signal, computed } from '@angular/core';
 import { environment } from '../environments/environment.example';
 import { Contact } from '../interfaces/contact.interface';
-import { Subtask, FullTask } from '../interfaces/task.interface';
+import { Subtask, FullTask, TaskFormData } from '../interfaces/task.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -195,6 +195,65 @@ export class Supabase {
     if (error) {
       console.error('Error updating subtask:', error.message);
     }
+  }
+
+  /**
+  * Main entry point to create a task with all its dependencies.
+  */
+  async createTask(taskData: TaskFormData, contactIds: number[], subtasks: {title: string}[]) {
+    const NEW_TASK = await this.insertTask(taskData);
+    await Promise.all([
+      this.insertTaskAssignments(NEW_TASK.id, contactIds),
+      this.insertSubtasks(NEW_TASK.id, subtasks)
+    ]);
+    await this.loadBoardData();
+  }
+
+  /**
+  * Inserts the primary task record and returns the created object.
+  */
+  async insertTask(taskData: TaskFormData) {
+    const { data, error } = await this.supabase
+      .from('tasks')
+      .insert([taskData])
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  }
+
+  /**
+  * Links contacts to a specific task.
+  */
+  async insertTaskAssignments(taskId: number, contactIds: number[]) {
+    if (contactIds.length === 0) return;
+    const ASSIGNMENTS = contactIds.map(contact_id => ({ task_id: taskId, contact_id }));
+    const { error } = await this.supabase.from('task_assignments').insert(ASSIGNMENTS);
+    if (error) throw new Error(`Failed to assign contacts: ${error.message}`);
+  }
+
+  /**
+  * Creates subtasks for a specific task.
+  */
+  async insertSubtasks(taskId: number, subtasks: {title: string}[]) {
+    if (subtasks.length === 0) return;
+    const RECORDS = subtasks.map(subtask => ({ task_id: taskId, title: subtask.title, is_done: false }));
+    const { error } = await this.supabase.from('subtasks').insert(RECORDS);
+
+    if (error) throw new Error(`Failed to create subtasks: ${error.message}`);
+  }
+
+  /**
+  * Deletes a task by ID. Database CASCADE should handle subtasks and assignments.
+  * @param taskId - The ID of the task to remove.
+  */
+  async deleteTask(taskId: number) {
+    const { error } = await this.supabase
+      .from('tasks')
+      .delete()
+      .eq('id', taskId);
+    if (error) throw error;
+    await this.loadBoardData();
   }
 
 }
