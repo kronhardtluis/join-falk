@@ -143,7 +143,6 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  overflow-x: auto;
   max-width: calc(1440px - 232px);
 }
 
@@ -255,17 +254,16 @@
   #board-content {
     .board-columns {
       display: grid;
-      grid-template-columns: 1fr;
-      //overflow-x: auto;
-      .board-column{
-        overflow-x: auto;
-      }
+      grid-template-columns: repeat(1, minmax(250px, 1fr));
+      gap: 20px;
+      width: 100%;
     }
 
     .task-library {
       @include all.flexi($jc: flex-start, $fd: row, $gap: 4%);
       overflow-x: auto;
       width: 100%;
+      padding-right: 15px;
 
       .task-card {
         width: 250px;
