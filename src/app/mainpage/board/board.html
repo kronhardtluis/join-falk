@@ -2,10 +2,10 @@
   <section id="board-header">
     <div id="header">
       <h2>Board</h2>
-      <button id="add-task-button-responsive">
+      <a routerLink="/add-task" id="add-task-button-responsive">
         <img class="add-default" src="assets/icons/add-board-blue.png" alt="Add Icon" />
         <img class="add-hover" src="assets/icons/add-board-light-blue.png" alt="Add Icon" />
-      </button>
+      </a>
     </div>
 
     <div class="search-add-section">
@@ -39,20 +39,36 @@
             />
           </button>
         </div>
-        @if(dbService.todoTasks().length > 0){
+        @if (dbService.todoTasks().length > 0) {
           <div class="task-library">
             @for (task of dbService.todoTasks(); track task.id) {
               <div class="task-card" (click)="openTaskDetails(task)">
-                <div [class]="task.category === 'Technical Task' ? 'task-type technical' : 'task-type user-story'">
-                  {{task.category}}
+                <div
+                  [class]="
+                    task.category === 'Technical Task'
+                      ? 'task-type technical'
+                      : 'task-type user-story'
+                  "
+                >
+                  {{ task.category }}
                 </div>
-                <h3>{{task.title}}</h3>
-                <p>{{task.description}}</p>
-                @if(task.subtasks.length != 0){
+                <h3>{{ task.title }}</h3>
+                <p>{{ task.description }}</p>
+                @if (task.subtasks.length != 0) {
                   <div class="subtask">
                     <div class="subtask-undone"></div>
-                    <div class="subtask-done" [style.--progress]="dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length"></div>
-                    <span class="subtasks-nummery">{{dbService.getDoneSubtasksCount(task.subtasks)}}/{{ task.subtasks.length }} Subtasks</span>
+                    <div
+                      class="subtask-done"
+                      [style.--progress]="
+                        dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length
+                      "
+                    ></div>
+                    <span class="subtasks-nummery"
+                      >{{ dbService.getDoneSubtasksCount(task.subtasks) }}/{{
+                        task.subtasks.length
+                      }}
+                      Subtasks</span
+                    >
                   </div>
                 }
                 <div class="task-footer">
@@ -64,9 +80,15 @@
                     }
                   </div>
                   @switch (task.priority) {
-                    @case ('Urgent') {<img src="assets/icons/urgent-red.png" alt="Priority Up" />}
-                    @case ('Medium') {<img src="assets/icons/medium-orange.png" alt="Priority Up" />}
-                    @case ('Low') {<img src="assets/icons/low-green.png" alt="Priority Up" />}
+                    @case ('Urgent') {
+                      <img src="assets/icons/urgent-red.png" alt="Priority Up" />
+                    }
+                    @case ('Medium') {
+                      <img src="assets/icons/medium-orange.png" alt="Priority Up" />
+                    }
+                    @case ('Low') {
+                      <img src="assets/icons/low-green.png" alt="Priority Up" />
+                    }
                   }
                 </div>
               </div>
@@ -92,20 +114,36 @@
             />
           </button>
         </div>
-        @if(dbService.inProgressTasks().length > 0){
+        @if (dbService.inProgressTasks().length > 0) {
           <div class="task-library">
             @for (task of dbService.inProgressTasks(); track task.id) {
               <div class="task-card" (click)="openTaskDetails(task)">
-                <div [class]="task.category === 'Technical Task' ? 'task-type technical' : 'task-type user-story'">
-                  {{task.category}}
+                <div
+                  [class]="
+                    task.category === 'Technical Task'
+                      ? 'task-type technical'
+                      : 'task-type user-story'
+                  "
+                >
+                  {{ task.category }}
                 </div>
-                <h3>{{task.title}}</h3>
-                <p>{{task.description}}</p>
-                @if(task.subtasks.length != 0){
+                <h3>{{ task.title }}</h3>
+                <p>{{ task.description }}</p>
+                @if (task.subtasks.length != 0) {
                   <div class="subtask">
-                  <div class="subtask-undone"></div>
-                  <div class="subtask-done" [style.--progress]="dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length"></div>
-                  <span class="subtasks-nummery">{{dbService.getDoneSubtasksCount(task.subtasks)}}/{{ task.subtasks.length }} Subtasks</span>
+                    <div class="subtask-undone"></div>
+                    <div
+                      class="subtask-done"
+                      [style.--progress]="
+                        dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length
+                      "
+                    ></div>
+                    <span class="subtasks-nummery"
+                      >{{ dbService.getDoneSubtasksCount(task.subtasks) }}/{{
+                        task.subtasks.length
+                      }}
+                      Subtasks</span
+                    >
                   </div>
                 }
                 <div class="task-footer">
@@ -117,16 +155,21 @@
                     }
                   </div>
                   @switch (task.priority) {
-                    @case ('Urgent') {<img src="assets/icons/urgent-red.png" alt="Priority Up" />}
-                    @case ('Medium') {<img src="assets/icons/medium-orange.png" alt="Priority Up" />}
-                    @case ('Low') {<img src="assets/icons/low-green.png" alt="Priority Up" />}
+                    @case ('Urgent') {
+                      <img src="assets/icons/urgent-red.png" alt="Priority Up" />
+                    }
+                    @case ('Medium') {
+                      <img src="assets/icons/medium-orange.png" alt="Priority Up" />
+                    }
+                    @case ('Low') {
+                      <img src="assets/icons/low-green.png" alt="Priority Up" />
+                    }
                   }
                 </div>
               </div>
             }
           </div>
-        }
-        @else {
+        } @else {
           <div class="no-tasks-placeholder">
             <p>No tasks to do</p>
           </div>
@@ -146,20 +189,36 @@
             />
           </button>
         </div>
-        @if(dbService.awaitingFeedbackTasks().length > 0){
+        @if (dbService.awaitingFeedbackTasks().length > 0) {
           <div class="task-library">
             @for (task of dbService.awaitingFeedbackTasks(); track task.id) {
               <div class="task-card" (click)="openTaskDetails(task)">
-                <div [class]="task.category === 'Technical Task' ? 'task-type technical' : 'task-type user-story'">
-                  {{task.category}}
+                <div
+                  [class]="
+                    task.category === 'Technical Task'
+                      ? 'task-type technical'
+                      : 'task-type user-story'
+                  "
+                >
+                  {{ task.category }}
                 </div>
-                <h3>{{task.title}}</h3>
-                <p>{{task.description}}</p>
-                @if(task.subtasks.length != 0){
+                <h3>{{ task.title }}</h3>
+                <p>{{ task.description }}</p>
+                @if (task.subtasks.length != 0) {
                   <div class="subtask">
-                  <div class="subtask-undone"></div>
-                  <div class="subtask-done" [style.--progress]="dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length"></div>
-                  <span class="subtasks-nummery">{{dbService.getDoneSubtasksCount(task.subtasks)}}/{{ task.subtasks.length }} Subtasks</span>
+                    <div class="subtask-undone"></div>
+                    <div
+                      class="subtask-done"
+                      [style.--progress]="
+                        dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length
+                      "
+                    ></div>
+                    <span class="subtasks-nummery"
+                      >{{ dbService.getDoneSubtasksCount(task.subtasks) }}/{{
+                        task.subtasks.length
+                      }}
+                      Subtasks</span
+                    >
                   </div>
                 }
                 <div class="task-footer">
@@ -171,9 +230,15 @@
                     }
                   </div>
                   @switch (task.priority) {
-                    @case ('Urgent') {<img src="assets/icons/urgent-red.png" alt="Priority Up" />}
-                    @case ('Medium') {<img src="assets/icons/medium-orange.png" alt="Priority Up" />}
-                    @case ('Low') {<img src="assets/icons/low-green.png" alt="Priority Up" />}
+                    @case ('Urgent') {
+                      <img src="assets/icons/urgent-red.png" alt="Priority Up" />
+                    }
+                    @case ('Medium') {
+                      <img src="assets/icons/medium-orange.png" alt="Priority Up" />
+                    }
+                    @case ('Low') {
+                      <img src="assets/icons/low-green.png" alt="Priority Up" />
+                    }
                   }
                 </div>
               </div>
@@ -191,20 +256,36 @@
         <div class="column-header">
           <p>Done</p>
         </div>
-        @if(dbService.doneTasks().length > 0){
+        @if (dbService.doneTasks().length > 0) {
           <div class="task-library">
             @for (task of dbService.doneTasks(); track task.id) {
               <div class="task-card" (click)="openTaskDetails(task)">
-                <div [class]="task.category === 'Technical Task' ? 'task-type technical' : 'task-type user-story'">
-                  {{task.category}}
+                <div
+                  [class]="
+                    task.category === 'Technical Task'
+                      ? 'task-type technical'
+                      : 'task-type user-story'
+                  "
+                >
+                  {{ task.category }}
                 </div>
-                <h3>{{task.title}}</h3>
-                <p>{{task.description}}</p>
-                @if(task.subtasks.length != 0){
+                <h3>{{ task.title }}</h3>
+                <p>{{ task.description }}</p>
+                @if (task.subtasks.length != 0) {
                   <div class="subtask">
-                  <div class="subtask-undone"></div>
-                  <div class="subtask-done" [style.--progress]="dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length"></div>
-                  <span class="subtasks-nummery">{{dbService.getDoneSubtasksCount(task.subtasks)}}/{{ task.subtasks.length }} Subtasks</span>
+                    <div class="subtask-undone"></div>
+                    <div
+                      class="subtask-done"
+                      [style.--progress]="
+                        dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length
+                      "
+                    ></div>
+                    <span class="subtasks-nummery"
+                      >{{ dbService.getDoneSubtasksCount(task.subtasks) }}/{{
+                        task.subtasks.length
+                      }}
+                      Subtasks</span
+                    >
                   </div>
                 }
                 <div class="task-footer">
@@ -216,9 +297,15 @@
                     }
                   </div>
                   @switch (task.priority) {
-                    @case ('Urgent') {<img src="assets/icons/urgent-red.png" alt="Priority Up" />}
-                    @case ('Medium') {<img src="assets/icons/medium-orange.png" alt="Priority Up" />}
-                    @case ('Low') {<img src="assets/icons/low-green.png" alt="Priority Up" />}
+                    @case ('Urgent') {
+                      <img src="assets/icons/urgent-red.png" alt="Priority Up" />
+                    }
+                    @case ('Medium') {
+                      <img src="assets/icons/medium-orange.png" alt="Priority Up" />
+                    }
+                    @case ('Low') {
+                      <img src="assets/icons/low-green.png" alt="Priority Up" />
+                    }
                   }
                 </div>
               </div>
@@ -233,63 +320,106 @@
     </div>
   </section>
 
-  <dialog #dialog (click)="checkClickOutside($event)">
-    <button (click)="close()">
+  <dialog id="add-task-dialog" #dialog (click)="checkClickOutside($event)">
+    <button class="dialog-close-button" (click)="close()">
       <img src="assets/icons/close-blue.png" alt="Close" />
     </button>
     <app-add-task></app-add-task>
   </dialog>
 
-  <dialog #taskDetailDialog id="taskDetailDialog" (click)="checkClickOutside($event, 'taskDetailDialog')">
+  <dialog
+    #taskDetailDialog
+    id="taskDetailDialog"
+    (click)="checkClickOutside($event, 'taskDetailDialog')"
+  >
     @if (dbService.selectedTask(); as task) {
-    <div (click)="$event.stopPropagation()">
-      <div class="task-detail-header">
-        <span [class]="task.category === 'Technical Task' ? 'category technical' : 'category user-story'">{{ task.category }}</span>
-        <button (click)="closeTaskDetails()">
-          <img src="assets/icons/close-blue.png" alt="Close">
-        </button>
-      </div>
-      <h3>{{ task.title }}</h3>
-      <p>{{ task.description }}</p>
-      <div>
-        <strong>Due date:</strong> {{ task.due_date }}
-      </div>
-      <div>
-        <strong>Priority:</strong> {{ task.priority }}
-        @switch (task.priority) {
-          @case ('Urgent') {<img src="assets/icons/urgent-red.png" alt="Priority Up" />}
-          @case ('Medium') {<img src="assets/icons/medium-orange.png" alt="Priority Up" />}
-          @case ('Low') {<img src="assets/icons/low-green.png" alt="Priority Up" />}
-        }
-      </div>
-      <!-- "assigned-to-section" -->
-      <div>
-        <h3>Assigned To:</h3>
-        @for (assignment of task.task_assignments; track assignment.contacts.id) {
+      <div id="stopPropagation" (click)="$event.stopPropagation()">
+        <div class="task-detail-header">
+          <span
+            [class]="
+              task.category === 'Technical Task' ? 'category technical' : 'category user-story'
+            "
+            >{{ task.category }}</span
+          >
+          <button class="dialog-close-button" (click)="closeTaskDetails()">
+            <img src="assets/icons/close-blue.png" alt="Close" />
+          </button>
+        </div>
+
+        <div class="title-description">
+          <h2>{{ task.title }}</h2>
+          <p>{{ task.description }}</p>
+        </div>
+
+        <div class="date-priority">
+          <p>Due date:</p>
+          <span>{{ task.due_date }}</span>
+          <p>Priority:</p>
           <div>
-            <div style="height: 30px; aspect-ratio: 1; border-radius: 50%; color: white; font-size: 16px; display: flex; justify-content: center; align-items: center;" [style.background-color]="assignment.contacts.color">
-              {{ dbService.getInitials(assignment.contacts.name) }}
+            <span>{{ task.priority }}</span>
+            @switch (task.priority) {
+              @case ('Urgent') {
+                <img src="assets/icons/urgent-red.png" alt="Priority Up" />
+              }
+              @case ('Medium') {
+                <img src="assets/icons/medium-orange.png" alt="Priority Up" />
+              }
+              @case ('Low') {
+                <img src="assets/icons/low-green.png" alt="Priority Up" />
+              }
+            }
+          </div>
+        </div>
+
+        <!-- "assigned-to-section" -->
+        <div>
+          <p class="subtitle">Assigned To:</p>
+          <div class="scroll-div">
+          @for (assignment of task.task_assignments; track assignment.contacts.id) {
+            <div class="assigned-to-user">
+              <span [style.background-color]="assignment.contacts.color">
+                {{ dbService.getInitials(assignment.contacts.name) }}
+              </span>
+              <p>{{ assignment.contacts.name }}</p>
             </div>
-            <span>{{ assignment.contacts.name }}</span>
+          }
           </div>
-        }
-      </div>
-      <!-- Subtask section -->
-      <div>
-        <h3>Subtasks:</h3>
-        @for (subtask of task.subtasks; track subtask.id) {
+        </div>
+        <!-- Subtask section -->
+        <div>
+          <p class="subtitle">Subtasks:</p>
+          <div class="scroll-div scroll-div--subtask">
+          @for (subtask of task.subtasks; track subtask.id) {
+            <div class="subtasks">
+              <input
+                type="checkbox"
+                [checked]="subtask.is_done"
+                (change)="dbService.toggleSubtaskStatus(subtask)"
+              />
+              <span>{{ subtask.title }}</span>
+            </div>
+          }
+          </div>
+        </div>
+        <!-- Buttons section -->
+        <div class="task-buttons">
           <div>
-            <input type="checkbox" [checked]="subtask.is_done" (change)="dbService.toggleSubtaskStatus(subtask)">
-            <span>{{ subtask.title }}</span>
+            <button class="buttons">
+              <img class="default" src="/assets/icons/delete.png" alt="Delete" />
+              <img class="hover" src="/assets/icons/delete-light-blue.png" alt="Delete" />
+              Delete
+            </button>
           </div>
-        }
+          <span class="seperator"></span>
+          <div>
+            <button class="buttons">
+              <img class="default" src="/assets/icons/edit.png" alt="Edit" />
+              <img class="hover" src="/assets/icons/edit-light-blue.png" alt="Edit" />
+              Edit
+            </button>
+          </div>
+        </div>
       </div>
-      <!-- Buttons section -->
-      <div>
-        <button>Delete</button>
-        <button>Edit</button>
-      </div>
-    </div>
-  }
+    }
   </dialog>
 </main>
