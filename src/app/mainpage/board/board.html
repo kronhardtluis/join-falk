@@ -10,7 +10,7 @@
 
     <div class="search-add-section">
       <div id="input-wrapper">
-        <input id="input-search" type="text" placeholder="Find Task" (input)="onSearch($event)"/>
+        <input id="input-search" type="text" placeholder="Find Task" (input)="onSearch($event)" />
         <button>
           <img src="assets/icons/search.png" alt="Search Icon" />
         </button>
@@ -25,9 +25,14 @@
 
   <!-- Board -->
   <section id="board-content">
-    <div class="board-columns">
+    <div cdkDropListGroup class="board-columns">
       <!-- Spalte: To Do -->
-      <div class="board-column">
+      <div
+        cdkDropList
+        [cdkDropListData]="todoTasksFiltred()"
+        (cdkDropListDropped)="drop($event)"
+        class="board-column"
+      >
         <div class="column-header">
           <p>To do</p>
           <button class="add-button" (click)="open()">
@@ -42,7 +47,7 @@
         @if (todoTasksFiltred().length > 0) {
           <div class="task-library">
             @for (task of todoTasksFiltred(); track task.id) {
-              <div class="task-card" (click)="openTaskDetails(task)">
+              <div cdkDrag class="task-card" (click)="openTaskDetails(task)">
                 <div
                   [class]="
                     task.category === 'Technical Task'
@@ -102,7 +107,12 @@
       </div>
 
       <!-- Spalte: In Progress -->
-      <div class="board-column">
+      <div
+        cdkDropList
+        [cdkDropListData]="inProgressTasksFiltred()"
+        (cdkDropListDropped)="drop($event)"
+        class="board-column"
+      >
         <div class="column-header">
           <p>In progress</p>
           <button class="add-button" (click)="open()">
@@ -117,7 +127,7 @@
         @if (inProgressTasksFiltred().length > 0) {
           <div class="task-library">
             @for (task of inProgressTasksFiltred(); track task.id) {
-              <div class="task-card" (click)="openTaskDetails(task)">
+              <div cdkDrag class="task-card" (click)="openTaskDetails(task)">
                 <div
                   [class]="
                     task.category === 'Technical Task'
@@ -177,7 +187,12 @@
       </div>
 
       <!-- Spalte: Await Feedback -->
-      <div class="board-column">
+      <div
+        cdkDropList
+        [cdkDropListData]="awaitingFeedbackTasksFiltred()"
+        (cdkDropListDropped)="drop($event)"
+        class="board-column"
+      >
         <div class="column-header">
           <p>Await feedback</p>
           <button class="add-button" (click)="open()">
@@ -192,7 +207,7 @@
         @if (awaitingFeedbackTasksFiltred().length > 0) {
           <div class="task-library">
             @for (task of awaitingFeedbackTasksFiltred(); track task.id) {
-              <div class="task-card" (click)="openTaskDetails(task)">
+              <div cdkDrag class="task-card" (click)="openTaskDetails(task)">
                 <div
                   [class]="
                     task.category === 'Technical Task'
@@ -252,14 +267,19 @@
       </div>
 
       <!-- Spalte: Done -->
-      <div class="board-column">
+      <div
+        cdkDropList
+        [cdkDropListData]="doneTasksFiltred()"
+        (cdkDropListDropped)="drop($event)"
+        class="board-column"
+      >
         <div class="column-header">
           <p>Done</p>
         </div>
         @if (doneTasksFiltred().length > 0) {
           <div class="task-library">
             @for (task of doneTasksFiltred(); track task.id) {
-              <div class="task-card" (click)="openTaskDetails(task)">
+              <div cdkDrag class="task-card" (click)="openTaskDetails(task)">
                 <div
                   [class]="
                     task.category === 'Technical Task'
@@ -375,30 +395,30 @@
         <div>
           <p class="subtitle">Assigned To:</p>
           <div class="scroll-div">
-          @for (assignment of task.task_assignments; track assignment.contacts.id) {
-            <div class="assigned-to-user">
-              <span [style.background-color]="assignment.contacts.color">
-                {{ dbService.getInitials(assignment.contacts.name) }}
-              </span>
-              <p>{{ assignment.contacts.name }}</p>
-            </div>
-          }
+            @for (assignment of task.task_assignments; track assignment.contacts.id) {
+              <div class="assigned-to-user">
+                <span [style.background-color]="assignment.contacts.color">
+                  {{ dbService.getInitials(assignment.contacts.name) }}
+                </span>
+                <p>{{ assignment.contacts.name }}</p>
+              </div>
+            }
           </div>
         </div>
         <!-- Subtask section -->
         <div>
           <p class="subtitle">Subtasks:</p>
           <div class="scroll-div scroll-div--subtask">
-          @for (subtask of task.subtasks; track subtask.id) {
-            <div class="subtasks">
-              <input
-                type="checkbox"
-                [checked]="subtask.is_done"
-                (change)="dbService.toggleSubtaskStatus(subtask)"
-              />
-              <span>{{ subtask.title }}</span>
-            </div>
-          }
+            @for (subtask of task.subtasks; track subtask.id) {
+              <div class="subtasks">
+                <input
+                  type="checkbox"
+                  [checked]="subtask.is_done"
+                  (change)="dbService.toggleSubtaskStatus(subtask)"
+                />
+                <span>{{ subtask.title }}</span>
+              </div>
+            }
           </div>
         </div>
         <!-- Buttons section -->
