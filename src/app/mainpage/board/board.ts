@@ -31,7 +31,7 @@ export class Board {
     },
   ];
   dbService = inject(Supabase);
-  isTaskEditMode = signal(false);
+  //isTaskEditMode = signal(false);
 
   /**
    * Initializes the component by fetching initial board data and
