@@ -276,7 +276,7 @@
 
 //#endregion
 
-dialog {
+#add-task-dialog {
   // display: block;
   position: fixed;
   top: 50%;
@@ -286,28 +286,10 @@ dialog {
   width: 75%;
   height: 80%;
   border-radius: 30px;
-  border: 2px solid black;
   overflow: hidden;
   overflow-y: auto;
   animation: slide-in-right 0.2s forwards;
   // animation: slide-out-left 0.3s forwards;
-
-
-  button {
-    background-color: transparent;
-    position: absolute;
-    top: 3%;
-    right: 3%;
-    border-radius: 50%;
-    padding: 8px;
-    @include all.flexi($ai: center, $jc: center);
-    z-index: 999;
-
-    &:hover {
-      background-color: all.$greyLight;
-      cursor: pointer;
-    }
-  }
 
   &::backdrop {
     background: rgba(0, 0, 0, 0.3);
@@ -315,6 +297,21 @@ dialog {
   }
 }
 
+.dialog-close-button {
+  background-color: transparent;
+  position: absolute;
+  top: 3%;
+  right: 3%;
+  border-radius: 50%;
+  padding: 8px;
+  @include all.flexi($ai: center, $jc: center);
+  z-index: 999;
+
+  &:hover {
+    background-color: all.$greyLight;
+    cursor: pointer;
+  }
+}
 //#endregion
 
 /* Task Card Styles */
@@ -430,24 +427,4 @@ dialog {
   border: 2px solid white; /* Weißer Rand */
   box-sizing: border-box;
   text-transform: uppercase;
-}
-
-/* Farben für die Initialen der Benutzer - WIEDER ENTFERNEN */
-.initial-bg-purple {
-  background-color: #8e44ad;
-}
-.initial-bg-blue {
-  background-color: #3498db;
-}
-.initial-bg-orange {
-  background-color: #f39c12;
-}
-.initial-bg-pink {
-  background-color: #e91e63;
-}
-.initial-bg-green {
-  background-color: #27ae60;
-}
-.initial-bg-red {
-  background-color: #e74c3c;
 }
