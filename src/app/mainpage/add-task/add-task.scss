@@ -36,8 +36,10 @@ form {
       width: clamp(300px, 90%, 400px);
     }
 
-    p {
+    h3 {
       margin-block: 16px 8px;
+      font-weight: normal;
+      font-size: 18px;
     }
 
     input,
@@ -47,16 +49,15 @@ form {
       padding: 12px 8px;
       background-color: white;
       width: 98%;
-      margin: 3px;
       outline: none;
       transition: 0.3s;
 
-      &[type="date"]:hover {
-        cursor: pointer;
+      &[type='date']:hover {
+        cursor: text;
       }
 
-      &:focus{
-      border-color: all.$blueLight;
+      &:focus {
+        border-color: all.$blueLight;
       }
     }
 
@@ -85,10 +86,6 @@ form {
           box-shadow: 0px 4px 3px all.$greyMid;
         }
 
-        p {
-          margin: 0;
-        }
-
         img {
           width: 21px;
         }
@@ -96,29 +93,41 @@ form {
     }
 
     #assign-contacts {
-      @include all.flexi($fd: column);
+      @include all.flexi($ai: flex-start, $fd: column);
       width: 100%;
-    }
 
-    #contacts {
-      // position: absolute;
-      // top: 100%;
-      // left: 0;
-      width: 98%;
-      background: white;
-      border-radius: 0 0 8px 8px;
-      border: 1px solid all.$greyMid;
-      z-index: 2;
-      font-size: 1.8rem;
-      padding: 2px;
+      #contacts {
+        position: absolute;
+        top: 48px;
+        display: none;
+        width: 98%;
+        background: white;
+        border-radius: 0 0 8px 8px;
+        border: 1px solid all.$greyMid;
+        z-index: 2;
+        font-size: 1.8rem;
+        padding: 2px;
 
-      li {
-        padding: 8px;
-        border-radius: 8px;
+        li {
+          padding: 8px;
+          border-radius: 8px;
 
-        &:hover {
-          cursor: pointer;
-          background-color: all.$greyMid;
+          &:hover {
+            cursor: pointer;
+            background-color: all.$greyMid;
+          }
+        }
+      }
+
+      #assigned-contacts {
+        @include all.flexi($jc: flex-start, $fd: row, $gap: 12px);
+
+        p {
+          @include all.flexi();
+          background-color: red;
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
         }
       }
     }
@@ -132,7 +141,20 @@ form {
       }
     }
 
-    #plus {
+    .drop-down {
+      right: -90%;
+      top: -40px;
+      padding: 8px;
+      background: none;
+
+      &:hover {
+        cursor: pointer;
+        border-radius: 50%;
+        background-color: all.$greyMid;
+      }
+    }
+
+    #options {
       position: absolute;
       right: 0;
       top: 12px;
