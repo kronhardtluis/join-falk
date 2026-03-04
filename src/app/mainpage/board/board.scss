@@ -476,7 +476,7 @@
 .cdk-drag-preview {
   background: white;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-  transform: rotate(5deg);
+  transform: rotate(5deg); // funktioniert nicht!!!
 }
 
 /* Das "Schatten"-Element markiert die Zielposition (die Lücke) */
@@ -484,8 +484,9 @@
   border: 3px dotted #999; 
   margin-bottom: 15px;
   min-height: 150px;
-  background: rgba(0, 0, 0, 0.02); /* Dezenter Hintergrund für die Lücke */
-  opacity: 1; /* Volle Sichtbarkeit für den Rahmen */
+  width: 250px;
+  background: rgba(0, 0, 0, 0.02); 
+  opacity: 1; 
 }
 
 .board-column.cdk-drop-list-dragging {
