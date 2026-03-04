@@ -97,15 +97,14 @@
     }
   }
 
-.scroll-div {
-  max-height: 130px;
-  overflow-y: auto;
+  .scroll-div {
+    max-height: 130px;
+    overflow-y: auto;
 
-  &--subtask {
-    max-height: 75px;
+    &--subtask {
+      max-height: 75px;
+    }
   }
-}
-
 
   .subtitle {
     margin-bottom: 6px;
@@ -133,16 +132,18 @@
     gap: 10px;
   }
 
-  .task-buttons {
-    width: fit-content;
+  #task-buttons {
     position: absolute;
-    bottom: 0%;
+    bottom: 5%;
     right: 5%;
+    width: auto;
+    height: 25px;
     @include all.flexi($gap: 8px);
+
 
     .seperator {
       width: 2px;
-      height: 20px;
+      height: 25px;
       background-color: grey;
     }
   }
