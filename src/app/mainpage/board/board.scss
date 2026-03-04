@@ -428,3 +428,42 @@
   box-sizing: border-box;
   text-transform: uppercase;
 }
+
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 12px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  cursor: grabbing;
+  transform: rotate(-5deg);
+  //transition: transform 0.1s ease;
+  opacity: 1;
+}
+
+.cdk-drag-placeholder {
+  background: rgba(0, 0, 0, 0.05);
+  border: 2px dashed #b6a8a8;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  min-height: 150px;
+  transform: rotate(5deg);
+}
+
+.board-column.cdk-drop-list-dragging {
+  background-color: rgba(69, 137, 255, 0.05);
+  border: 2px solid rgba(69, 137, 255, 0.2);
+  transition: background-color 0.2s ease;
+}
+
+.board-column.cdk-drop-list-receiving {
+  background-color: rgba(69, 137, 255, 0.15);
+  border-color: #4589ff;
+}
+
+.cdk-drop-list-dragging .task-card:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
