@@ -33,5 +33,10 @@ export class AddTask {
     // const subtask = subtaskRef.value;
   }
 
+  clearSubtask(): void {
+    const subtaskRef = document.getElementById("add-subtask")!;
+    // const subtask = subtaskRef.value;
+  }
+
   minDate = new Date().toISOString().split('T')[0];
 }
