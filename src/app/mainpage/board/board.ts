@@ -12,12 +12,8 @@ import { Supabase } from '../../services/supabase';
 import { FullTask } from '../../interfaces/task.interface';
 import { RouterLink } from '@angular/router';
 import {
-  CdkDrag,
   CdkDragDrop,
-  CdkDropList,
-  moveItemInArray,
-  transferArrayItem,
-  CdkDropListGroup,
+  DragDropModule,
 } from '@angular/cdk/drag-drop';
 
 interface cardTemplate {
@@ -31,7 +27,8 @@ interface cardTemplate {
 
 @Component({
   selector: 'app-board',
-  imports: [AddTask, RouterLink, CdkDrag, CdkDropList, CdkDropListGroup],
+  standalone: true,
+  imports: [AddTask, RouterLink, DragDropModule],
   templateUrl: './board.html',
   styleUrl: './board.scss',
 })
@@ -155,41 +152,36 @@ export class Board {
     this.searchQuery.set(input.value);
   }
 
+  /**
+  * Triggers the deletion of a task after user confirmation.
+  * Closes the detail dialog upon success.
+  * @param taskId - The ID of the task to be deleted.
+  */
+  async deleteTask(taskId: number) {
+      try {
+        await this.dbService.deleteTask(taskId);
+        this.closeTaskDetails();
+        this.showNotification("task deleted");
+      } catch (err) {
+        console.error('Delete failed:', err);
+      }
+  }
+
+  //JSDoc...???
+  showNotification(msg:string){
+    console.log(msg);
+  }
+
   //#region Testregion
-
-  // drop(event: CdkDragDrop<FullTask[]>) {
-  //   if (event.previousContainer === event.container) {
-  //     // Nur Sortierung innerhalb der Spalte (optional)
-  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-  //   } else {
-  //     // 1. Den Task finden, der bewegt wurde
-  //     const task = event.item.data as FullTask;
-
-  //     // 2. Den neuen Status anhand der Container-ID ermitteln
-  //     // Die IDs setzen wir gleich im HTML (z.B. id="ToDo")
-  //     const newStatus = event.container.id;
-
-  //     // 3. Update an Supabase senden
-  //     // Du brauchst eine Methode in deinem Service, die den Status ändert
-
-  //     this.dbService.updateTaskStatus(task.id!, newStatus);
-
-  //     // Hinweis: transferArrayItem lassen wir hier weg, weil Supabase
-  //     // durch das Real-time Update deine Signals automatisch neu berechnet!
-  //   }
-  // }
-
   drop(event: CdkDragDrop<FullTask[]>) {
   const task = event.item.data as FullTask;
   const newStatus = event.container.id;
-
   console.log(`Verschiebe Task "${task?.id}" nach: ${newStatus}`);
-
   if (event.previousContainer !== event.container) {
     this.dbService.updateTaskStatus(task.id!, newStatus);
   }
 }
 
-//#endregion 
+//#endregion
 
 }

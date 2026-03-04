@@ -1,5 +1,5 @@
 <main class="board-container">
-  
+
   <section id="board-header">
     <div id="header">
       <h2>Board</h2>
@@ -29,7 +29,7 @@
     <div cdkDropListGroup class="board-columns">
       <!-- Spalte: To Do -->
       <div
-        id="toDo"
+        id="ToDo"
         cdkDropList
         [cdkDropListData]="todoTasksFiltred()"
         (cdkDropListDropped)="drop($event)"
@@ -49,7 +49,7 @@
         @if (todoTasksFiltred().length > 0) {
           <div class="task-library">
             @for (task of todoTasksFiltred(); track task.id) {
-              <div cdkDrag class="task-card" (click)="openTaskDetails(task)">
+              <div cdkDrag [cdkDragData]="task" class="task-card" (click)="openTaskDetails(task)">
                 <div
                   [class]="
                     task.category === 'Technical Task'
@@ -110,7 +110,7 @@
 
       <!-- Spalte: In Progress -->
       <div
-        id="inProgress"
+        id="In Progress"
         cdkDropList
         [cdkDropListData]="inProgressTasksFiltred()"
         (cdkDropListDropped)="drop($event)"
@@ -130,7 +130,7 @@
         @if (inProgressTasksFiltred().length > 0) {
           <div class="task-library">
             @for (task of inProgressTasksFiltred(); track task.id) {
-              <div cdkDrag class="task-card" (click)="openTaskDetails(task)">
+              <div cdkDrag class="task-card" [cdkDragData]="task" (click)="openTaskDetails(task)">
                 <div
                   [class]="
                     task.category === 'Technical Task'
@@ -191,7 +191,7 @@
 
       <!-- Spalte: Await Feedback -->
       <div
-        id="awaitFeedback"
+        id="Awaiting Feedback"
         cdkDropList
         [cdkDropListData]="awaitingFeedbackTasksFiltred()"
         (cdkDropListDropped)="drop($event)"
@@ -211,7 +211,7 @@
         @if (awaitingFeedbackTasksFiltred().length > 0) {
           <div class="task-library">
             @for (task of awaitingFeedbackTasksFiltred(); track task.id) {
-              <div cdkDrag class="task-card" (click)="openTaskDetails(task)">
+              <div cdkDrag class="task-card" [cdkDragData]="task" (click)="openTaskDetails(task)">
                 <div
                   [class]="
                     task.category === 'Technical Task'
@@ -272,7 +272,7 @@
 
       <!-- Spalte: Done -->
       <div
-        id="done"
+        id="Done"
         cdkDropList
         [cdkDropListData]="doneTasksFiltred()"
         (cdkDropListDropped)="drop($event)"
@@ -284,7 +284,7 @@
         @if (doneTasksFiltred().length > 0) {
           <div class="task-library">
             @for (task of doneTasksFiltred(); track task.id) {
-              <div cdkDrag class="task-card" (click)="openTaskDetails(task)">
+              <div cdkDrag class="task-card" [cdkDragData]="task" (click)="openTaskDetails(task)">
                 <div
                   [class]="
                     task.category === 'Technical Task'
