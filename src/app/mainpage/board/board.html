@@ -33,6 +33,7 @@
         cdkDropList
         [cdkDropListData]="todoTasksFiltred()"
         (cdkDropListDropped)="drop($event)"
+        cdkDropListOrientation="horizontal"
         class="board-column"
       >
         <div class="column-header">
@@ -114,6 +115,7 @@
         cdkDropList
         [cdkDropListData]="inProgressTasksFiltred()"
         (cdkDropListDropped)="drop($event)"
+        cdkDropListOrientation="horizontal"
         class="board-column"
       >
         <div class="column-header">
@@ -195,6 +197,7 @@
         cdkDropList
         [cdkDropListData]="awaitingFeedbackTasksFiltred()"
         (cdkDropListDropped)="drop($event)"
+        cdkDropListOrientation="horizontal"
         class="board-column"
       >
         <div class="column-header">
@@ -276,6 +279,7 @@
         cdkDropList
         [cdkDropListData]="doneTasksFiltred()"
         (cdkDropListDropped)="drop($event)"
+        cdkDropListOrientation="horizontal"
         class="board-column"
       >
         <div class="column-header">

@@ -14,6 +14,7 @@ import { RouterLink } from '@angular/router';
 import {
   CdkDragDrop,
   DragDropModule,
+  moveItemInArray
 } from '@angular/cdk/drag-drop';
 
 interface cardTemplate {
@@ -176,9 +177,12 @@ export class Board {
   drop(event: CdkDragDrop<FullTask[]>) {
   const task = event.item.data as FullTask;
   const newStatus = event.container.id;
+
   console.log(`Verschiebe Task "${task?.id}" nach: ${newStatus}`);
   if (event.previousContainer !== event.container) {
     this.dbService.updateTaskStatus(task.id!, newStatus);
+  } else {
+    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
   }
 }
 
