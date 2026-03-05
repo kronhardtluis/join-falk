@@ -26,8 +26,9 @@ export interface TaskFormData {
   due_date: string;
   priority: TaskPriority;
   category: TaskCategory;
-  assigned_contact_ids: number[];
-  subtasks: string[];
+  assigned_contact_ids?: number[];
+  subtasks?: string[];
+  status?: TaskStatus;
 }
 
 export interface TaskAssignment {
