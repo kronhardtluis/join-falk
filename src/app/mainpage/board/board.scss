@@ -271,6 +271,13 @@
         min-width: 250px;
       }
     }
+
+    .board-column.cdk-drop-list-receiving {
+      .task-library::after,
+      .no-tasks-placeholder::after {
+        width: 250px;
+      }
+    }
   }
 }
 
@@ -478,7 +485,9 @@
 .cdk-drag-placeholder {
   border: 3px dotted #999;
   margin-bottom: 15px;
-  min-height: 150px;
+  min-height: 200px;
+  min-width: 200px;
+  max-width: 250px;
   background: rgba(0, 0, 0, 0.02);
 }
 
@@ -491,15 +500,15 @@
   display: block;
   border: 3px dotted #ccc;
   border-radius: 8px;
-  min-height: 200px;
   width: 100%;
+  height: 230px;
   margin-bottom: 15px;
 }
 
-// .board-column.cdk-drop-list-dragging {
-//   background-color: transparent;
-//   border-style: none;
-// }
+.board-column.cdk-drop-list-dragging {
+  background-color: transparent;
+  border-style: none;
+}
 
 .cdk-drop-list-dragging .task-card:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
@@ -510,53 +519,5 @@
 }
 
 //#endregion
-
-
-//#region-version 2
-
-/* 1. Die Vorschau an der Maus */
-// .cdk-drag-preview {
-//   background: white;
-//   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-// }
-
-// /* 2. Der aktive Placeholder (die Lücke zwischen den Karten) */
-// .cdk-drag-placeholder {
-//   border: 3px dotted #999;
-//   margin-bottom: 15px;
-//   min-height: 150px;
-//   background: rgba(0, 0, 0, 0.02);
-//   display: block;
-// }
-
-// /* 3. Der "Voraus-Rahmen" (nur in Listen ohne aktiven Drag-Placeholder) */
-// .board-column.cdk-drop-list-receiving .task-library:not(:has(.cdk-drag-placeholder))::after,
-// .board-column.cdk-drop-list-receiving .no-tasks-placeholder:not(:has(.cdk-drag-placeholder))::after {
-//   content: '';
-//   display: block;
-//   border: 3px dotted #ccc;
-//   border-radius: 8px;
-//   min-height: 150px; /* Höhe an Placeholder angepasst für Stabilität */
-//   width: 100%;
-//   margin-bottom: 15px;
-// }
-
-// /* 4. Listen-Styles während des Draggings */
-// .board-column.cdk-drop-list-dragging {
-//   background-color: transparent;
-//   border-style: none;
-// }
-
-// /* Sanftes Gleiten der Karten */
-// .cdk-drop-list-dragging .task-card:not(.cdk-drag-placeholder) {
-//   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-// }
-
-// .cdk-drag-animating {
-//   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-// }
-
-//#endregion 
-
 
 //#endregion
