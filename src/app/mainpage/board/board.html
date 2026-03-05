@@ -1,5 +1,4 @@
 <main class="board-container">
-
   <section id="board-header">
     <div id="header">
       <h2>Board</h2>
@@ -27,12 +26,9 @@
   <!-- Board -->
   <section id="board-content">
     <div cdkDropListGroup class="board-columns">
+      
       <!-- Spalte: To Do -->
-      <div
-
-
-        class="board-column"
-      >
+      <div class="board-column">
         <div class="column-header">
           <p>To do</p>
           <button class="add-button" (click)="open()">
@@ -44,14 +40,17 @@
             />
           </button>
         </div>
-        @if (todoTasksFiltred().length > 0) {
-          <div class="task-library"
+
+        <div
+          class="task-library"
           id="ToDo"
           cdkDropList
-        [cdkDropListData]="todoTasksFiltred()"
-        (cdkDropListDropped)="drop($event)"
-        [cdkDropListOrientation]="orientation"
-          cdkScrollable>
+          [cdkDropListData]="todoTasksFiltred()"
+          (cdkDropListDropped)="drop($event)"
+          [cdkDropListOrientation]="orientation"
+          cdkScrollable
+        >
+          @if (todoTasksFiltred().length > 0) {
             @for (task of todoTasksFiltred(); track task.id) {
               <div cdkDrag [cdkDragData]="task" class="task-card" (click)="openTaskDetails(task)">
                 <div
@@ -104,19 +103,16 @@
                 </div>
               </div>
             }
-          </div>
-        } @else {
-          <div class="no-tasks-placeholder">
-            <p>No tasks to do</p>
-          </div>
-        }
+          } @else {
+            <div class="no-tasks-placeholder">
+              <p>No tasks to do</p>
+            </div>
+          }
+        </div>
       </div>
 
       <!-- Spalte: In Progress -->
-      <div
-
-        class="board-column"
-      >
+      <div class="board-column">
         <div class="column-header">
           <p>In progress</p>
           <button class="add-button" (click)="open()">
@@ -128,14 +124,17 @@
             />
           </button>
         </div>
-        @if (inProgressTasksFiltred().length > 0) {
-          <div class="task-library"
+
+        <div
+          class="task-library"
           id="In Progress"
-        cdkDropList
-        [cdkDropListData]="inProgressTasksFiltred()"
-        (cdkDropListDropped)="drop($event)"
-        [cdkDropListOrientation]="orientation"
-          cdkScrollable>
+          cdkDropList
+          [cdkDropListData]="inProgressTasksFiltred()"
+          (cdkDropListDropped)="drop($event)"
+          [cdkDropListOrientation]="orientation"
+          cdkScrollable
+        >
+          @if (inProgressTasksFiltred().length > 0) {
             @for (task of inProgressTasksFiltred(); track task.id) {
               <div cdkDrag class="task-card" [cdkDragData]="task" (click)="openTaskDetails(task)">
                 <div
@@ -188,19 +187,16 @@
                 </div>
               </div>
             }
-          </div>
-        } @else {
-          <div class="no-tasks-placeholder">
-            <p>No tasks in progress</p>
-          </div>
-        }
+          } @else {
+            <div class="no-tasks-placeholder">
+              <p>No tasks in progress</p>
+            </div>
+          }
+        </div>
       </div>
 
       <!-- Spalte: Await Feedback -->
-      <div
-
-        class="board-column"
-      >
+      <div class="board-column">
         <div class="column-header">
           <p>Await feedback</p>
           <button class="add-button" (click)="open()">
@@ -212,14 +208,17 @@
             />
           </button>
         </div>
-        @if (awaitingFeedbackTasksFiltred().length > 0) {
-          <div class="task-library"
-                  id="Awaiting Feedback"
-        cdkDropList
-        [cdkDropListData]="awaitingFeedbackTasksFiltred()"
-        (cdkDropListDropped)="drop($event)"
-        [cdkDropListOrientation]="orientation"
-          cdkScrollable>
+
+        <div
+          class="task-library"
+          id="Awaiting Feedback"
+          cdkDropList
+          [cdkDropListData]="awaitingFeedbackTasksFiltred()"
+          (cdkDropListDropped)="drop($event)"
+          [cdkDropListOrientation]="orientation"
+          cdkScrollable
+        >
+          @if (awaitingFeedbackTasksFiltred().length > 0) {
             @for (task of awaitingFeedbackTasksFiltred(); track task.id) {
               <div cdkDrag class="task-card" [cdkDragData]="task" (click)="openTaskDetails(task)">
                 <div
@@ -272,12 +271,12 @@
                 </div>
               </div>
             }
-          </div>
-        } @else {
-          <div class="no-tasks-placeholder">
-            <p>No tasks in feedback</p>
-          </div>
-        }
+          } @else {
+            <div class="no-tasks-placeholder">
+              <p>No tasks in feedback</p>
+            </div>
+          }
+        </div>
       </div>
 
       <!-- Spalte: Done -->
@@ -285,14 +284,16 @@
         <div class="column-header">
           <p>Done</p>
         </div>
-          <div class="task-library"
-            id="Done"
-            cdkDropList
-            [cdkDropListData]="doneTasksFiltred()"
-            (cdkDropListDropped)="drop($event)"
-            [cdkDropListOrientation]="orientation"
-            cdkScrollable>
-            @if (doneTasksFiltred().length > 0) {
+        <div
+          class="task-library"
+          id="Done"
+          cdkDropList
+          [cdkDropListData]="doneTasksFiltred()"
+          (cdkDropListDropped)="drop($event)"
+          [cdkDropListOrientation]="orientation"
+          cdkScrollable
+        >
+          @if (doneTasksFiltred().length > 0) {
             @for (task of doneTasksFiltred(); track task.id) {
               <div cdkDrag class="task-card" [cdkDragData]="task" (click)="openTaskDetails(task)">
                 <div
@@ -343,15 +344,14 @@
                     }
                   }
                 </div>
-
-              </div>
-              }
-            }@else {
-              <div class="no-tasks-placeholder">
-                <p>No tasks done</p>
               </div>
             }
-          </div>
+          } @else {
+            <div class="no-tasks-placeholder">
+              <p>No tasks done</p>
+            </div>
+          }
+        </div>
       </div>
     </div>
   </section>

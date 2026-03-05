@@ -182,6 +182,7 @@
 }
 
 .no-tasks-placeholder {
+  width: 100%;
   p {
     font-size: 1.8rem;
     background-color: #e7e7e7;
@@ -189,7 +190,7 @@
     padding: 10px;
     text-align: center;
     color: #b6a8a8;
-    margin-top: 10px;
+    width: 100%;
     border: 2px dashed all.$greyMid;
     box-shadow: 0 2px 4px rgba(9, 30, 66, 0.08);
   }
@@ -259,6 +260,10 @@
       width: 100%;
     }
 
+    .board-column{
+      margin-top:30px;
+    }
+
     .task-library {
       @include all.flexi($jc: flex-start, $fd: row, $gap: 4%);
       overflow-x: auto;
@@ -272,11 +277,10 @@
       }
     }
 
-    .board-column.cdk-drop-list-receiving {
-      .task-library::after,
-      .no-tasks-placeholder::after {
-        width: 250px;
-      }
+    .task-library.cdk-drop-list-receiving::after,
+    .no-tasks-placeholder.cdk-drop-list-receiving::after {
+      width: 250px;
+      height: 230px;
     }
   }
 }
@@ -325,6 +329,7 @@
 .task-library {
   @include all.flexi($jc: flex-start, $fd: column, $gap: 4%);
   width: 100%;
+  height: 100%;
 }
 
 .task-card {
@@ -438,7 +443,7 @@
 
 //#region Safe
 
-// /* Die Vorschau, die an der Maus klebt */
+/* Die Vorschau, die an der Maus klebt */
 // .cdk-drag-preview {
 //   background: white;
 //   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
@@ -469,44 +474,47 @@
 //   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 // }
 
+/* 3. Der "Voraus-Rahmen" für alle anderen Spalten */
+/* Sobald eine Liste bereit ist, ein Element zu empfangen, zeigen wir
+   ein Pseudo-Element am Ende der task-library an */
+// .board-column.cdk-drop-list-receiving .task-library::after,
+// .board-column.cdk-drop-list-receiving .no-tasks-placeholder::after {
+//   content: '';
+//   display: block;
+//   border: 3px dotted #ccc;
+//   border-radius: 8px;
+//   width: 100%;
+//   height: 230px;
+//   margin-bottom: 15px;
+// }
+
 //#endregion
 
 //#region Test
 
 //#region-version 1
 
-/* 1. Die Vorschau an der Maus */
+/* Die Vorschau, die an der Maus klebt */
 .cdk-drag-preview {
   background: white;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  transform: rotate(5deg);
 }
 
-/* 2. Der aktive Placeholder (wenn man über einer Liste schwebt) */
+/* Das "Schatten"-Element markiert die Zielposition (die Lücke) */
 .cdk-drag-placeholder {
   border: 3px dotted #999;
   margin-bottom: 15px;
-  min-height: 200px;
+  min-height: 150px;
   min-width: 200px;
-  max-width: 250px;
+  width: 100%; /* Auf 100% gesetzt, damit es die Breite der Spalte füllt */
   background: rgba(0, 0, 0, 0.02);
-}
-
-/* 3. Der "Voraus-Rahmen" für alle anderen Spalten */
-/* Sobald eine Liste bereit ist, ein Element zu empfangen, zeigen wir
-   ein Pseudo-Element am Ende der task-library an */
-.board-column.cdk-drop-list-receiving .task-library::after,
-.board-column.cdk-drop-list-receiving .no-tasks-placeholder::after {
-  content: '';
-  display: block;
-  border: 3px dotted #ccc;
-  border-radius: 8px;
-  width: 100%;
-  height: 230px;
-  margin-bottom: 15px;
+  opacity: 1;
 }
 
 .board-column.cdk-drop-list-dragging {
   background-color: transparent;
+  transition: background-color 0.2s ease;
   border-style: none;
 }
 
@@ -516,6 +524,20 @@
 
 .cdk-drag-animating {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* 3. Der "Voraus-Rahmen" für alle anderen Spalten */
+/* Da cdkDropList direkt auf .task-library liegt, erhält diese die receiving-Klasse */
+.task-library.cdk-drop-list-receiving::after,
+.no-tasks-placeholder.cdk-drop-list-receiving::after {
+  content: '';
+  display: block;
+  border: 3px dotted #ccc;
+  border-radius: 8px;
+  width: 100%;
+  height: 200px;
+  // margin-top: 10px;
+  // margin-bottom: 15px;
 }
 
 //#endregion
