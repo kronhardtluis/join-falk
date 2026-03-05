@@ -479,11 +479,13 @@
   border: 3px dotted #999;
   margin-bottom: 15px;
   min-height: 150px;
+  min-width: 150px;
+  max-width: 250px;
   background: rgba(0, 0, 0, 0.02);
 }
 
 /* 3. Der "Voraus-Rahmen" für alle anderen Spalten */
-/* Sobald eine Liste bereit ist, ein Element zu empfangen, zeigen wir 
+/* Sobald eine Liste bereit ist, ein Element zu empfangen, zeigen wir
    ein Pseudo-Element am Ende der task-library an */
 .board-column.cdk-drop-list-receiving .task-library::after,
 .board-column.cdk-drop-list-receiving .no-tasks-placeholder::after {
@@ -556,7 +558,7 @@
 //   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 // }
 
-//#endregion 
+//#endregion
 
 
 //#endregion
