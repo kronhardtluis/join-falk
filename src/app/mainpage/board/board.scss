@@ -182,16 +182,16 @@
 }
 
 .no-tasks-placeholder {
-  background-color: #e7e7e7;
-  border-radius: 8px;
-  padding: 10px;
-  text-align: center;
-  color: #b6a8a8;
-  margin-top: 10px;
-  border: 2px dashed all.$greyMid;
-  box-shadow: 0 2px 4px rgba(9, 30, 66, 0.08);
   p {
     font-size: 1.8rem;
+    background-color: #e7e7e7;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    color: #b6a8a8;
+    margin-top: 10px;
+    border: 2px dashed all.$greyMid;
+    box-shadow: 0 2px 4px rgba(9, 30, 66, 0.08);
   }
 }
 
@@ -429,36 +429,29 @@
   text-transform: uppercase;
 }
 
+//#region Safe
+
+// /* Die Vorschau, die an der Maus klebt */
 // .cdk-drag-preview {
-//   box-sizing: border-box;
-//   border-radius: 12px;
-//   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-//   cursor: grabbing;
-//   transform: rotate(5deg); /* Nur die gegriffene Karte dreht sich */
-//   // transition: transform 0.1s ease;
-//   background-color: white;
+//   background: white;
+//   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+//   transform: rotate(5deg); // funktioniert nicht!!!
 // }
 
+// /* Das "Schatten"-Element markiert die Zielposition (die Lücke) */
 // .cdk-drag-placeholder {
-//   background: rgba(0, 0, 0, 0.05);
-//   border: 2px dashed #b6a8a8;
-//   border-radius: 12px;
+//   border: 3px dotted #999;
 //   margin-bottom: 15px;
 //   min-height: 150px;
-//   transform: rotate(5deg);
+//   width: 250px;
+//   background: rgba(0, 0, 0, 0.02);
+//   opacity: 1;
 // }
 
 // .board-column.cdk-drop-list-dragging {
-//   background-color: rgba(69, 137, 255, 0.05);
-//   border: 2px solid rgba(69, 137, 255, 0.2);
+//   background-color: transparent;
 //   transition: background-color 0.2s ease;
-// }
-
-// .board-column.cdk-drop-list-receiving {
-//   background-color: none;
-//   border: dotted 3px #999;
-
-//   // border-color: #4589ff;
+//   border-style: none;
 // }
 
 // .cdk-drop-list-dragging .task-card:not(.cdk-drag-placeholder) {
@@ -469,31 +462,44 @@
 //   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 // }
 
+//#endregion
+
 //#region Test
 
+//#region-version 1
 
-/* Die Vorschau, die an der Maus klebt */
+/* 1. Die Vorschau an der Maus */
 .cdk-drag-preview {
   background: white;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-  transform: rotate(5deg); // funktioniert nicht!!!
 }
 
-/* Das "Schatten"-Element markiert die Zielposition (die Lücke) */
+/* 2. Der aktive Placeholder (wenn man über einer Liste schwebt) */
 .cdk-drag-placeholder {
-  border: 3px dotted #999; 
+  border: 3px dotted #999;
   margin-bottom: 15px;
   min-height: 150px;
-  width: 250px;
-  background: rgba(0, 0, 0, 0.02); 
-  opacity: 1; 
+  background: rgba(0, 0, 0, 0.02);
 }
 
-.board-column.cdk-drop-list-dragging {
-  background-color: transparent;
-  transition: background-color 0.2s ease;
-  border-style: none;
+/* 3. Der "Voraus-Rahmen" für alle anderen Spalten */
+/* Sobald eine Liste bereit ist, ein Element zu empfangen, zeigen wir 
+   ein Pseudo-Element am Ende der task-library an */
+.board-column.cdk-drop-list-receiving .task-library::after,
+.board-column.cdk-drop-list-receiving .no-tasks-placeholder::after {
+  content: '';
+  display: block;
+  border: 3px dotted #ccc;
+  border-radius: 8px;
+  min-height: 200px;
+  width: 100%;
+  margin-bottom: 15px;
 }
+
+// .board-column.cdk-drop-list-dragging {
+//   background-color: transparent;
+//   border-style: none;
+// }
 
 .cdk-drop-list-dragging .task-card:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
@@ -502,6 +508,55 @@
 .cdk-drag-animating {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
+//#endregion
+
+
+//#region-version 2
+
+/* 1. Die Vorschau an der Maus */
+// .cdk-drag-preview {
+//   background: white;
+//   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+// }
+
+// /* 2. Der aktive Placeholder (die Lücke zwischen den Karten) */
+// .cdk-drag-placeholder {
+//   border: 3px dotted #999;
+//   margin-bottom: 15px;
+//   min-height: 150px;
+//   background: rgba(0, 0, 0, 0.02);
+//   display: block;
+// }
+
+// /* 3. Der "Voraus-Rahmen" (nur in Listen ohne aktiven Drag-Placeholder) */
+// .board-column.cdk-drop-list-receiving .task-library:not(:has(.cdk-drag-placeholder))::after,
+// .board-column.cdk-drop-list-receiving .no-tasks-placeholder:not(:has(.cdk-drag-placeholder))::after {
+//   content: '';
+//   display: block;
+//   border: 3px dotted #ccc;
+//   border-radius: 8px;
+//   min-height: 150px; /* Höhe an Placeholder angepasst für Stabilität */
+//   width: 100%;
+//   margin-bottom: 15px;
+// }
+
+// /* 4. Listen-Styles während des Draggings */
+// .board-column.cdk-drop-list-dragging {
+//   background-color: transparent;
+//   border-style: none;
+// }
+
+// /* Sanftes Gleiten der Karten */
+// .cdk-drop-list-dragging .task-card:not(.cdk-drag-placeholder) {
+//   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+// }
+
+// .cdk-drag-animating {
+//   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+// }
+
+//#endregion 
 
 
 //#endregion
