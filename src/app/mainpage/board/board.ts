@@ -197,20 +197,28 @@ export class Board {
     this.orientation = window.innerWidth > 1200 ? 'vertical' : 'horizontal';
   }
 
-  isMenuOpen = false;
+  isDropDownOpen = false;
 
   toggleMenu() {
-    this.isMenuOpen = !this.isMenuOpen;
+    this.isDropDownOpen = !this.isDropDownOpen;
   }
   closeMenu() {
-    this.isMenuOpen = false;
+    this.isDropDownOpen = false;
   }
+
+  @HostListener('window:resize', ['$event'])
+  DropDownResizeClose(event: any) {
+    if (window.innerWidth > 640) {
+      this.isDropDownOpen = false;
+    }
+  }
+
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
     if (!target.closest('#dropdown-button') && !target.closest('.dropdown')) {
-      this.isMenuOpen = false;
+      this.isDropDownOpen = false;
     }
   }
 }

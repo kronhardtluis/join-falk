@@ -196,101 +196,6 @@
   }
 }
 
-//#region Mediaquerries
-
-@include all.notebook {
-  #add-span {
-    display: none;
-  }
-}
-
-@include all.tablet {
-  #board-header {
-    @include all.flexi($fd: column, $ai: flex-start);
-  }
-}
-
-@include all.mobile {
-  .search-add-section {
-    width: 100%;
-  }
-
-  #input-wrapper {
-    width: 100%;
-  }
-
-  #input-search {
-    width: 100%;
-  }
-
-  #add-task-button {
-    display: none;
-  }
-
-  #add-task-button-responsive {
-    display: block;
-  }
-
-  #board-header {
-    height: 175px;
-    gap: 16px;
-    #header {
-      width: 100%;
-      @include all.flexi($jc: space-between, $ai: center);
-
-      h2 {
-        font-size: 47px;
-      }
-    }
-  }
-
-  .column-header {
-    p {
-      font-size: 24px;
-    }
-  }
-
-  .dropdown-button{
-    display: block;
-  }
-}
-
-@media (max-width: 1200px) {
-  #board-content {
-    .board-columns {
-      display: grid;
-      grid-template-columns: repeat(1, minmax(250px, 1fr));
-      gap: 20px;
-      width: 100%;
-    }
-
-    .board-column{
-      margin-top:30px;
-    }
-
-    .task-library {
-      @include all.flexi($jc: flex-start, $fd: row, $gap: 4%);
-      overflow-x: auto;
-      width: 100%;
-      padding-right: 15px;
-
-      .task-card {
-        width: 250px;
-        height: 230px;
-        min-width: 250px;
-      }
-    }
-
-    .task-library.cdk-drop-list-receiving::after,
-    .no-tasks-placeholder.cdk-drop-list-receiving::after {
-      width: 250px;
-      height: 230px;
-    }
-  }
-}
-
-//#endregion
-
 #add-task-dialog {
   // display: block;
   position: fixed;
@@ -445,7 +350,6 @@
   text-transform: uppercase;
 }
 
-
 //#region drag and drop
 
 /* Die Vorschau, die an der Maus klebt */
@@ -496,12 +400,12 @@
 
 //#endregion
 
-.card-header{
+.card-header {
   @include all.flexi($jc: space-between);
   width: 100%;
 }
 
-.dropdown-button{
+.dropdown-button {
   display: none;
   z-index: 999;
   background-color: white;
@@ -511,27 +415,37 @@
 .dropdown {
   display: none;
   position: absolute;
-  width: fit-content;
+  width: 140px;
   height: auto;
-  right: 7%;
-  top: 5%;
+  right: -50%;
+  top: 1%;
   background-color: all.$blue;
   padding: 6px;
-  border-radius: 8px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
   z-index: 1000;
   color: white;
+  cursor: pointer;
 
   .dropdown-content {
     width: 100%;
     height: 100%;
-    font-size: 1.6rem;
+    font-size: 1.4rem;
+    padding: 10px;
+    @include all.flexi($jc: space-between, $fd: column, $ai: flex-start);
+
+    strong {
+      margin-bottom: 8px;
+    }
 
     > button {
       background-color: transparent;
-      padding: 10px;
       width: 100%;
       text-align: left;
-
+      padding: 4px;
+      @include all.flexi($jc: flex-start, $gap: 4px);
       &:hover {
         background-color: all.$blueHover;
       }
@@ -542,3 +456,100 @@
 .dropdown.open {
   display: flex;
 }
+
+//#region Mediaquerries
+
+@include all.notebook {
+  #add-span {
+    display: none;
+  }
+}
+
+@include all.tablet {
+  #board-header {
+    @include all.flexi($fd: column, $ai: flex-start);
+  }
+}
+
+@include all.mobile {
+  .search-add-section {
+    width: 100%;
+  }
+
+  #input-wrapper {
+    width: 100%;
+  }
+
+  #input-search {
+    width: 100%;
+  }
+
+  #add-task-button {
+    display: none;
+  }
+
+  #add-task-button-responsive {
+    display: block;
+  }
+
+  #board-header {
+    height: 175px;
+    gap: 16px;
+    #header {
+      width: 100%;
+      @include all.flexi($jc: space-between, $ai: center);
+
+      h2 {
+        font-size: 47px;
+      }
+    }
+  }
+
+  .column-header {
+    p {
+      font-size: 24px;
+    }
+  }
+
+  .card-header {
+    .dropdown-button {
+      display: block;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  #board-content {
+    .board-columns {
+      display: grid;
+      grid-template-columns: repeat(1, minmax(250px, 1fr));
+      gap: 20px;
+      width: 100%;
+    }
+
+    .board-column {
+      margin-top: 30px;
+    }
+
+    .task-library {
+      @include all.flexi($jc: flex-start, $fd: row, $gap: 4%);
+      overflow-x: auto;
+      width: 100%;
+      padding-right: 15px;
+
+      .task-card {
+        width: 250px;
+        height: 230px;
+        min-width: 250px;
+      }
+    }
+
+    .task-library.cdk-drop-list-receiving::after,
+    .no-tasks-placeholder.cdk-drop-list-receiving::after {
+      width: 250px;
+      height: 230px;
+    }
+  }
+}
+
+//#endregion

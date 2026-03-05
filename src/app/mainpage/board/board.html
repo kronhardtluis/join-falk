@@ -64,17 +64,18 @@
                     {{ task.category }}
                   </div>
                   <button class="dropdown-button" (click)="toggleMenu(); $event.stopPropagation()">
-                    <img src="/assets/icons/dots.png" alt="" />
+                    <img src="/assets/icons/swap.png" alt="swap" />
                   </button>
                   <div
                     class="dropdown"
                     (click)="$event.stopPropagation()"
-                    [class.open]="isMenuOpen"
+                    [class.open]="isDropDownOpen"
                   >
                     <div class="dropdown-content">
-                      <button (click)="closeMenu()">In Progress</button>
-                      <button (click)="closeMenu()">Awaiting Feedback</button>
-                      <button (click)="closeMenu()">Done</button>
+                      <strong>Move to</strong>
+                      <button (click)="closeMenu()"> <img src="/assets/icons/arrow_downward.png" alt="down"> In Progress</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_downward.png" alt="down"> Rewiew</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_downward.png" alt="down"> Done</button>
                     </div>
                   </div>
                 </div>
@@ -165,17 +166,18 @@
                     {{ task.category }}
                   </div>
                   <button class="dropdown-button" (click)="toggleMenu(); $event.stopPropagation()">
-                    <img src="/assets/icons/dots.png" alt="" />
+                    <img src="/assets/icons/swap.png" alt="swap" />
                   </button>
                   <div
                     class="dropdown"
                     (click)="$event.stopPropagation()"
-                    [class.open]="isMenuOpen"
+                    [class.open]="isDropDownOpen"
                   >
                     <div class="dropdown-content">
-                      <button (click)="closeMenu()">To Do</button>
-                      <button (click)="closeMenu()">Awaiting Feedback</button>
-                      <button (click)="closeMenu()">Done</button>
+                      <strong>Move to</strong>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_upward.png" alt="up"> To Do</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_downward.png" alt="down"> Review</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_downward.png" alt="down"> Done</button>
                     </div>
                   </div>
                 </div>
@@ -265,17 +267,18 @@
                     {{ task.category }}
                   </div>
                   <button class="dropdown-button" (click)="toggleMenu(); $event.stopPropagation()">
-                    <img src="/assets/icons/dots.png" alt="" />
+                    <img src="/assets/icons/swap.png" alt="swap" />
                   </button>
                   <div
                     class="dropdown"
                     (click)="$event.stopPropagation()"
-                    [class.open]="isMenuOpen"
+                    [class.open]="isDropDownOpen"
                   >
                     <div class="dropdown-content">
-                      <button (click)="closeMenu()">To Do</button>
-                      <button (click)="closeMenu()">In Progress</button>
-                      <button (click)="closeMenu()">Done</button>
+                      <strong>Move to</strong>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_upward.png" alt="up"> To Do</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_upward.png" alt="up">In Progress</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_downward.png" alt="down"> Done</button>
                     </div>
                   </div>
                 </div>
@@ -356,17 +359,18 @@
                     {{ task.category }}
                   </div>
                   <button class="dropdown-button" (click)="toggleMenu(); $event.stopPropagation()">
-                    <img src="/assets/icons/dots.png" alt="" />
+                    <img src="/assets/icons/swap.png" alt="swap" />
                   </button>
                   <div
                     class="dropdown"
                     (click)="$event.stopPropagation()"
-                    [class.open]="isMenuOpen"
+                    [class.open]="isDropDownOpen"
                   >
                     <div class="dropdown-content">
-                      <button (click)="closeMenu()">To Do</button>
-                      <button (click)="closeMenu()">In Progress</button>
-                      <button (click)="closeMenu()">Awaiting Feedback</button>
+                      <strong>Move to</strong>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_upward.png" alt="up"> To Do</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_upward.png" alt="up"> In Progress</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_upward.png" alt="up"> Review</button>
                     </div>
                   </div>
                 </div>
