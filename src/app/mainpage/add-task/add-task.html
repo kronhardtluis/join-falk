@@ -12,7 +12,7 @@
     <input id="due-date" type="date" [min]="minDate" />
   </div>
 
-  <div id="line"></div>
+  <div id="big-line"></div>
 
   <div class="content">
     <h3>Prio</h3>
@@ -34,14 +34,15 @@
     <h3>Assigned to</h3>
     <!-- #region - Kontakte laden. Wie? -->
     <div id="assign-contacts">
-      <input placeholder="Select contacts to assign" id="select-contact">
+      <input placeholder="Select contacts to assign" id="select-contact" />
       <button class="drop-down" id="open-contacts">
         <img src="assets/icons/drop-down.png" alt="drop-down" />
       </button>
-      <ul id="contacts">
-        <li>Herbert Schröde</li>
-        <li>Angelo Mertel</li>
-        <li>Max Mustermann</li>
+      <!-- beide Checkboxen sind drin -->
+      <ul class="list">
+        <li>2 Checkboxen -> <img src="assets/icons/cheackbox.png" alt="checkbox"><img src="assets/icons/cheackbox-white.png" alt="checked checkbox"></li>
+        <li>Angelo Mertel <img src="assets/icons/cheackbox.png" alt="checkbox"><img src="assets/icons/cheackbox-white.png" alt="checked checkbox"></li>
+        <li>Max Mustermann <img src="assets/icons/cheackbox.png" alt="checkbox"><img src="assets/icons/cheackbox-white.png" alt="checked checkbox"></li>
       </ul>
       <div id="assigned-contacts">
         <p>HS</p>
@@ -52,23 +53,27 @@
     <!-- #endregion -->
 
     <h3>Category<span>*</span></h3>
-    <input placeholder="Select Task Category" list="categorys" name="categorys" />
-    <button class="drop-down" id="open-categories">
-      <img src="assets/icons/drop-down.png" alt="drop-down" />
-    </button>
-    <datalist id="categorys">
-      <option value="Technical Task"></option>
-      <option value="User Story"></option>
-    </datalist>
+    <div id="category-block">
+      <input placeholder="Select Task Category" id="category" />
+      <button class="drop-down" id="open-categories">
+        <img src="assets/icons/drop-down.png" alt="drop-down" />
+      </button>
+      <ul class="list">
+        <li>Herbert Schröde</li>
+        <li>Angelo Mertel</li>
+        <li>Max Mustermann</li>
+      </ul>
+    </div>
 
     <h3>Subtasks</h3>
     <div id="subtask-block">
       <input id="add-subtask" type="text" placeholder="Add new Subtask" />
       <button (click)="addSubtask()" id="add-button">
-        <img src="assets/icons/close-blue.png" alt="plus" />
+        <img src="assets/icons/check-blue.png" alt="check" />
       </button>
+      <div id="small-line"></div>
       <button (click)="clearSubtask()" id="delete-button">
-        <img src="assets/icons/check-blue.png" alt="plus" />
+        <img src="assets/icons/close-blue.png" alt="close" />
       </button>
     </div>
   </div>
@@ -82,6 +87,9 @@
       <img id="unhovered" src="assets/icons/close-blue.png" alt="" />
       <img id="hovered" src="assets/icons/close-light-blue.png" alt="" />
     </button>
-    <button id="create">Create Task <img src="assets/icons/check-white.png" alt="" /></button>
+    <button id="create">
+      Create Task
+      <img src="assets/icons/check-white.png" alt="" />
+    </button>
   </div>
 </div>
