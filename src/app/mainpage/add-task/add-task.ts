@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { Supabase } from '../../services/supabase';
 import { Task, TaskFormData, TaskPriority } from '../../interfaces/task.interface';
@@ -12,11 +12,13 @@ import { CommonModule } from '@angular/common';
 })
 
 export class AddTask {
-  private fb = inject(FormBuilder);
+  public fb = inject(FormBuilder);
   public dbService = inject(Supabase);
   minDate = new Date().toISOString().split('T')[0];
   taskForm: FormGroup;
   selectedPriority = signal<TaskPriority>('Medium');
+  public isContactListVisible = signal<boolean>(false);
+  searchContactName = signal<string>('');
 
   constructor() {
     this.taskForm = this.fb.group({
@@ -28,6 +30,10 @@ export class AddTask {
       subtaskInput: [''],
       subtasks: this.fb.array([])
     });
+  }
+
+  ngOnInit() {
+    this.dbService.getContacts();
   }
 
   get subtaskArray() {
@@ -84,4 +90,54 @@ export class AddTask {
     }
   }
 
+  getContactInitials(id: number): string {
+    const CONTACT = this.dbService.contacts().find(contact => contact.id === id);
+    return CONTACT ? this.dbService.getInitials(CONTACT.name) : '';
+  }
+
+  getContactColor(id: number): string {
+    const CONTACT = this.dbService.contacts().find(contact => contact.id === id);
+    return CONTACT?.color || '#ccc';
+  }
+
+  toggleContactList() {
+    this.isContactListVisible.update(v => !v);
+    if (this.isContactListVisible()) {
+      this.searchContactName.set('');
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('#assign-contacts')) {
+      this.isContactListVisible.set(false);
+    }
+  }
+
+  toggleContactSelection(contactId: number) {
+    const control = this.taskForm.get('assigned_to');
+    const currentValues: number[] = control?.value || [];
+
+    if (currentValues.includes(contactId)) {
+      control?.setValue(currentValues.filter(id => id !== contactId));
+    } else {
+      control?.setValue([...currentValues, contactId]);
+    }
+  }
+
+  filteredContacts = computed(() => {
+    const term = this.searchContactName().toLowerCase().trim();
+    if (!term) return this.dbService.contacts();
+
+    return this.dbService.contacts().filter(contact =>
+      contact.name.toLowerCase().includes(term)
+    );
+  });
+
+  onSearchChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.searchContactName.set(input.value);
+    this.isContactListVisible.set(true);
+  }
 }

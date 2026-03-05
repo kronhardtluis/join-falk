@@ -45,19 +45,55 @@
 
     <h3>Assigned to</h3>
     <div id="assign-contacts">
-      <select formControlName="assigned_to" multiple id="select-contact">
-        @for (contact of dbService.contacts(); track contact.id) {
-          <option [value]="contact.id">{{ contact.name }}</option>
-        }
-      </select>
+  <div class="input-container">
+    <input
+      type="text"
+      placeholder="Select contacts to assign"
+      id="select-contact"
+      [value]="searchContactName()"
+      (input)="onSearchChange($event)"
+      (click)="toggleContactList()"
+    />
+    <button type="button" class="drop-down" (click)="toggleContactList()">
+      <img
+        src="assets/icons/drop-down.png"
+        [style.transform]="isContactListVisible() ? 'rotate(180deg)' : 'rotate(0)'"
+        alt="arrow"
+      />
+    </button>
+  </div>
 
-      <div id="assigned-contacts">
-        @for (contactId of taskForm.get('assigned_to')?.value; track contactId) {
-          <span class="assignee-badge">
-             </span>
-        }
-      </div>
-    </div>
+  @if (isContactListVisible()) {
+    <ul id="contacts-list-dropdown">
+      @for (contact of filteredContacts(); track contact.id) {
+        <li (click)="contact.id !== undefined && toggleContactSelection(contact.id)">
+          <div class="contact-info">
+            <span class="initials-circle" [style.background-color]="contact.color">
+              {{ dbService.getInitials(contact.name) }}
+            </span>
+            <span class="contact-name">{{ contact.name }}</span>
+          </div>
+          <input
+            type="checkbox"
+            [checked]="taskForm.get('assigned_to')?.value.includes(contact.id)"
+            (click)="$event.stopPropagation()"
+            (change)="contact.id !== undefined && toggleContactSelection(contact.id)"
+          />
+        </li>
+      } @empty {
+        <li class="no-results">No contacts found</li>
+      }
+    </ul>
+  }
+
+  <div id="assigned-contacts-badges">
+    @for (id of taskForm.get('assigned_to')?.value; track id) {
+      <span class="assignee-badge" [style.background-color]="getContactColor(id)">
+        {{ getContactInitials(id) }}
+      </span>
+    }
+  </div>
+</div>
 
     <h3>Category<span>*</span></h3>
     <select formControlName="category">
