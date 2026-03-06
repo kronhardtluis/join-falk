@@ -370,7 +370,7 @@
   opacity: 1;
 }
 
-.board-column.cdk-drop-list-dragging {
+.task-library.cdk-drop-list-dragging {
   background-color: transparent;
   transition: background-color 0.2s ease;
   border-style: none;
@@ -394,8 +394,6 @@
   border-radius: 8px;
   width: 100%;
   height: 200px;
-  // margin-top: 10px;
-  // margin-bottom: 15px;
 }
 
 //#endregion
@@ -427,7 +425,7 @@
   border-bottom-right-radius: 20px;
   z-index: 1000;
   color: white;
-  cursor: pointer;
+  cursor: default;
 
   .dropdown-content {
     width: 100%;
@@ -445,6 +443,7 @@
       width: 100%;
       text-align: left;
       padding: 4px;
+      cursor: pointer;
       @include all.flexi($jc: flex-start, $gap: 4px);
       &:hover {
         background-color: all.$blueHover;
