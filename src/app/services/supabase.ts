@@ -172,6 +172,15 @@ export class Supabase {
    */
   async toggleSubtaskStatus(subtask: Subtask) {
     const NEW_STATUS = !subtask.is_done;
+    this.selectedTask.update((task) => {
+      if (task && task.subtasks) {
+        const updatedSubtasks = task.subtasks.map((s) =>
+          s.id === subtask.id ? { ...s, is_done: NEW_STATUS } : s,
+        );
+        return { ...task, subtasks: updatedSubtasks };
+      }
+      return task;
+    });
     const { error } = await this.supabase
       .from('subtasks')
       .update({ is_done: NEW_STATUS })
