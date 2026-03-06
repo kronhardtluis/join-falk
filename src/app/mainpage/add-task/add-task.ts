@@ -1,7 +1,7 @@
 import { Component, inject, signal, computed, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { Supabase } from '../../services/supabase';
-import { Task, TaskFormData, TaskPriority } from '../../interfaces/task.interface';
+import { Task, TaskCategory, TaskFormData, TaskPriority } from '../../interfaces/task.interface';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -19,6 +19,8 @@ export class AddTask {
   selectedPriority = signal<TaskPriority>('Medium');
   public isContactListVisible = signal<boolean>(false);
   searchContactName = signal<string>('');
+  isCategoryListVisible = signal<boolean>(false);
+  isSubtaskActive = signal<boolean>(false);
 
   constructor() {
     this.taskForm = this.fb.group({
@@ -58,20 +60,35 @@ export class AddTask {
   }
 
   /**
-  * Adds a new subtask to the form array.
-  * Extracts the value from the 'subtaskInput' field, validates that it is not empty
-  * or whitespace, pushes a new FormGroup into the subtask array, and resets the input.
+  * Adds a new subtask to the subtask form array.
+  * Extracts the current value from the 'subtaskInput' field, validates that it contains
+  * non-whitespace characters, pushes a new FormGroup into the 'subtasks' array,
+  * and subsequently invokes 'clearSubtask()' to reset the input field.
   */
   addSubtask() {
     const VALUE = this.taskForm.get('subtaskInput')?.value;
     if (VALUE && VALUE.trim()) {
       this.subtaskArray.push(this.fb.group({ title: [VALUE] }));
-      this.taskForm.get('subtaskInput')?.setValue('');
+      this.clearSubtask();
     }
   }
 
+  /**
+  * Clears the current value of the subtask input field.
+  * This method resets the 'subtaskInput' form control to an empty string,
+  * typically used when the user cancels the current typing or after
+  * a subtask has been successfully added.
+  */
   clearSubtask(){
     this.taskForm.get('subtaskInput')?.setValue('');
+    this.isSubtaskActive.set(false);
+  }
+
+  /**
+  * Sets the subtask input to active mode.
+  */
+  setSubtaskActive(active: boolean) {
+    this.isSubtaskActive.set(active);
   }
 
   /**
@@ -172,15 +189,19 @@ export class AddTask {
   }
 
   /**
-  * Listens for click events across the entire document to handle dropdown closure.
-  * If a click occurs outside the '#assign-contacts' container, the contact list
-  * visibility is set to false.
-  * @param {MouseEvent} event - The native mouse event used to determine the click target.
+  * Global document click listener that manages the automatic closure of custom dropdown menus.
+  * It checks the click target and toggles the visibility signals for both the
+  * contact assignment list and the category selection list. If a click occurs
+  * outside their respective parent containers, the dropdowns are closed.
+  * @param {MouseEvent} event - The native browser mouse event triggered by the user.
   */
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-    if (!target.closest('#assign-contacts')) {
+    const TARGET = event.target as HTMLElement;
+    if (!TARGET.closest('#category-select')) {
+      this.isCategoryListVisible.set(false);
+    }
+    if (!TARGET.closest('#assign-contacts')) {
       this.isContactListVisible.set(false);
     }
   }
@@ -239,5 +260,21 @@ export class AddTask {
   isContactSelected(contactId: number): boolean {
     const selectedIds: number[] = this.taskForm.get('assigned_to')?.value || [];
     return selectedIds.includes(contactId);
+  }
+
+  /**
+  * Toggles the visibility of the category dropdown list.
+  */
+  toggleCategoryList() {
+    this.isCategoryListVisible.update(v => !v);
+  }
+
+  /**
+  * Sets the selected category in the reactive form and closes the dropdown.
+  * @param {string} category - The name of the selected category.
+  */
+  selectCategory(category: TaskCategory) {
+    this.taskForm.get('category')?.setValue(category);
+    this.isCategoryListVisible.set(false);
   }
 }

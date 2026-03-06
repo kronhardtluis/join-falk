@@ -100,37 +100,51 @@
     </div>
 
     <h3>Category<span class="asterisk">*</span></h3>
-    <!-- <select formControlName="category">
-        <option value="" disabled>Select Task Category</option>
-        <option value="Technical Task">Technical Task</option>
-        <option value="User Story">User Story</option>
-    </select> -->
-
-
-          <div id="category-block">
-      <input placeholder="Select Task Category" id="category" />
-      <button class="drop-down" id="open-categories">
-        <img src="assets/icons/drop-down.png" alt="drop-down" />
-      </button>
-      <ul class="list">
-        <li>Herbert Schröde</li>
-        <li>Angelo Mertel</li>
-        <li>Max Mustermann</li>
-      </ul>
+    <div id="category-select">
+      <div class="input-container">
+        <input
+          id="select-category"
+          type="text"
+          formControlName="category"
+          placeholder="Select task category"
+          class="select-input"
+          readonly
+          (click)="toggleCategoryList()"
+        />
+        <button type="button" class="drop-down" (click)="toggleCategoryList()">
+          <img
+            src="assets/icons/drop-down.png"
+            [style.transform]="isCategoryListVisible()? 'rotate(180deg)' : 'rotate(0)'"
+            alt="arrow"
+          />
+        </button>
+      </div>
+      @if (isCategoryListVisible()) {
+        <ul id="category-dropdown-list">
+          <li class="category-name-list" (click)="selectCategory('Technical Task')">Technical Task</li>
+          <li class="category-name-list" (click)="selectCategory('User Story')">User Story</li>
+        </ul>
+      }
     </div>
-
-
 
     <h3>Subtasks</h3>
     <div id="subtask-block">
-      <input id="add-subtask" type="text" placeholder="Add new Subtask" />
-      <button (click)="clearSubtask()" id="add-button">
-        <img src="assets/icons/close-blue.png" alt="delete" />
-      </button>
-      <div id="small-line"></div>
-      <button (click)="addSubtask()" id="delete-button">
-        <img src="assets/icons/check-blue.png" alt="check" />
-      </button>
+      <input id="add-subtask"
+        formControlName="subtaskInput"
+        type="text"
+        placeholder="Add new Subtask"
+        (focus)="setSubtaskActive(true)"
+        (keydown.enter)="$event.preventDefault(); addSubtask()"
+      />
+      @if(isSubtaskActive() || taskForm.get('subtaskInput')?.value){
+        <button (click)="clearSubtask()" id="add-button">
+          <img src="assets/icons/close-blue.png" alt="delete" />
+        </button>
+        <div id="small-line"></div>
+        <button (click)="addSubtask()" id="delete-button">
+          <img src="assets/icons/check-blue.png" alt="check" />
+        </button>
+      }
     </div>
     <ul id="subtask-list">
         @for (sub of subtaskArray.controls; track $index) {
