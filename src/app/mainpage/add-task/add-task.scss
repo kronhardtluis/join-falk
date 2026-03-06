@@ -6,7 +6,7 @@ h2 {
   margin-top: 3%;
 }
 
-span {
+.asterisk {
   color: red;
 }
 
@@ -298,6 +298,20 @@ button.importance{
       width: 8px;
       height: auto;
       }
+    }
+  }
+
+  #assigned-contacts-badges {
+    gap: 0;
+
+    .assignee-badge {
+      @include all.flexi();
+      width: 40px;
+      height: 40px;
+      padding: 3px;
+      margin: 3px;
+      border-radius: 50%;
+      color: white;
     }
   }
 
