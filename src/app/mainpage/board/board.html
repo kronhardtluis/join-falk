@@ -207,9 +207,14 @@
                 }
                 <div class="task-footer">
                   <div class="assignees">
-                    @for (assignment of task.task_assignments; track assignment.contacts.id) {
+                    @for (assignment of task.task_assignments.slice(0, 7); track assignment.contacts.id) {
                       <span class="assignee" [style.background-color]="assignment.contacts.color">
                         {{ dbService.getInitials(assignment.contacts.name) }}
+                      </span>
+                    }
+                    @if (task.task_assignments.length > 7) {
+                      <span class="assignee ellipsis-badge">
+                        ...
                       </span>
                     }
                   </div>
@@ -308,9 +313,14 @@
                 }
                 <div class="task-footer">
                   <div class="assignees">
-                    @for (assignment of task.task_assignments; track assignment.contacts.id) {
+                    @for (assignment of task.task_assignments.slice(0, 7); track assignment.contacts.id) {
                       <span class="assignee" [style.background-color]="assignment.contacts.color">
                         {{ dbService.getInitials(assignment.contacts.name) }}
+                      </span>
+                    }
+                    @if (task.task_assignments.length > 7) {
+                      <span class="assignee ellipsis-badge">
+                        ...
                       </span>
                     }
                   </div>
@@ -400,9 +410,14 @@
                 }
                 <div class="task-footer">
                   <div class="assignees">
-                    @for (assignment of task.task_assignments; track assignment.contacts.id) {
+                    @for (assignment of task.task_assignments.slice(0, 7); track assignment.contacts.id) {
                       <span class="assignee" [style.background-color]="assignment.contacts.color">
                         {{ dbService.getInitials(assignment.contacts.name) }}
+                      </span>
+                    }
+                    @if (task.task_assignments.length > 7) {
+                      <span class="assignee ellipsis-badge">
+                        ...
                       </span>
                     }
                   </div>
