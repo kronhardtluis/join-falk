@@ -264,14 +264,14 @@ button.importance{
   }
 }
 
-#assign-contacts {
+#assign-contacts, #category-select {
   position: relative;
   width: 100%;
 
   .input-container {
     display: flex;
     align-items: center;
-    z-index: 999;
+    //z-index: 999;
     cursor: pointer;
     height: fit-content;
     padding: 0;
@@ -315,7 +315,7 @@ button.importance{
     }
   }
 
-  #contacts-list-dropdown {
+  #contacts-list-dropdown, #category-dropdown-list {
     position: absolute;
     top: 100%;
     left: 0;
@@ -356,6 +356,14 @@ button.importance{
           border-color: white;
           background-color: transparent;
         }
+      }
+
+      &.category-name-list{
+        font-size: 16px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
       }
     }
   }

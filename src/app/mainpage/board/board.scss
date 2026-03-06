@@ -390,7 +390,8 @@
 
 .assignees {
   display: flex;
-  gap: -8px; /* Für überlappende Avatare */
+  //gap: -8px; /* Für überlappende Avatare */
+  width: calc(100% - 25px);
 }
 
 .assignee {
@@ -407,6 +408,18 @@
   border: 2px solid white; /* Weißer Rand */
   box-sizing: border-box;
   text-transform: uppercase;
+  margin-left: -8px;
+  flex-shrink: 0;
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &.ellipsis-badge{
+    background-color: #2A3647; // Ciemny granat z motywu Join
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    cursor: default;
+  }
 }
 
 //#region drag and drop
