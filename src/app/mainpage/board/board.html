@@ -108,15 +108,15 @@
                 <div class="task-footer">
                   <div class="assignees">
                     @for (
-                      assignment of task.task_assignments.slice(0, 7);
+                      assignment of task.task_assignments.slice(0, 3);
                       track assignment.contacts.id
                     ) {
                       <span class="assignee" [style.background-color]="assignment.contacts.color">
                         {{ dbService.getInitials(assignment.contacts.name) }}
                       </span>
                     }
-                    @if (task.task_assignments.length > 7) {
-                      <span class="assignee ellipsis-badge"> ... </span>
+                    @if (task.task_assignments.length > 3) {
+                      <span class="assignee ellipsis-badge"> +{{ task.task_assignments.length - 3 }} </span>
                     }
                   </div>
                   @switch (task.priority) {
@@ -221,15 +221,15 @@
                 <div class="task-footer">
                   <div class="assignees">
                     @for (
-                      assignment of task.task_assignments.slice(0, 7);
+                      assignment of task.task_assignments.slice(0, 3);
                       track assignment.contacts.id
                     ) {
                       <span class="assignee" [style.background-color]="assignment.contacts.color">
                         {{ dbService.getInitials(assignment.contacts.name) }}
                       </span>
                     }
-                    @if (task.task_assignments.length > 7) {
-                      <span class="assignee ellipsis-badge"> ... </span>
+                    @if (task.task_assignments.length > 3) {
+                      <span class="assignee ellipsis-badge"> +{{ task.task_assignments.length - 3 }} </span>
                     }
                   </div>
                   @switch (task.priority) {
@@ -334,15 +334,15 @@
                 <div class="task-footer">
                   <div class="assignees">
                     @for (
-                      assignment of task.task_assignments.slice(0, 7);
+                      assignment of task.task_assignments.slice(0, 3);
                       track assignment.contacts.id
                     ) {
                       <span class="assignee" [style.background-color]="assignment.contacts.color">
                         {{ dbService.getInitials(assignment.contacts.name) }}
                       </span>
                     }
-                    @if (task.task_assignments.length > 7) {
-                      <span class="assignee ellipsis-badge"> ... </span>
+                    @if (task.task_assignments.length > 3) {
+                      <span class="assignee ellipsis-badge"> +{{ task.task_assignments.length - 3 }} </span>
                     }
                   </div>
                   @switch (task.priority) {
@@ -438,15 +438,15 @@
                 <div class="task-footer">
                   <div class="assignees">
                     @for (
-                      assignment of task.task_assignments.slice(0, 7);
+                      assignment of task.task_assignments.slice(0, 3);
                       track assignment.contacts.id
                     ) {
                       <span class="assignee" [style.background-color]="assignment.contacts.color">
                         {{ dbService.getInitials(assignment.contacts.name) }}
                       </span>
                     }
-                    @if (task.task_assignments.length > 7) {
-                      <span class="assignee ellipsis-badge"> ... </span>
+                    @if (task.task_assignments.length > 3) {
+                      <span class="assignee ellipsis-badge"> +{{ task.task_assignments.length - 3 }} </span>
                     }
                   </div>
                   @switch (task.priority) {
