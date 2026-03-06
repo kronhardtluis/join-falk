@@ -5,8 +5,8 @@ app-mainpage {
 }
 
 app-add-task {
-  padding: 4% 6%;
-  height: calc(100dvh - all.$header-height);
+  padding: 4% 6% 0;
+  max-height: 100%;
 
   @media (max-width: 1250px) {
     display: flex;

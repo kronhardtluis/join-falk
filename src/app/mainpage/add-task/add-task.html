@@ -12,7 +12,7 @@
     <input formControlName="due_date" id="due-date" type="date" [min]="minDate" />
   </div>
 
-  <div id="line"></div>
+  <div id="big-line"></div>
 
   <div class="content">
     <h3>Prio</h3>
@@ -106,12 +106,25 @@
 
     <h3>Subtasks</h3>
     <div id="subtask-block">
-      <input formControlName="subtaskInput" id="add-subtask" type="text" placeholder="Add new Subtask" (keyup.enter)="addSubtask()"/>
-      <div class="subtask-buttons">
-          <button type="button" (click)="addSubtask()" id="add-button">
-            <img src="assets/icons/add-task-blue.png" alt="add" />
-          </button>
-      </div>
+      <input id="add-subtask" type="text" placeholder="Add new Subtask" />
+      <button (click)="addSubtask()" id="add-button">
+        <img src="assets/icons/close-blue.png" alt="plus" />
+      </button>
+      <button (click)="clearSubtask()" id="delete-button">
+        <img src="assets/icons/check-blue.png" alt="plus" />
+      </button>
+
+          <!-- <div id="category-block">
+      <input placeholder="Select Task Category" id="category" />
+      <button class="drop-down" id="open-categories">
+        <img src="assets/icons/drop-down.png" alt="drop-down" />
+      </button>
+      <ul class="list">
+        <li>Herbert Schröde</li>
+        <li>Angelo Mertel</li>
+        <li>Max Mustermann</li>
+      </ul>
+    </div> -->
     </div>
     <ul id="subtask-list">
         @for (sub of subtaskArray.controls; track $index) {
