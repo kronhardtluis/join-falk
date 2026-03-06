@@ -45,13 +45,14 @@ form {
     }
 
     input,
-    textarea {
+    textarea,
+    .input-container {
       border-radius: 8px;
       border: 2px solid all.$greyMid;
       padding: 12px 8px;
       background-color: white;
-      width: 98%;
       min-height: 50px;
+      width: 98%;
       outline: none;
       transition: 0.3s;
 
@@ -130,19 +131,6 @@ form {
 
     #category-block {
       width: 100%;
-    }
-
-    .drop-down {
-      left: 90%;
-      bottom: 40px;
-      padding: 8px;
-      background: none;
-      border-radius: 50%;
-
-      &:hover {
-        cursor: pointer;
-        background-color: all.$greyMid;
-      }
     }
 
     #options {
@@ -282,12 +270,10 @@ button.importance{
   .input-container {
     display: flex;
     align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 0 12px;
-    background: white;
     z-index: 999;
     cursor: pointer;
+    height: fit-content;
+    padding: 0;
 
     input {
       border: none;
@@ -297,8 +283,21 @@ button.importance{
       outline: none;
     }
 
-    .drop-down img {
+    .drop-down {
       transition: transform 0.2s ease;
+      border-radius: 50%;
+      background: none;
+      padding: 6px 8px;
+
+      &:hover {
+        cursor: pointer;
+        background-color: all.$greyMid;
+      }
+
+      img {
+      width: 8px;
+      height: auto;
+      }
     }
   }
 
@@ -347,18 +346,7 @@ button.importance{
   }
 
   .custom-checkbox {
-    width: 24px;
-    height: 24px;
-    border: 2px solid #2A3647;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     transition: all 0.2s ease;
-    img {
-      width: 16px;
-      height: 12px;
-    }
   }
 
   .contact-info {

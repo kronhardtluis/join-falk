@@ -77,7 +77,9 @@
 
                 <div class="custom-checkbox">
                   @if (isContactSelected(contact.id)) {
-                    <img src="assets/icons/check-white.png" alt="selected" />
+                    <img src="assets/icons/cheackbox-white.png" alt="checked checkbox">
+                  } @else {
+                    <img src="assets/icons/cheackbox.png" alt="checkbox">
                   }
                 </div>
               </li>
@@ -104,15 +106,6 @@
         <option value="User Story">User Story</option>
     </select>
 
-    <h3>Subtasks</h3>
-    <div id="subtask-block">
-      <input id="add-subtask" type="text" placeholder="Add new Subtask" />
-      <button (click)="addSubtask()" id="add-button">
-        <img src="assets/icons/close-blue.png" alt="plus" />
-      </button>
-      <button (click)="clearSubtask()" id="delete-button">
-        <img src="assets/icons/check-blue.png" alt="plus" />
-      </button>
 
           <!-- <div id="category-block">
       <input placeholder="Select Task Category" id="category" />
@@ -125,6 +118,18 @@
         <li>Max Mustermann</li>
       </ul>
     </div> -->
+
+
+
+    <h3>Subtasks</h3>
+    <div id="subtask-block">
+      <input id="add-subtask" type="text" placeholder="Add new Subtask" />
+      <button (click)="clearSubtask()" id="add-button">
+        <img src="assets/icons/close-blue.png" alt="delete" />
+      </button>
+      <button (click)="addSubtask()" id="delete-button">
+        <img src="assets/icons/check-blue.png" alt="check" />
+      </button>
     </div>
     <ul id="subtask-list">
         @for (sub of subtaskArray.controls; track $index) {

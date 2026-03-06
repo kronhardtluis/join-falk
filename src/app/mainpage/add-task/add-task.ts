@@ -70,6 +70,10 @@ export class AddTask {
     }
   }
 
+  clearSubtask(){
+    this.taskForm.get('subtaskInput')?.setValue('');
+  }
+
   /**
   * Removes a subtask from the form array at a specific position.
   * @param {number} index - The index of the subtask element to be removed from the array.
