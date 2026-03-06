@@ -11,11 +11,7 @@ import { AddTask } from '../add-task/add-task';
 import { Supabase } from '../../services/supabase';
 import { FullTask } from '../../interfaces/task.interface';
 import { RouterLink } from '@angular/router';
-import {
-  CdkDragDrop,
-  DragDropModule,
-  moveItemInArray
-} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 
 interface cardTemplate {
   type: string;
@@ -154,38 +150,75 @@ export class Board {
   }
 
   /**
-  * Triggers the deletion of a task after user confirmation.
-  * Closes the detail dialog upon success.
-  * @param taskId - The ID of the task to be deleted.
-  */
+   * Triggers the deletion of a task after user confirmation.
+   * Closes the detail dialog upon success.
+   * @param taskId - The ID of the task to be deleted.
+   */
   async deleteTask(taskId: number) {
-      try {
-        await this.dbService.deleteTask(taskId);
-        this.closeTaskDetails();
-        this.showNotification("task deleted");
-      } catch (err) {
-        console.error('Delete failed:', err);
-      }
+    try {
+      await this.dbService.deleteTask(taskId);
+      this.closeTaskDetails();
+      this.showNotification('task deleted');
+    } catch (err) {
+      console.error('Delete failed:', err);
+    }
   }
 
   //JSDoc...???
-  showNotification(msg:string){
+  showNotification(msg: string) {
     console.log(msg);
   }
 
   //#region Testregion
   drop(event: CdkDragDrop<FullTask[]>) {
-  const task = event.item.data as FullTask;
-  const newStatus = event.container.id;
+    const task = event.item.data as FullTask;
+    const newStatus = event.container.id;
 
-  console.log(`Verschiebe Task "${task?.id}" nach: ${newStatus}`);
-  if (event.previousContainer !== event.container) {
-    this.dbService.updateTaskStatus(task.id!, newStatus);
-  } else {
-    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    console.log(`Verschiebe Task "${task?.id}" nach: ${newStatus}`);
+    if (event.previousContainer !== event.container) {
+      this.dbService.updateTaskStatus(task.id!, newStatus);
+    } else {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    }
   }
-}
 
-//#endregion
+  //#endregion
 
+  orientation: 'horizontal' | 'vertical' = 'vertical';
+
+  constructor() {
+    this.updateOrientation();
+  }
+
+  @HostListener('window:resize')
+  updateOrientation() {
+    // > 1200px -> vertical (Karten stapeln sich)
+    // < 1200px -> horizontal (Karten liegen nebeneinander)
+    this.orientation = window.innerWidth > 1200 ? 'vertical' : 'horizontal';
+  }
+
+  isDropDownOpen = false;
+
+  toggleMenu() {
+    this.isDropDownOpen = !this.isDropDownOpen;
+  }
+  closeMenu() {
+    this.isDropDownOpen = false;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  DropDownResizeClose(event: any) {
+    if (window.innerWidth > 640) {
+      this.isDropDownOpen = false;
+    }
+  }
+
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('#dropdown-button') && !target.closest('.dropdown')) {
+      this.isDropDownOpen = false;
+    }
+  }
 }

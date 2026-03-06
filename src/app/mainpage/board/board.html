@@ -1,5 +1,4 @@
 <main class="board-container">
-
   <section id="board-header">
     <div id="header">
       <h2>Board</h2>
@@ -28,14 +27,7 @@
   <section id="board-content">
     <div cdkDropListGroup class="board-columns">
       <!-- Spalte: To Do -->
-      <div
-        id="ToDo"
-        cdkDropList
-        [cdkDropListData]="todoTasksFiltred()"
-        (cdkDropListDropped)="drop($event)"
-        cdkDropListOrientation="horizontal"
-        class="board-column"
-      >
+      <div class="board-column">
         <div class="column-header">
           <p>To do</p>
           <button class="add-button" (click)="open()">
@@ -47,19 +39,47 @@
             />
           </button>
         </div>
-        @if (todoTasksFiltred().length > 0) {
-          <div class="task-library">
+
+        <div
+          class="task-library"
+          id="ToDo"
+          cdkDropList
+          [cdkDropListData]="todoTasksFiltred()"
+          (cdkDropListDropped)="drop($event)"
+          [cdkDropListOrientation]="orientation"
+          cdkScrollable
+        >
+          @if (todoTasksFiltred().length > 0) {
             @for (task of todoTasksFiltred(); track task.id) {
               <div cdkDrag [cdkDragData]="task" class="task-card" (click)="openTaskDetails(task)">
-                <div
-                  [class]="
-                    task.category === 'Technical Task'
-                      ? 'task-type technical'
-                      : 'task-type user-story'
-                  "
-                >
-                  {{ task.category }}
+                <!-- startpunkt -->
+                <div class="card-header">
+                  <div
+                    [class]="
+                      task.category === 'Technical Task'
+                        ? 'task-type technical'
+                        : 'task-type user-story'
+                    "
+                  >
+                    {{ task.category }}
+                  </div>
+                  <button class="dropdown-button" (click)="toggleMenu(); $event.stopPropagation()">
+                    <img src="/assets/icons/swap.png" alt="swap" />
+                  </button>
+                  <div
+                    class="dropdown"
+                    (click)="$event.stopPropagation()"
+                    [class.open]="isDropDownOpen"
+                  >
+                    <div class="dropdown-content">
+                      <strong>Move to</strong>
+                      <button (click)="closeMenu()"> <img src="/assets/icons/arrow_downward.png" alt="down"> In Progress</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_downward.png" alt="down"> Rewiew</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_downward.png" alt="down"> Done</button>
+                    </div>
+                  </div>
                 </div>
+                <!-- Ende -->
                 <h3>{{ task.title }}</h3>
                 <p>{{ task.description }}</p>
                 @if (task.subtasks.length != 0) {
@@ -101,23 +121,16 @@
                 </div>
               </div>
             }
-          </div>
-        } @else {
-          <div class="no-tasks-placeholder">
-            <p>No tasks to do</p>
-          </div>
-        }
+          } @else {
+            <div class="no-tasks-placeholder">
+              <p>No tasks to do</p>
+            </div>
+          }
+        </div>
       </div>
 
       <!-- Spalte: In Progress -->
-      <div
-        id="In Progress"
-        cdkDropList
-        [cdkDropListData]="inProgressTasksFiltred()"
-        (cdkDropListDropped)="drop($event)"
-        cdkDropListOrientation="horizontal"
-        class="board-column"
-      >
+      <div class="board-column">
         <div class="column-header">
           <p>In progress</p>
           <button class="add-button" (click)="open()">
@@ -129,18 +142,44 @@
             />
           </button>
         </div>
-        @if (inProgressTasksFiltred().length > 0) {
-          <div class="task-library">
+
+        <div
+          class="task-library"
+          id="In Progress"
+          cdkDropList
+          [cdkDropListData]="inProgressTasksFiltred()"
+          (cdkDropListDropped)="drop($event)"
+          [cdkDropListOrientation]="orientation"
+          cdkScrollable
+        >
+          @if (inProgressTasksFiltred().length > 0) {
             @for (task of inProgressTasksFiltred(); track task.id) {
               <div cdkDrag class="task-card" [cdkDragData]="task" (click)="openTaskDetails(task)">
-                <div
-                  [class]="
-                    task.category === 'Technical Task'
-                      ? 'task-type technical'
-                      : 'task-type user-story'
-                  "
-                >
-                  {{ task.category }}
+                <div class="card-header">
+                  <div
+                    [class]="
+                      task.category === 'Technical Task'
+                        ? 'task-type technical'
+                        : 'task-type user-story'
+                    "
+                  >
+                    {{ task.category }}
+                  </div>
+                  <button class="dropdown-button" (click)="toggleMenu(); $event.stopPropagation()">
+                    <img src="/assets/icons/swap.png" alt="swap" />
+                  </button>
+                  <div
+                    class="dropdown"
+                    (click)="$event.stopPropagation()"
+                    [class.open]="isDropDownOpen"
+                  >
+                    <div class="dropdown-content">
+                      <strong>Move to</strong>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_upward.png" alt="up"> To Do</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_downward.png" alt="down"> Review</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_downward.png" alt="down"> Done</button>
+                    </div>
+                  </div>
                 </div>
                 <h3>{{ task.title }}</h3>
                 <p>{{ task.description }}</p>
@@ -183,23 +222,16 @@
                 </div>
               </div>
             }
-          </div>
-        } @else {
-          <div class="no-tasks-placeholder">
-            <p>No tasks in progress</p>
-          </div>
-        }
+          } @else {
+            <div class="no-tasks-placeholder">
+              <p>No tasks in progress</p>
+            </div>
+          }
+        </div>
       </div>
 
       <!-- Spalte: Await Feedback -->
-      <div
-        id="Awaiting Feedback"
-        cdkDropList
-        [cdkDropListData]="awaitingFeedbackTasksFiltred()"
-        (cdkDropListDropped)="drop($event)"
-        cdkDropListOrientation="horizontal"
-        class="board-column"
-      >
+      <div class="board-column">
         <div class="column-header">
           <p>Await feedback</p>
           <button class="add-button" (click)="open()">
@@ -211,18 +243,44 @@
             />
           </button>
         </div>
-        @if (awaitingFeedbackTasksFiltred().length > 0) {
-          <div class="task-library">
+
+        <div
+          class="task-library"
+          id="Awaiting Feedback"
+          cdkDropList
+          [cdkDropListData]="awaitingFeedbackTasksFiltred()"
+          (cdkDropListDropped)="drop($event)"
+          [cdkDropListOrientation]="orientation"
+          cdkScrollable
+        >
+          @if (awaitingFeedbackTasksFiltred().length > 0) {
             @for (task of awaitingFeedbackTasksFiltred(); track task.id) {
               <div cdkDrag class="task-card" [cdkDragData]="task" (click)="openTaskDetails(task)">
-                <div
-                  [class]="
-                    task.category === 'Technical Task'
-                      ? 'task-type technical'
-                      : 'task-type user-story'
-                  "
-                >
-                  {{ task.category }}
+                <div class="card-header">
+                  <div
+                    [class]="
+                      task.category === 'Technical Task'
+                        ? 'task-type technical'
+                        : 'task-type user-story'
+                    "
+                  >
+                    {{ task.category }}
+                  </div>
+                  <button class="dropdown-button" (click)="toggleMenu(); $event.stopPropagation()">
+                    <img src="/assets/icons/swap.png" alt="swap" />
+                  </button>
+                  <div
+                    class="dropdown"
+                    (click)="$event.stopPropagation()"
+                    [class.open]="isDropDownOpen"
+                  >
+                    <div class="dropdown-content">
+                      <strong>Move to</strong>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_upward.png" alt="up"> To Do</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_upward.png" alt="up">In Progress</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_downward.png" alt="down"> Done</button>
+                    </div>
+                  </div>
                 </div>
                 <h3>{{ task.title }}</h3>
                 <p>{{ task.description }}</p>
@@ -265,38 +323,56 @@
                 </div>
               </div>
             }
-          </div>
-        } @else {
-          <div class="no-tasks-placeholder">
-            <p>No tasks in feedback</p>
-          </div>
-        }
+          } @else {
+            <div class="no-tasks-placeholder">
+              <p>No tasks in feedback</p>
+            </div>
+          }
+        </div>
       </div>
 
       <!-- Spalte: Done -->
-      <div
-        id="Done"
-        cdkDropList
-        [cdkDropListData]="doneTasksFiltred()"
-        (cdkDropListDropped)="drop($event)"
-        cdkDropListOrientation="horizontal"
-        class="board-column"
-      >
+      <div class="board-column">
         <div class="column-header">
           <p>Done</p>
         </div>
-        @if (doneTasksFiltred().length > 0) {
-          <div class="task-library">
+        <div
+          class="task-library"
+          id="Done"
+          cdkDropList
+          [cdkDropListData]="doneTasksFiltred()"
+          (cdkDropListDropped)="drop($event)"
+          [cdkDropListOrientation]="orientation"
+          cdkScrollable
+        >
+          @if (doneTasksFiltred().length > 0) {
             @for (task of doneTasksFiltred(); track task.id) {
               <div cdkDrag class="task-card" [cdkDragData]="task" (click)="openTaskDetails(task)">
-                <div
-                  [class]="
-                    task.category === 'Technical Task'
-                      ? 'task-type technical'
-                      : 'task-type user-story'
-                  "
-                >
-                  {{ task.category }}
+                <div class="card-header">
+                  <div
+                    [class]="
+                      task.category === 'Technical Task'
+                        ? 'task-type technical'
+                        : 'task-type user-story'
+                    "
+                  >
+                    {{ task.category }}
+                  </div>
+                  <button class="dropdown-button" (click)="toggleMenu(); $event.stopPropagation()">
+                    <img src="/assets/icons/swap.png" alt="swap" />
+                  </button>
+                  <div
+                    class="dropdown"
+                    (click)="$event.stopPropagation()"
+                    [class.open]="isDropDownOpen"
+                  >
+                    <div class="dropdown-content">
+                      <strong>Move to</strong>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_upward.png" alt="up"> To Do</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_upward.png" alt="up"> In Progress</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_upward.png" alt="up"> Review</button>
+                    </div>
+                  </div>
                 </div>
                 <h3>{{ task.title }}</h3>
                 <p>{{ task.description }}</p>
@@ -339,12 +415,12 @@
                 </div>
               </div>
             }
-          </div>
-        } @else {
-          <div class="no-tasks-placeholder">
-            <p>No tasks done</p>
-          </div>
-        }
+          } @else {
+            <div class="no-tasks-placeholder">
+              <p>No tasks done</p>
+            </div>
+          }
+        </div>
       </div>
     </div>
   </section>

@@ -71,7 +71,6 @@ form {
 
       .importance {
         @include all.flexi($gap: 8px);
-        background-color: white;
         box-shadow: 0px 0px 3px all.$greyMid;
         border-radius: 8px;
         padding: 12px 24px;
@@ -95,46 +94,46 @@ form {
       }
     }
 
-    #assign-contacts {
-      @include all.flexi($ai: flex-start, $fd: column);
-      width: 100%;
-    }
+    // #assign-contacts {
+    //   @include all.flexi($ai: flex-start, $fd: column);
+    //   width: 100%;
 
-    .list {
-      position: absolute;
-      top: 48px;
-      // display: none;
-      width: 98%;
-      background: white;
-      border-radius: 0 0 8px 8px;
-      border: 1px solid all.$greyMid;
-      z-index: 2;
-      font-size: 1.8rem;
-      padding: 2px;
+    //   #contacts {
+    //     position: absolute;
+    //     top: 48px;
+    //     display: none;
+    //     width: 98%;
+    //     background: white;
+    //     border-radius: 0 0 8px 8px;
+    //     border: 1px solid all.$greyMid;
+    //     z-index: 2;
+    //     font-size: 1.8rem;
+    //     padding: 2px;
 
-      li {
-        padding: 8px;
-        border-radius: 8px;
-        @include all.flexi($jc: space-between);
+      // li {
+      //   padding: 8px;
+      //   border-radius: 8px;
+      //   @include all.flexi($jc: space-between);
 
-        &:hover {
-          cursor: pointer;
-          background-color: all.$greyMid;
-        }
-      }
+      //   &:hover {
+      //     cursor: pointer;
+      //     background-color: all.$greyMid;
+      //   }
+      // }
+    //   }
 
-      #assigned-contacts {
-        @include all.flexi($jc: flex-start, $fd: row, $gap: 12px);
+    //   #assigned-contacts {
+    //     @include all.flexi($jc: flex-start, $fd: row, $gap: 12px);
 
-        p {
-          @include all.flexi();
-          background-color: red;
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
-        }
-      }
-    }
+        // p {
+          // @include all.flexi();
+          // background-color: red;
+          // width: 50px;
+          // height: 50px;
+          // border-radius: 50%;
+        // }
+      // }
+    // }
 
     #subtask-block {
       width: 100%;
@@ -292,5 +291,96 @@ form {
   input,
   textarea {
     font-size: 1.6rem;
+  }
+}
+
+button.importance{
+  background-color: white;
+  &.active-urgent{
+    background-color: #ff3d00;
+    p{
+      color: white;
+    }
+  }
+  &.active-medium {
+    background-color: #ffa800;
+        p{
+      color: white;
+    }
+  }
+  &.active-low {
+    background-color: #7ae229;
+        p{
+      color: white;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+#assign-contacts {
+  position: relative; // Kluczowe dla pozycjonowania listy
+  width: 100%;
+
+  .input-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 0 12px;
+    background: white;
+    cursor: pointer;
+
+    input {
+      border: none;
+      width: 100%;
+      padding: 12px 0;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .drop-down img {
+      transition: transform 0.2s ease;
+    }
+  }
+
+  #contacts-list-dropdown {
+    position: absolute;
+    top: 100%; // Pojawia się pod inputem
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 0 0 10px 10px;
+    max-height: 200px;
+    overflow-y: auto;
+    list-style: none;
+    padding: 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 15px;
+      transition: background 0.1s;
+
+      &:hover {
+        background-color: #f0f0f0;
+      }
+
+      .contact-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+    }
   }
 }
