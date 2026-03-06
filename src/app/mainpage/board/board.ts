@@ -184,16 +184,41 @@ export class Board {
 
   //#endregion
 
-orientation: 'horizontal' | 'vertical' = 'vertical';
+  orientation: 'horizontal' | 'vertical' = 'vertical';
 
-constructor() {
-  this.updateOrientation();
-}
+  constructor() {
+    this.updateOrientation();
+  }
 
-@HostListener('window:resize')
-updateOrientation() {
-  // > 1200px -> vertical (Karten stapeln sich)
-  // < 1200px -> horizontal (Karten liegen nebeneinander)
-  this.orientation = window.innerWidth > 1200 ? 'vertical' : 'horizontal';
-}
+  @HostListener('window:resize')
+  updateOrientation() {
+    // > 1200px -> vertical (Karten stapeln sich)
+    // < 1200px -> horizontal (Karten liegen nebeneinander)
+    this.orientation = window.innerWidth > 1200 ? 'vertical' : 'horizontal';
+  }
+
+  isDropDownOpen = false;
+
+  toggleMenu() {
+    this.isDropDownOpen = !this.isDropDownOpen;
+  }
+  closeMenu() {
+    this.isDropDownOpen = false;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  DropDownResizeClose(event: any) {
+    if (window.innerWidth > 640) {
+      this.isDropDownOpen = false;
+    }
+  }
+
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('#dropdown-button') && !target.closest('.dropdown')) {
+      this.isDropDownOpen = false;
+    }
+  }
 }

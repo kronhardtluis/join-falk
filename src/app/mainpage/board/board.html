@@ -26,7 +26,6 @@
   <!-- Board -->
   <section id="board-content">
     <div cdkDropListGroup class="board-columns">
-      
       <!-- Spalte: To Do -->
       <div class="board-column">
         <div class="column-header">
@@ -53,15 +52,34 @@
           @if (todoTasksFiltred().length > 0) {
             @for (task of todoTasksFiltred(); track task.id) {
               <div cdkDrag [cdkDragData]="task" class="task-card" (click)="openTaskDetails(task)">
-                <div
-                  [class]="
-                    task.category === 'Technical Task'
-                      ? 'task-type technical'
-                      : 'task-type user-story'
-                  "
-                >
-                  {{ task.category }}
+                <!-- startpunkt -->
+                <div class="card-header">
+                  <div
+                    [class]="
+                      task.category === 'Technical Task'
+                        ? 'task-type technical'
+                        : 'task-type user-story'
+                    "
+                  >
+                    {{ task.category }}
+                  </div>
+                  <button class="dropdown-button" (click)="toggleMenu(); $event.stopPropagation()">
+                    <img src="/assets/icons/swap.png" alt="swap" />
+                  </button>
+                  <div
+                    class="dropdown"
+                    (click)="$event.stopPropagation()"
+                    [class.open]="isDropDownOpen"
+                  >
+                    <div class="dropdown-content">
+                      <strong>Move to</strong>
+                      <button (click)="closeMenu()"> <img src="/assets/icons/arrow_downward.png" alt="down"> In Progress</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_downward.png" alt="down"> Rewiew</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_downward.png" alt="down"> Done</button>
+                    </div>
+                  </div>
                 </div>
+                <!-- Ende -->
                 <h3>{{ task.title }}</h3>
                 <p>{{ task.description }}</p>
                 @if (task.subtasks.length != 0) {
@@ -137,14 +155,31 @@
           @if (inProgressTasksFiltred().length > 0) {
             @for (task of inProgressTasksFiltred(); track task.id) {
               <div cdkDrag class="task-card" [cdkDragData]="task" (click)="openTaskDetails(task)">
-                <div
-                  [class]="
-                    task.category === 'Technical Task'
-                      ? 'task-type technical'
-                      : 'task-type user-story'
-                  "
-                >
-                  {{ task.category }}
+                <div class="card-header">
+                  <div
+                    [class]="
+                      task.category === 'Technical Task'
+                        ? 'task-type technical'
+                        : 'task-type user-story'
+                    "
+                  >
+                    {{ task.category }}
+                  </div>
+                  <button class="dropdown-button" (click)="toggleMenu(); $event.stopPropagation()">
+                    <img src="/assets/icons/swap.png" alt="swap" />
+                  </button>
+                  <div
+                    class="dropdown"
+                    (click)="$event.stopPropagation()"
+                    [class.open]="isDropDownOpen"
+                  >
+                    <div class="dropdown-content">
+                      <strong>Move to</strong>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_upward.png" alt="up"> To Do</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_downward.png" alt="down"> Review</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_downward.png" alt="down"> Done</button>
+                    </div>
+                  </div>
                 </div>
                 <h3>{{ task.title }}</h3>
                 <p>{{ task.description }}</p>
@@ -221,14 +256,31 @@
           @if (awaitingFeedbackTasksFiltred().length > 0) {
             @for (task of awaitingFeedbackTasksFiltred(); track task.id) {
               <div cdkDrag class="task-card" [cdkDragData]="task" (click)="openTaskDetails(task)">
-                <div
-                  [class]="
-                    task.category === 'Technical Task'
-                      ? 'task-type technical'
-                      : 'task-type user-story'
-                  "
-                >
-                  {{ task.category }}
+                <div class="card-header">
+                  <div
+                    [class]="
+                      task.category === 'Technical Task'
+                        ? 'task-type technical'
+                        : 'task-type user-story'
+                    "
+                  >
+                    {{ task.category }}
+                  </div>
+                  <button class="dropdown-button" (click)="toggleMenu(); $event.stopPropagation()">
+                    <img src="/assets/icons/swap.png" alt="swap" />
+                  </button>
+                  <div
+                    class="dropdown"
+                    (click)="$event.stopPropagation()"
+                    [class.open]="isDropDownOpen"
+                  >
+                    <div class="dropdown-content">
+                      <strong>Move to</strong>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_upward.png" alt="up"> To Do</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_upward.png" alt="up">In Progress</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_downward.png" alt="down"> Done</button>
+                    </div>
+                  </div>
                 </div>
                 <h3>{{ task.title }}</h3>
                 <p>{{ task.description }}</p>
@@ -296,14 +348,31 @@
           @if (doneTasksFiltred().length > 0) {
             @for (task of doneTasksFiltred(); track task.id) {
               <div cdkDrag class="task-card" [cdkDragData]="task" (click)="openTaskDetails(task)">
-                <div
-                  [class]="
-                    task.category === 'Technical Task'
-                      ? 'task-type technical'
-                      : 'task-type user-story'
-                  "
-                >
-                  {{ task.category }}
+                <div class="card-header">
+                  <div
+                    [class]="
+                      task.category === 'Technical Task'
+                        ? 'task-type technical'
+                        : 'task-type user-story'
+                    "
+                  >
+                    {{ task.category }}
+                  </div>
+                  <button class="dropdown-button" (click)="toggleMenu(); $event.stopPropagation()">
+                    <img src="/assets/icons/swap.png" alt="swap" />
+                  </button>
+                  <div
+                    class="dropdown"
+                    (click)="$event.stopPropagation()"
+                    [class.open]="isDropDownOpen"
+                  >
+                    <div class="dropdown-content">
+                      <strong>Move to</strong>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_upward.png" alt="up"> To Do</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_upward.png" alt="up"> In Progress</button>
+                      <button (click)="closeMenu()"><img src="/assets/icons/arrow_upward.png" alt="up"> Review</button>
+                    </div>
+                  </div>
                 </div>
                 <h3>{{ task.title }}</h3>
                 <p>{{ task.description }}</p>
