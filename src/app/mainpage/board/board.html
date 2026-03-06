@@ -477,7 +477,7 @@
     <button class="dialog-close-button" (click)="close()">
       <img src="assets/icons/close-blue.png" alt="Close" />
     </button>
-    <app-add-task></app-add-task>
+    <app-add-task (taskCreated)="close()"></app-add-task>
   </dialog>
 
   <dialog
@@ -560,7 +560,7 @@
         <!-- Buttons section -->
         <div id="task-buttons">
           <div>
-            <button class="buttons">
+            <button class="buttons" (click)="deleteTask(task.id)">
               <img class="default" src="/assets/icons/delete.png" alt="Delete" />
               <img class="hover" src="/assets/icons/delete-light-blue.png" alt="Delete" />
               Delete
@@ -568,7 +568,7 @@
           </div>
           <span class="seperator"></span>
           <div>
-            <button class="buttons">
+            <button class="buttons" (click)="isTaskEditMode.set(true)">
               <img class="default" src="/assets/icons/edit.png" alt="Edit" />
               <img class="hover" src="/assets/icons/edit-light-blue.png" alt="Edit" />
               Edit
@@ -578,4 +578,6 @@
       </div>
     }
   </dialog>
+
+
 </main>

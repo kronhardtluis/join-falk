@@ -3,3 +3,7 @@
 <main class="content">
   <router-outlet />
 </main>
+
+<div id="notification-msg" [class.show]="dbService.notificationMessage()">
+  <span>{{ dbService.notificationMessage() }}</span>
+</div>

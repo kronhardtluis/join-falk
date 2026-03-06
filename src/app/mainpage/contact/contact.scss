@@ -422,32 +422,6 @@
   }
 }
 
-#notification {
-  width: 300px;
-  height: 75px;
-  color: white;
-  background-color: all.$blue;
-  padding: 14px;
-  border-radius: 10px;
-  z-index: 999;
-  position: fixed;
-  top: 50%;
-  right: -300px;
-  transition: right 0.5s ease-in-out, opacity 0.5s ease-in-out;
-  opacity: 0;
-  text-align: center;
-
-  &.show {
-    right: 15%;
-    opacity: 1;
-  }
-  span {
-    font-size: 20px;
-    height: 100%;
-    width: 100%;
-  }
-}
-
 .text-cut {
   @include all.text-cut;
 }

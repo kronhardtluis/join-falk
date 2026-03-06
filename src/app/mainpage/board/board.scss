@@ -413,9 +413,8 @@
   &:first-child {
     margin-left: 0;
   }
-
   &.ellipsis-badge{
-    background-color: #2A3647; // Ciemny granat z motywu Join
+    background-color: #2A3647;
     font-size: 14px;
     letter-spacing: 0.5px;
     cursor: default;
@@ -566,3 +565,5 @@
 }
 
 //#endregion
+
+
