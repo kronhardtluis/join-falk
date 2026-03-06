@@ -1,8 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Header } from './shared/header/header';
 import { Navbar } from './shared/navbar/navbar';
 import { Mainpage } from './mainpage/mainpage';
+import { Supabase } from './services/supabase';
 
 @Component({
   selector: 'app-root',
@@ -12,4 +13,5 @@ import { Mainpage } from './mainpage/mainpage';
 })
 export class App {
   protected readonly title = signal('join-falk');
+  dbService = inject(Supabase);
 }

@@ -1,8 +1,9 @@
-import { Component, inject, signal, computed, HostListener } from '@angular/core';
+import { Component, inject, signal, computed, HostListener, output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { Supabase } from '../../services/supabase';
 import { Task, TaskCategory, TaskFormData, TaskPriority } from '../../interfaces/task.interface';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-task',
@@ -14,6 +15,7 @@ import { CommonModule } from '@angular/common';
 export class AddTask {
   public fb = inject(FormBuilder);
   public dbService = inject(Supabase);
+  public router = inject(Router);
   minDate = new Date().toISOString().split('T')[0];
   taskForm: FormGroup;
   selectedPriority = signal<TaskPriority>('Medium');
@@ -21,6 +23,7 @@ export class AddTask {
   searchContactName = signal<string>('');
   isCategoryListVisible = signal<boolean>(false);
   isSubtaskActive = signal<boolean>(false);
+  taskCreated = output<void>();
 
   constructor() {
     this.taskForm = this.fb.group({
@@ -145,13 +148,16 @@ export class AddTask {
   /** Logic to execute after successful task creation */
   private handleSuccess() {
     this.formClear();
-    console.log('Task successfully created!');
-    //this.router.navigate(['/board']);
+    this.dbService.showNotification('Task successfully created!');
+    this.taskCreated.emit();
+    setTimeout(() => {
+      this.router.navigate(['/board']);
+    }, 1500);
   }
 
   /** Error handling logic */
   private handleError(error: any) {
-    console.error('Failed to create task:', error);
+    this.dbService.showNotification('Failed to create task.');
   }
 
   /**

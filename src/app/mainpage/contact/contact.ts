@@ -22,7 +22,6 @@ export class Contact implements OnInit {
   public isVisible = signal(false);
   public isEditMode = signal(false);
   public isMobileMenuOpen = signal(false);
-  public notificationMessage = signal<string>('');
   dbService = inject(Supabase);
   private fb = inject(FormBuilder);
   public userForm: FormGroup = this.fb.group({
@@ -110,7 +109,7 @@ export class Contact implements OnInit {
         await this.dbService.deleteContact(ID);
         this.closeDetailView();
         this.closeDialog();
-        this.showNotification('Contact successfully deleted.');
+        this.dbService.showNotification('Contact successfully deleted.');
       } catch (error) {
       console.error('Error deleting contact:', error);
       }
@@ -127,7 +126,7 @@ export class Contact implements OnInit {
     try {
       await this.processContactData();
       this.finalizeForm();
-      this.showNotification(this.isEditMode() ? 'Contact successfully saved.' : 'Contact successfully created.');
+      this.dbService.showNotification(this.isEditMode() ? 'Contact successfully saved.' : 'Contact successfully created.');
     } catch (error) {
       this.handleError(error);
     }
@@ -194,17 +193,6 @@ export class Contact implements OnInit {
   */
   private handleError(error: unknown) {
     console.error('Form submission failed:', error);
-  }
-
-  /**
-  * Triggers the notification toast by setting the message signal.
-  * The UI reacts by adding the '.show' class, which initiates a CSS transition
-  * for opacity and right-positioning.
-  * @param {string} message - The text to be displayed.
-  */
-  showNotification(message:string){
-    this.notificationMessage.set(message);
-    setTimeout(() => {this.notificationMessage.set('');}, 1250);
   }
 
   /**

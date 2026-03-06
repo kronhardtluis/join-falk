@@ -21,6 +21,7 @@ export class Supabase {
   );
   public doneTasks = computed(() => this.tasks().filter((t) => t.status === 'Done'));
   public selectedTask = signal<FullTask | null>(null);
+  public notificationMessage = signal<string>('');
 
   /**
    * Fetches all contacts from the database, sorted alphabetically by name.
@@ -244,6 +245,17 @@ export class Supabase {
     const { error } = await this.supabase.from('tasks').delete().eq('id', taskId);
     if (error) throw error;
     await this.loadBoardData();
+  }
+
+  /**
+  * Triggers the notification toast by setting the message signal.
+  * The UI reacts by adding the '.show' class, which initiates a CSS transition
+  * for opacity and right-positioning.
+  * @param {string} message - The text to be displayed.
+  */
+  showNotification(message:string){
+    this.notificationMessage.set(message);
+    setTimeout(() => {this.notificationMessage.set('');}, 1250);
   }
 
   //#region testbereich

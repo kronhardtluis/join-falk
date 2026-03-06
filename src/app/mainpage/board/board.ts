@@ -160,27 +160,22 @@ export class Board {
    * Closes the detail dialog upon success.
    * @param taskId - The ID of the task to be deleted.
    */
-  async deleteTask(taskId: number) {
+  async deleteTask(taskId: number | undefined) {
+    if (taskId === undefined) return;
     try {
       await this.dbService.deleteTask(taskId);
       this.closeTaskDetails();
-      this.showNotification('task deleted');
+      this.dbService.showNotification('Task deleted.');
     } catch (err) {
-      console.error('Delete failed:', err);
+      this.dbService.showNotification('Delete failed: ' + err);
     }
-  }
-
-  //JSDoc...???
-  showNotification(msg: string) {
-    console.log(msg);
   }
 
   //#region Testregion
   drop(event: CdkDragDrop<FullTask[]>) {
     const task = event.item.data as FullTask;
     const newStatus = event.container.id;
-
-    console.log(`Verschiebe Task "${task?.id}" nach: ${newStatus}`);
+    //console.log(`Verschiebe Task "${task?.id}" nach: ${newStatus}`);
     if (event.previousContainer !== event.container) {
       this.dbService.updateTaskStatus(task.id!, newStatus);
     } else {

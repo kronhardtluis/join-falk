@@ -109,15 +109,15 @@
                 <div class="task-footer">
                   <div class="assignees">
                     @for (
-                      assignment of task.task_assignments.slice(0, 7);
+                      assignment of task.task_assignments.slice(0, 3);
                       track assignment.contacts.id
                     ) {
                       <span class="assignee" [style.background-color]="assignment.contacts.color">
                         {{ dbService.getInitials(assignment.contacts.name) }}
                       </span>
                     }
-                    @if (task.task_assignments.length > 7) {
-                      <span class="assignee ellipsis-badge"> ... </span>
+                    @if (task.task_assignments.length > 3) {
+                      <span class="assignee ellipsis-badge"> +{{ task.task_assignments.length - 3 }} </span>
                     }
                   </div>
                   @switch (task.priority) {
@@ -223,15 +223,15 @@
                 <div class="task-footer">
                   <div class="assignees">
                     @for (
-                      assignment of task.task_assignments.slice(0, 7);
+                      assignment of task.task_assignments.slice(0, 3);
                       track assignment.contacts.id
                     ) {
                       <span class="assignee" [style.background-color]="assignment.contacts.color">
                         {{ dbService.getInitials(assignment.contacts.name) }}
                       </span>
                     }
-                    @if (task.task_assignments.length > 7) {
-                      <span class="assignee ellipsis-badge"> ... </span>
+                    @if (task.task_assignments.length > 3) {
+                      <span class="assignee ellipsis-badge"> +{{ task.task_assignments.length - 3 }} </span>
                     }
                   </div>
                   @switch (task.priority) {
@@ -337,15 +337,15 @@
                 <div class="task-footer">
                   <div class="assignees">
                     @for (
-                      assignment of task.task_assignments.slice(0, 7);
+                      assignment of task.task_assignments.slice(0, 3);
                       track assignment.contacts.id
                     ) {
                       <span class="assignee" [style.background-color]="assignment.contacts.color">
                         {{ dbService.getInitials(assignment.contacts.name) }}
                       </span>
                     }
-                    @if (task.task_assignments.length > 7) {
-                      <span class="assignee ellipsis-badge"> ... </span>
+                    @if (task.task_assignments.length > 3) {
+                      <span class="assignee ellipsis-badge"> +{{ task.task_assignments.length - 3 }} </span>
                     }
                   </div>
                   @switch (task.priority) {
@@ -442,15 +442,15 @@
                 <div class="task-footer">
                   <div class="assignees">
                     @for (
-                      assignment of task.task_assignments.slice(0, 7);
+                      assignment of task.task_assignments.slice(0, 3);
                       track assignment.contacts.id
                     ) {
                       <span class="assignee" [style.background-color]="assignment.contacts.color">
                         {{ dbService.getInitials(assignment.contacts.name) }}
                       </span>
                     }
-                    @if (task.task_assignments.length > 7) {
-                      <span class="assignee ellipsis-badge"> ... </span>
+                    @if (task.task_assignments.length > 3) {
+                      <span class="assignee ellipsis-badge"> +{{ task.task_assignments.length - 3 }} </span>
                     }
                   </div>
                   @switch (task.priority) {
@@ -481,7 +481,7 @@
     <button class="dialog-close-button" (click)="close()">
       <img src="assets/icons/close-blue.png" alt="Close" />
     </button>
-    <app-add-task></app-add-task>
+    <app-add-task (taskCreated)="close()"></app-add-task>
   </dialog>
 
   <dialog
@@ -564,7 +564,7 @@
         <!-- Buttons section -->
         <div id="task-buttons">
           <div>
-            <button class="buttons">
+            <button class="buttons" (click)="deleteTask(task.id)">
               <img class="default" src="/assets/icons/delete.png" alt="Delete" />
               <img class="hover" src="/assets/icons/delete-light-blue.png" alt="Delete" />
               Delete
@@ -572,7 +572,7 @@
           </div>
           <span class="seperator"></span>
           <div>
-            <button class="buttons">
+            <button class="buttons" (click)="isTaskEditMode.set(true)">
               <img class="default" src="/assets/icons/edit.png" alt="Edit" />
               <img class="hover" src="/assets/icons/edit-light-blue.png" alt="Edit" />
               Edit
@@ -582,4 +582,6 @@
       </div>
     }
   </dialog>
+
+
 </main>
