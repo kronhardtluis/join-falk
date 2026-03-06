@@ -100,14 +100,14 @@
     </div>
 
     <h3>Category<span>*</span></h3>
-    <select formControlName="category">
+    <!-- <select formControlName="category">
         <option value="" disabled>Select Task Category</option>
         <option value="Technical Task">Technical Task</option>
         <option value="User Story">User Story</option>
-    </select>
+    </select> -->
 
 
-          <!-- <div id="category-block">
+          <div id="category-block">
       <input placeholder="Select Task Category" id="category" />
       <button class="drop-down" id="open-categories">
         <img src="assets/icons/drop-down.png" alt="drop-down" />
@@ -117,7 +117,7 @@
         <li>Angelo Mertel</li>
         <li>Max Mustermann</li>
       </ul>
-    </div> -->
+    </div>
 
 
 
@@ -127,6 +127,7 @@
       <button (click)="clearSubtask()" id="add-button">
         <img src="assets/icons/close-blue.png" alt="delete" />
       </button>
+      <div id="small-line"></div>
       <button (click)="addSubtask()" id="delete-button">
         <img src="assets/icons/check-blue.png" alt="check" />
       </button>

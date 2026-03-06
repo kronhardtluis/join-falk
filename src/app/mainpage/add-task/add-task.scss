@@ -46,7 +46,8 @@ form {
 
     input,
     textarea,
-    .input-container {
+    .input-container,
+    select {
       border-radius: 8px;
       border: 2px solid all.$greyMid;
       padding: 12px 8px;
@@ -121,10 +122,10 @@ form {
 
       #small-line {
         position: absolute;
-        left: calc(70% + 43px);
+        left: calc(70% + 40px);
         bottom: 48px;
         height: 38px;
-        width: 2px;
+        width: 1px;
         background-color: all.$greyMid;
       }
     }
@@ -278,7 +279,6 @@ button.importance{
     input {
       border: none;
       width: 100%;
-      padding: 12px 0;
       cursor: pointer;
       outline: none;
     }
@@ -307,6 +307,7 @@ button.importance{
     left: 0;
     right: 0;
     z-index: 100;
+    width: 98%;
     background-color: white;
     border: 1px solid #d1d1d1;
     border-radius: 10px;
