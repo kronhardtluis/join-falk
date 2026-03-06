@@ -232,6 +232,65 @@
     cursor: pointer;
   }
 }
+
+.card-header {
+  @include all.flexi($jc: space-between);
+  width: 100%;
+}
+
+.dropdown-button {
+  display: none;
+  z-index: 999;
+  background-color: white;
+  cursor: pointer;
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  width: 140px;
+  height: auto;
+  right: -50%;
+  top: 1%;
+  background-color: all.$blue;
+  padding: 6px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  z-index: 1000;
+  color: white;
+  cursor: default;
+
+  .dropdown-content {
+    width: 100%;
+    height: 100%;
+    font-size: 1.4rem;
+    padding: 10px;
+    @include all.flexi($jc: space-between, $fd: column, $ai: flex-start);
+
+    strong {
+      margin-bottom: 8px;
+    }
+
+    > button {
+      background-color: transparent;
+      width: 100%;
+      text-align: left;
+      padding: 4px;
+      cursor: pointer;
+      @include all.flexi($jc: flex-start, $gap: 4px);
+      &:hover {
+        background-color: all.$blueHover;
+      }
+    }
+  }
+}
+
+.dropdown.open {
+  display: flex;
+}
+
 //#endregion
 
 /* Task Card Styles */
@@ -397,64 +456,6 @@
 }
 
 //#endregion
-
-.card-header {
-  @include all.flexi($jc: space-between);
-  width: 100%;
-}
-
-.dropdown-button {
-  display: none;
-  z-index: 999;
-  background-color: white;
-  cursor: pointer;
-}
-
-.dropdown {
-  display: none;
-  position: absolute;
-  width: 140px;
-  height: auto;
-  right: -50%;
-  top: 1%;
-  background-color: all.$blue;
-  padding: 6px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 20px;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-  z-index: 1000;
-  color: white;
-  cursor: default;
-
-  .dropdown-content {
-    width: 100%;
-    height: 100%;
-    font-size: 1.4rem;
-    padding: 10px;
-    @include all.flexi($jc: space-between, $fd: column, $ai: flex-start);
-
-    strong {
-      margin-bottom: 8px;
-    }
-
-    > button {
-      background-color: transparent;
-      width: 100%;
-      text-align: left;
-      padding: 4px;
-      cursor: pointer;
-      @include all.flexi($jc: flex-start, $gap: 4px);
-      &:hover {
-        background-color: all.$blueHover;
-      }
-    }
-  }
-}
-
-.dropdown.open {
-  display: flex;
-}
 
 //#region Mediaquerries
 
