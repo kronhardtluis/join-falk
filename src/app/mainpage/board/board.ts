@@ -221,4 +221,12 @@ export class Board {
       this.isDropDownOpen = false;
     }
   }
+
+  checkboxSwitch(status:boolean): string{
+    if(status){
+      return 'src="/assets/icons/cheackbox-white.png" alt="checked-checkbox"'
+    } else {
+      return 'src="/assets/icons/cheackbox.png" alt="checkbox"'
+    }
+  }
 }

@@ -496,11 +496,15 @@
           <div class="scroll-div scroll-div--subtask">
             @for (subtask of task.subtasks; track subtask.id) {
               <div class="subtasks">
-                <input
-                  type="checkbox"
-                  [checked]="subtask.is_done"
-                  (change)="dbService.toggleSubtaskStatus(subtask)"
-                />
+                <!-- <input
+                  type="image"
+                  (click)="dbService.toggleSubtaskStatus(subtask); checkboxSwitch(subtask.is_done)"
+                /> -->
+                  @if(subtask.is_done){
+                    <img src="/assets/icons/cheackbox-checked.png" alt="checked-checkbox" (click)="dbService.toggleSubtaskStatus(subtask)">
+                  } @else {
+                    <img src="/assets/icons/cheackbox.png" alt="checkbox" (click)="dbService.toggleSubtaskStatus(subtask)">
+                  }
                 <span>{{ subtask.title }}</span>
               </div>
             }
