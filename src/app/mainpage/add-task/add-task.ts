@@ -32,19 +32,36 @@ export class AddTask {
     });
   }
 
+  /**
+  * Lifecycle hook that initializes the component by fetching
+  * the list of available contacts from the database service.
+  */
   ngOnInit() {
     this.dbService.getContacts();
   }
 
+  /**
+  * Getter that provides easy access to the 'subtasks' FormArray
+  * within the reactive task form.
+  * @returns {FormArray} The FormArray containing subtask form controls.
+  */
   get subtaskArray() {
     return this.taskForm.get('subtasks') as FormArray;
   }
 
+  /**
+  * Updates the current task priority level.
+  * @param {TaskPriority} prio - The priority level to be set (e.g., 'Urgent', 'Medium', 'Low').
+  */
   setPriority(prio: TaskPriority) {
     this.selectedPriority.set(prio);
-    console.log(prio);
   }
 
+  /**
+  * Adds a new subtask to the form array.
+  * Extracts the value from the 'subtaskInput' field, validates that it is not empty
+  * or whitespace, pushes a new FormGroup into the subtask array, and resets the input.
+  */
   addSubtask() {
     const VALUE = this.taskForm.get('subtaskInput')?.value;
     if (VALUE && VALUE.trim()) {
@@ -53,53 +70,96 @@ export class AddTask {
     }
   }
 
+  /**
+  * Removes a subtask from the form array at a specific position.
+  * @param {number} index - The index of the subtask element to be removed from the array.
+  */
   removeSubtask(index: number) {
     this.subtaskArray.removeAt(index);
   }
 
+  /**
+  * Resets the entire task form to its initial state.
+  * Clears all input fields, empties the subtask array, initializes
+  * 'assigned_to' as an empty list, and restores the default 'Medium' priority.
+  */
   formClear(){
     this.taskForm.reset({ assigned_to: [], subtasks: [] });
     this.subtaskArray.clear();
     this.selectedPriority.set('Medium');
   }
 
-  async addTask(){
-    if (this.taskForm.valid) {
-      const FORM_VALUE = this.taskForm.value;
-
-      const taskData:TaskFormData = {
-        title: FORM_VALUE.title,
-        description: FORM_VALUE.description,
-        due_date: FORM_VALUE.due_date,
-        category: FORM_VALUE.category,
-        priority: this.selectedPriority(),
-        status: "ToDo"
-      };
-
-      try {
-        await this.dbService.createTask(
-          taskData,
-          FORM_VALUE.assigned_to,
-          FORM_VALUE.subtasks
-        );
-        this.formClear();
-        console.log("Tutaj możesz dodać np. zamknięcie dialogu lub nawigację");
-      } catch (error) {
-        console.error('Failed to create task:', error);
-      }
+  /**
+  * Orchestrates the task creation process.
+  * Validates the form, extracts and prepares the data, and attempts to save the task
+  * to the database via the database service. Handles success and error states accordingly.
+  * @returns {Promise<void>} A promise that resolves when the task creation process is complete.
+  */
+  async addTask() {
+    if (this.taskForm.invalid) return;
+    const taskData = this.prepareTaskData();
+    const assignedTo = this.taskForm.value.assigned_to;
+    const subtasks = this.taskForm.value.subtasks;
+    try {
+      await this.dbService.createTask(taskData, assignedTo, subtasks);
+      this.handleSuccess();
+    } catch (error) {
+      this.handleError(error);
     }
   }
 
+  /** Prepares the main task object from the form and signals */
+  private prepareTaskData(): TaskFormData {
+    const FORM_VALUE = this.taskForm.value;
+    return {
+      title: FORM_VALUE.title,
+      description: FORM_VALUE.description,
+      due_date: FORM_VALUE.due_date,
+      category: FORM_VALUE.category,
+      priority: this.selectedPriority(),
+      status: "ToDo"
+    };
+  }
+
+  /** Logic to execute after successful task creation */
+  private handleSuccess() {
+    this.formClear();
+    console.log('Task successfully created!');
+    //this.router.navigate(['/board']);
+  }
+
+  /** Error handling logic */
+  private handleError(error: any) {
+    console.error('Failed to create task:', error);
+  }
+
+  /**
+  * Retrieves the initials of a contact based on their unique identifier.
+  * Searches the synchronized contacts list and uses the database service
+  * to format the initials.
+  * @param {number} id - The unique ID of the contact.
+  * @returns {string} The contact's initials or an empty string if not found.
+  */
   getContactInitials(id: number): string {
     const CONTACT = this.dbService.contacts().find(contact => contact.id === id);
     return CONTACT ? this.dbService.getInitials(CONTACT.name) : '';
   }
 
+  /**
+  * Retrieves the specific theme color associated with a contact.
+  * @param {number} id - The unique ID of the contact.
+  * @returns {string} The HEX color string or a default gray fallback ('#ccc').
+  */
   getContactColor(id: number): string {
     const CONTACT = this.dbService.contacts().find(contact => contact.id === id);
     return CONTACT?.color || '#ccc';
   }
 
+  /**
+  * Toggles the visibility of the contact selection dropdown.
+  * When opening the list, it automatically resets the search filter to ensure
+  * the full list of contacts is displayed.
+  */
   toggleContactList() {
     this.isContactListVisible.update(v => !v);
     if (this.isContactListVisible()) {
@@ -107,6 +167,12 @@ export class AddTask {
     }
   }
 
+  /**
+  * Listens for click events across the entire document to handle dropdown closure.
+  * If a click occurs outside the '#assign-contacts' container, the contact list
+  * visibility is set to false.
+  * @param {MouseEvent} event - The native mouse event used to determine the click target.
+  */
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
@@ -115,29 +181,59 @@ export class AddTask {
     }
   }
 
+  /**
+  * Toggles the selection state of a contact within the form.
+  * If the contact is already assigned, it removes them from the array;
+  * otherwise, it adds them. This method updates the reactive form control
+  * using an immutable array spread approach.
+  * @param {number} contactId - The unique identifier of the contact to toggle.
+  */
   toggleContactSelection(contactId: number) {
-    const control = this.taskForm.get('assigned_to');
-    const currentValues: number[] = control?.value || [];
+    const CONTROL = this.taskForm.get('assigned_to');
+    const CURRENT_VAL: number[] = CONTROL?.value || [];
 
-    if (currentValues.includes(contactId)) {
-      control?.setValue(currentValues.filter(id => id !== contactId));
+    if (CURRENT_VAL.includes(contactId)) {
+      CONTROL?.setValue(CURRENT_VAL.filter(id => id !== contactId));
     } else {
-      control?.setValue([...currentValues, contactId]);
+      CONTROL?.setValue([...CURRENT_VAL, contactId]);
     }
   }
 
+  /**
+  * A reactive signal that returns a filtered list of contacts based on the current search term.
+  * It automatically re-evaluates whenever 'searchContactName' or the global
+  * contacts list changes, ensuring efficient memory-based filtering.
+  * @returns {Contact[]} The list of contacts matching the search criteria.
+  */
   filteredContacts = computed(() => {
-    const term = this.searchContactName().toLowerCase().trim();
-    if (!term) return this.dbService.contacts();
+    const TERM = this.searchContactName().toLowerCase().trim();
+    if (!TERM) return this.dbService.contacts();
 
     return this.dbService.contacts().filter(contact =>
-      contact.name.toLowerCase().includes(term)
+      contact.name.toLowerCase().includes(TERM)
     );
   });
 
+  /**
+  * Handles the input event from the contact search field.
+  * Updates the search term signal and ensures the contact dropdown list
+  * is visible to show filtered results.
+  * @param {Event} event - The input event containing the search string.
+  */
   onSearchChange(event: Event) {
     const input = event.target as HTMLInputElement;
     this.searchContactName.set(input.value);
     this.isContactListVisible.set(true);
+  }
+
+  /**
+  * Checks if a specific contact is currently selected in the reactive form.
+  * Used primarily for UI styling and displaying custom checkmark icons.
+  * @param {number} contactId - The unique ID of the contact to check.
+  * @returns {boolean} True if the contact is in the 'assigned_to' array.
+  */
+  isContactSelected(contactId: number): boolean {
+    const selectedIds: number[] = this.taskForm.get('assigned_to')?.value || [];
+    return selectedIds.includes(contactId);
   }
 }
