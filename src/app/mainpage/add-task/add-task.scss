@@ -1,7 +1,7 @@
 @use '../../../../public/assets/styles/all-styles.scss' as all;
 
 h2 {
-  margin-left: 5%;
+  margin-inline: 5%;
   font-size: 6rem;
   margin-top: 3%;
 }
@@ -16,7 +16,7 @@ form {
   min-height: 50%;
   max-width: calc(1440px - 232px);
   max-height: 100%;
-  min-width: 50%;
+  width: 100%;
   padding-block: 16px;
   padding-inline: 5%;
   overflow-y: auto;
@@ -71,6 +71,14 @@ form {
       margin-left: 4px;
       width: calc(98% - 8px);
 
+      @include all.tablet {
+        @include all.flexi($fd: column, $gap: 16px);
+
+        .importance {
+          width: 80%;
+        }
+      }
+
       .importance {
         @include all.flexi($gap: 8px);
         box-shadow: 0px 0px 3px all.$greyMid;
@@ -78,10 +86,6 @@ form {
 
         @media (max-width: 1250px) {
           padding: 8px 8px;
-        }
-
-        @include all.tablet {
-          padding: 8px;
         }
 
         &:hover {
@@ -241,30 +245,31 @@ form {
   }
 }
 
-button.importance{
+button.importance {
   background-color: white;
   padding: 10px 16px;
-  &.active-urgent{
+  &.active-urgent {
     background-color: #ff3d00;
-    p{
+    p {
       color: white;
     }
   }
   &.active-medium {
     background-color: #ffa800;
-        p{
+    p {
       color: white;
     }
   }
   &.active-low {
     background-color: #7ae229;
-        p{
+    p {
       color: white;
     }
   }
 }
 
-#assign-contacts, #category-select {
+#assign-contacts,
+#category-select {
   position: relative;
   width: 100%;
 
@@ -295,8 +300,8 @@ button.importance{
       }
 
       img {
-      width: 8px;
-      height: auto;
+        width: 8px;
+        height: auto;
       }
     }
   }
@@ -315,7 +320,8 @@ button.importance{
     }
   }
 
-  #contacts-list-dropdown, #category-dropdown-list {
+  #contacts-list-dropdown,
+  #category-dropdown-list {
     position: absolute;
     top: 100%;
     left: 0;
@@ -346,7 +352,7 @@ button.importance{
       }
 
       &.selected-contact {
-        background-color: #2A3647;
+        background-color: #2a3647;
 
         .contact-name {
           color: white;
@@ -358,7 +364,7 @@ button.importance{
         }
       }
 
-      &.category-name-list{
+      &.category-name-list {
         font-size: 16px;
         white-space: nowrap;
         overflow: hidden;
