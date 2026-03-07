@@ -47,6 +47,7 @@
           [cdkDropListData]="todoTasksFiltred()"
           (cdkDropListDropped)="drop($event)"
           [cdkDropListOrientation]="orientation"
+          [cdkDropListDisabled]="dragDisabled"
           cdkScrollable
         >
           @if (todoTasksFiltred().length > 0) {
@@ -162,6 +163,7 @@
           [cdkDropListData]="inProgressTasksFiltred()"
           (cdkDropListDropped)="drop($event)"
           [cdkDropListOrientation]="orientation"
+          [cdkDropListDisabled]="dragDisabled"
           cdkScrollable
         >
           @if (inProgressTasksFiltred().length > 0) {
@@ -275,6 +277,7 @@
           [cdkDropListData]="awaitingFeedbackTasksFiltred()"
           (cdkDropListDropped)="drop($event)"
           [cdkDropListOrientation]="orientation"
+          [cdkDropListDisabled]="dragDisabled"
           cdkScrollable
         >
           @if (awaitingFeedbackTasksFiltred().length > 0) {
@@ -379,6 +382,7 @@
           [cdkDropListData]="doneTasksFiltred()"
           (cdkDropListDropped)="drop($event)"
           [cdkDropListOrientation]="orientation"
+          [cdkDropListDisabled]="dragDisabled"
           cdkScrollable
         >
           @if (doneTasksFiltred().length > 0) {

@@ -10,7 +10,7 @@ import {
 import { AddTask } from '../add-task/add-task';
 import { Supabase } from '../../services/supabase';
 import { FullTask } from '../../interfaces/task.interface';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 
 interface cardTemplate {
@@ -98,7 +98,13 @@ export class Board {
   }
 
   open() {
-    this.dialog.nativeElement.showModal();
+    if (window.innerWidth > 640) {
+      // Desktop-Logik: Modal öffnen
+      this.dialog.nativeElement.showModal();
+    } else {
+      // Mobile-Logik: Navigation zur Seite
+      this.router.navigate(['/add-task']);
+    }
   }
 
   close() {
@@ -180,8 +186,9 @@ export class Board {
   //#endregion
 
   orientation: 'horizontal' | 'vertical' = 'vertical';
+  dragDisabled = false;
 
-  constructor() {
+  constructor(private router: Router) {
     this.updateOrientation();
   }
 
@@ -190,6 +197,8 @@ export class Board {
     // > 1200px -> vertical (Karten stapeln sich)
     // < 1200px -> horizontal (Karten liegen nebeneinander)
     this.orientation = window.innerWidth > 1200 ? 'vertical' : 'horizontal';
+    // Drag and Drop ausschalten ab 640px
+    this.dragDisabled = window.innerWidth <= 640;
   }
 
   isDropDownOpen = false;
@@ -208,7 +217,6 @@ export class Board {
     }
   }
 
-
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
@@ -217,11 +225,11 @@ export class Board {
     }
   }
 
-  checkboxSwitch(status:boolean): string{
-    if(status){
-      return 'src="/assets/icons/cheackbox-white.png" alt="checked-checkbox"'
+  checkboxSwitch(status: boolean): string {
+    if (status) {
+      return 'src="/assets/icons/cheackbox-white.png" alt="checked-checkbox"';
     } else {
-      return 'src="/assets/icons/cheackbox.png" alt="checkbox"'
+      return 'src="/assets/icons/cheackbox.png" alt="checkbox"';
     }
   }
 }
