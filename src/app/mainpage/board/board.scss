@@ -29,31 +29,40 @@
 .search-add-section {
   @include all.flexi($ai: center);
   gap: 20px;
-}
 
-#input-wrapper {
-  height: fit-content;
+  #input-wrapper {
+    height: fit-content;
 
-  > button {
-    position: absolute;
-    right: 3%;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: white;
-    padding: 12px 12px 12px 25px;
-    margin-left: 10px;
-    cursor: pointer;
-
-    &::before {
-      content: '';
+    > button {
       position: absolute;
-      left: 5px;
+      right: 3%;
       top: 50%;
       transform: translateY(-50%);
+      background-color: white;
+      padding: 4px 4px 4px 17px;
+      margin-left: 10px;
+      cursor: pointer;
 
-      width: 1px;
-      height: 80%;
-      background-color: all.$greyMid;
+      img {
+        border-radius: 50%;
+        padding: 8px;
+      }
+
+      &:hover img{
+        background-color: all.$greyLight;
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+
+        width: 1px;
+        height: 80%;
+        background-color: all.$greyMid;
+      }
     }
   }
 }
@@ -280,6 +289,7 @@
       padding: 4px;
       cursor: pointer;
       @include all.flexi($jc: flex-start, $gap: 4px);
+
       &:hover {
         background-color: all.$blueHover;
       }
@@ -328,6 +338,7 @@
   .subtask {
     @include all.flexi($jc: flex-end);
     width: 100%;
+
     .subtask-done {
       position: absolute;
       left: 0;
@@ -413,8 +424,8 @@
   &:first-child {
     margin-left: 0;
   }
-  &.ellipsis-badge{
-    background-color: #2A3647;
+  &.ellipsis-badge {
+    background-color: #2a3647;
     font-size: 14px;
     letter-spacing: 0.5px;
     cursor: default;
@@ -565,5 +576,3 @@
 }
 
 //#endregion
-
-
