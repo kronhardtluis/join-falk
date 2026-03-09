@@ -6,7 +6,12 @@
     <input formControlName="title" placeholder="Enter a Title" type="text" />
 
     <h3>Description</h3>
-    <textarea formControlName="description" placeholder="Enter a Description" name="description" id="description"></textarea>
+    <textarea
+      formControlName="description"
+      placeholder="Enter a Description"
+      name="description"
+      id="description"
+    ></textarea>
 
     <h3>Due date<span class="asterisk">*</span></h3>
     <input formControlName="due_date" id="due-date" type="date" [min]="minDate" />
@@ -17,7 +22,12 @@
   <div class="content">
     <h3>Prio</h3>
     <div id="priorities">
-      <button type="button" class="importance" [class.active-urgent]="selectedPriority() === 'Urgent'" (click)="setPriority('Urgent')">
+      <button
+        type="button"
+        class="importance"
+        [class.active-urgent]="selectedPriority() === 'Urgent'"
+        (click)="setPriority('Urgent')"
+      >
         <p>urgent</p>
         @if (selectedPriority() === 'Urgent') {
           <img src="assets/icons/urgent-white.png" alt="" />
@@ -25,7 +35,12 @@
           <img src="assets/icons/urgent-red.png" alt="" />
         }
       </button>
-      <button type="button" class="importance" [class.active-medium]="selectedPriority() === 'Medium'" (click)="setPriority('Medium')">
+      <button
+        type="button"
+        class="importance"
+        [class.active-medium]="selectedPriority() === 'Medium'"
+        (click)="setPriority('Medium')"
+      >
         <p>medium</p>
         @if (selectedPriority() === 'Medium') {
           <img src="assets/icons/medium-white.png" alt="" />
@@ -33,7 +48,12 @@
           <img src="assets/icons/medium-orange.png" alt="" />
         }
       </button>
-      <button type="button" class="importance" [class.active-low]="selectedPriority() === 'Low'" (click)="setPriority('Low')">
+      <button
+        type="button"
+        class="importance"
+        [class.active-low]="selectedPriority() === 'Low'"
+        (click)="setPriority('Low')"
+      >
         <p>low</p>
         @if (selectedPriority() === 'Low') {
           <img src="assets/icons/low-white.png" alt="" />
@@ -67,7 +87,10 @@
         <ul id="contacts-list-dropdown">
           @for (contact of filteredContacts(); track contact.id) {
             @if (contact.id !== undefined) {
-              <li (click)="toggleContactSelection(contact.id)" [class.selected-contact]="isContactSelected(contact.id)">
+              <li
+                (click)="toggleContactSelection(contact.id)"
+                [class.selected-contact]="isContactSelected(contact.id)"
+              >
                 <div class="contact-info">
                   <span class="initials-circle" [style.background-color]="contact.color">
                     {{ dbService.getInitials(contact.name) }}
@@ -77,9 +100,9 @@
 
                 <div class="custom-checkbox">
                   @if (isContactSelected(contact.id)) {
-                    <img src="assets/icons/cheackbox-white.png" alt="checked checkbox">
+                    <img src="assets/icons/cheackbox-white.png" alt="checked checkbox" />
                   } @else {
-                    <img src="assets/icons/cheackbox.png" alt="checkbox">
+                    <img src="assets/icons/cheackbox.png" alt="checkbox" />
                   }
                 </div>
               </li>
@@ -114,14 +137,16 @@
         <button type="button" class="drop-down" (click)="toggleCategoryList()">
           <img
             src="assets/icons/drop-down.png"
-            [style.transform]="isCategoryListVisible()? 'rotate(180deg)' : 'rotate(0)'"
+            [style.transform]="isCategoryListVisible() ? 'rotate(180deg)' : 'rotate(0)'"
             alt="arrow"
           />
         </button>
       </div>
       @if (isCategoryListVisible()) {
         <ul id="category-dropdown-list">
-          <li class="category-name-list" (click)="selectCategory('Technical Task')">Technical Task</li>
+          <li class="category-name-list" (click)="selectCategory('Technical Task')">
+            Technical Task
+          </li>
           <li class="category-name-list" (click)="selectCategory('User Story')">User Story</li>
         </ul>
       }
@@ -129,14 +154,15 @@
 
     <h3>Subtasks</h3>
     <div id="subtask-block">
-      <input id="add-subtask"
+      <input
+        id="add-subtask"
         formControlName="subtaskInput"
         type="text"
         placeholder="Add new Subtask"
         (focus)="setSubtaskActive(true)"
         (keydown.enter)="$event.preventDefault(); addSubtask()"
       />
-      @if(isSubtaskActive() || taskForm.get('subtaskInput')?.value){
+      @if (isSubtaskActive() || taskForm.get('subtaskInput')?.value) {
         <button (click)="clearSubtask()" id="add-button">
           <img src="assets/icons/close-blue.png" alt="delete" />
         </button>
@@ -146,13 +172,30 @@
         </button>
       }
     </div>
-    <ul id="subtask-list">
-        @for (sub of subtaskArray.controls; track $index) {
-            <li>
-                {{ sub.value.title }}
-                <span (click)="removeSubtask($index)">x</span>
-            </li>
-        }
+    <ul id="subtask-content">
+      @for (sub of subtaskArray.controls; track $index) {
+        <div class="subtask-row">
+          <!-- <li contenteditable="true">{{ sub.value.title }}</li> -->
+          <input id="subtask-input" type="text" value="{{ sub.value.title }}"/>
+          
+          <div class="subtasks-buttons">
+            <button class="buttons">
+              <img class="hover" src="/assets/icons/edit.png" alt="Edit" />
+            </button>
+            <p class="seperator"></p>
+            <div>
+              <button class="buttons">
+                <img
+                  class="hover"
+                  (click)="removeSubtask($index)"
+                  src="/assets/icons/delete.png"
+                  alt="Delete"
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+      }
     </ul>
   </div>
 </form>
@@ -165,6 +208,8 @@
       <img id="unhovered" src="assets/icons/close-blue.png" alt="Close icon" />
       <img id="hovered" src="assets/icons/close-light-blue.png" alt="Close icon" />
     </button>
-    <button id="create" (click)="addTask()">Create Task <img src="assets/icons/check-white.png" alt="Check icon" /></button>
+    <button id="create" (click)="addTask()">
+      Create Task <img src="assets/icons/check-white.png" alt="Check icon" />
+    </button>
   </div>
 </div>

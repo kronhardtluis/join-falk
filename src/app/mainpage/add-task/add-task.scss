@@ -134,6 +134,74 @@ form {
       }
     }
 
+    #subtask-content {
+      width: 100%;
+      @include all.flexi($fd: column);
+
+      .subtask-row {
+        width: 100%;
+        margin-top: 8px;
+        @include all.flexi($jc: space-between);
+        font-size: 16px;
+        cursor: pointer;
+
+        li {
+          white-space: nowrap;
+          width: 100%;
+          list-style-type: disc;
+          list-style-position: inside;
+          border-radius: 8px;
+          border-bottom: 1px solid transparent;
+          outline: none;
+          padding-right: 5px;
+        }
+
+        #subtask-input {
+          list-style-type: disc;
+          list-style-position: inside;
+          background-color: transparent;
+          list-style-position: inside;
+          list-style-type: disc;
+          height: 100%;
+          width: 100%;
+          border: none;
+          padding-right: 80px;
+          border-radius: 8px;
+
+          &:hover {
+            background-color: all.$greyMid;
+          }
+          &:focus {
+            background-color: white;
+            border-radius: 0px;
+            border-bottom: 1px solid all.$blueLight;
+            list-style-type: none;
+          }
+        }
+
+        .seperator {
+          width: 2px;
+          height: 20px;
+          background-color: grey;
+          z-index: 999;
+        }
+
+        .subtasks-buttons {
+          position: absolute;
+          right: 1%;
+          top: 10%;
+          height: 100%;
+          width: 15%;
+          z-index: 50;
+          @include all.flexi($jc: center, $ai: center, $gap: 6px);
+
+          .buttons {
+            background-color: transparent;
+          }
+        }
+      }
+    }
+
     #category-block {
       width: 100%;
     }
