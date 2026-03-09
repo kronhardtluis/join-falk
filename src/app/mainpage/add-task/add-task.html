@@ -172,17 +172,28 @@
         </button>
       }
     </div>
-    <ul id="subtask-content">
+    <div id="subtask-content">
       @for (sub of subtaskArray.controls; track $index) {
         <div class="subtask-row">
-          <!-- <li contenteditable="true">{{ sub.value.title }}</li> -->
-          <input id="subtask-input" type="text" value="{{ sub.value.title }}"/>
-          
+          <img id="dot" src="/assets/icons/circle.png" alt="dot" />
+          <input
+            id="subtask-input"
+            type="text"
+            {list-style-type:
+            disc;}
+            value="{{ sub.value.title }}"
+          />
           <div class="subtasks-buttons">
             <button class="buttons">
               <img class="hover" src="/assets/icons/edit.png" alt="Edit" />
+              <img
+                (mousedown)="removeSubtask($index)"
+                class="focus"
+                src="/assets/icons/delete.png"
+                alt="Delete"
+              />
             </button>
-            <p class="seperator"></p>
+            <p class="seperator hover"></p>
             <div>
               <button class="buttons">
                 <img
@@ -191,12 +202,13 @@
                   src="/assets/icons/delete.png"
                   alt="Delete"
                 />
+                <img class="focus" src="assets/icons/subtasks-check.png" alt="check" />
               </button>
             </div>
           </div>
         </div>
       }
-    </ul>
+    </div>
   </div>
 </form>
 
