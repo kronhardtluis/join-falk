@@ -12,15 +12,7 @@ import { Supabase } from '../../services/supabase';
 import { FullTask } from '../../interfaces/task.interface';
 import { RouterLink, Router } from '@angular/router';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
-
-interface cardTemplate {
-  type: string;
-  title: string;
-  description: string;
-  subtasks: number;
-  doneSubtasks: number;
-  contacts: string[];
-}
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-board',
@@ -30,16 +22,6 @@ interface cardTemplate {
   styleUrl: './board.scss',
 })
 export class Board {
-  cards: cardTemplate[] = [
-    {
-      type: 'Technical Task',
-      title: 'Implementierung',
-      description: 'Ein sicheres Login-System für die Benutzer erstellen.',
-      subtasks: 3,
-      doneSubtasks: 1,
-      contacts: ['MT', 'LA', 'AT'],
-    },
-  ];
   dbService = inject(Supabase);
   isTaskEditMode = signal(false);
   searchQuery = signal<string>('');
@@ -51,6 +33,7 @@ export class Board {
     this.filteredTasks().filter((task) => task.status === 'Awaiting Feedback'),
   );
   doneTasksFiltred = computed(() => this.filteredTasks().filter((task) => task.status === 'Done'));
+  activeDropdownId = signal<number | null>(null);
 
   /**
    * Initializes the component by fetching initial board data and
@@ -90,6 +73,7 @@ export class Board {
   // Zugriff auf das native <dialog> Element
   @ViewChild('dialog') dialog!: ElementRef<HTMLDialogElement>;
 
+  //JSDoc...???
   @HostListener('window:resize', [])
   onResize() {
     if (window.innerWidth < 640 && this.dialog.nativeElement.open) {
@@ -97,6 +81,7 @@ export class Board {
     }
   }
 
+  //JSDoc...???
   open() {
     if (window.innerWidth > 640) {
       // Desktop-Logik: Modal öffnen
@@ -107,6 +92,7 @@ export class Board {
     }
   }
 
+  //JSDoc...???
   close() {
     this.dialog.nativeElement.close();
   }
@@ -121,6 +107,7 @@ export class Board {
   checkClickOutside(event: MouseEvent, dialogTarget?: string) {
     if (dialogTarget === 'taskDetailDialog') {
       this.closeTaskDetails();
+      this.isTaskEditMode.set(false);
     }
     if (event.target === this.dialog.nativeElement) {
       this.close();
@@ -171,6 +158,19 @@ export class Board {
     }
   }
 
+  //JSDoc...???
+  async saveEditedTask(task: FullTask) {
+    try {
+      await this.dbService.updateFullTask(task);
+      this.isTaskEditMode.set(false);
+      this.dbService.showNotification('Task updated successfully!');
+    } catch (err) {
+      console.error(err);
+      this.dbService.showNotification('Update failed');
+    }
+  }
+
+  //JSDoc...???
   //#region Testregion
   drop(event: CdkDragDrop<FullTask[]>) {
     const task = event.item.data as FullTask;
@@ -192,6 +192,7 @@ export class Board {
     this.updateOrientation();
   }
 
+  //JSDoc...???
   @HostListener('window:resize')
   updateOrientation() {
     // > 1200px -> vertical (Karten stapeln sich)
@@ -201,30 +202,35 @@ export class Board {
     this.dragDisabled = window.innerWidth <= 640;
   }
 
-  isDropDownOpen = false;
-
-  toggleMenu() {
-    this.isDropDownOpen = !this.isDropDownOpen;
+  //JSDoc...???
+  toggleMenu(taskId:number) {
+    this.activeDropdownId.update(id => id === taskId ? null : taskId);
   }
+
+  //JSDoc...???
   closeMenu() {
-    this.isDropDownOpen = false;
+    this.activeDropdownId.set(null);
   }
 
+  //JSDoc...???
   @HostListener('window:resize', ['$event'])
   DropDownResizeClose(event: any) {
     if (window.innerWidth > 640) {
-      this.isDropDownOpen = false;
+      this.closeMenu();
     }
   }
 
+  //JSDoc...???
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
     if (!target.closest('#dropdown-button') && !target.closest('.dropdown')) {
-      this.isDropDownOpen = false;
+      //this.isDropDownOpen = false;
+      this.closeMenu();
     }
   }
 
+  //JSDoc...???
   checkboxSwitch(status: boolean): string {
     if (status) {
       return 'src="/assets/icons/cheackbox-white.png" alt="checked-checkbox"';

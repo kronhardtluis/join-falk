@@ -67,7 +67,7 @@ export class Supabase {
   async getContactById(id: number) {
     const { data, error } = await this.supabase.from('contacts').select('*').eq('id', id).single();
     if (error) {
-      console.error('Error fetching contact:', error.message);
+      this.showNotification('Error fetching contact.');
       return null;
     }
     return data;
@@ -132,8 +132,7 @@ export class Supabase {
         )
       `);
     if (error) {
-      console.error('Error fetching tasks:', error.message);
-      throw error;
+      this.showNotification("Error fetching tasks.");
     }
     this.tasks.set(data as FullTask[]);
     return data as FullTask[];
@@ -150,7 +149,7 @@ export class Supabase {
       const TASK_DATA = await this.getTasks();
       this.tasks.set(TASK_DATA);
     } catch (error) {
-      console.error('Board loading failed', error);
+      this.showNotification('Board loading failed.')
     }
   }
 
@@ -187,7 +186,7 @@ export class Supabase {
       .update({ is_done: NEW_STATUS })
       .eq('id', subtask.id);
     if (error) {
-      console.error('Error updating subtask:', error.message);
+      this.showNotification("Error updating subtask.")
     }
   }
 
@@ -208,7 +207,7 @@ export class Supabase {
    */
   async insertTask(taskData: TaskFormData) {
     const { data, error } = await this.supabase.from('tasks').insert([taskData]).select().single();
-    if (error) throw error;
+    if (error) this.showNotification("Failed to insert task");
     return data;
   }
 
@@ -219,7 +218,7 @@ export class Supabase {
     if (contactIds.length === 0) return;
     const ASSIGNMENTS = contactIds.map((contact_id) => ({ task_id: taskId, contact_id }));
     const { error } = await this.supabase.from('task_assignments').insert(ASSIGNMENTS);
-    if (error) throw new Error(`Failed to assign contacts: ${error.message}`);
+    if (error) this.showNotification(`Failed to assign contacts.`);
   }
 
   /**
@@ -234,7 +233,7 @@ export class Supabase {
     }));
     const { error } = await this.supabase.from('subtasks').insert(RECORDS);
 
-    if (error) throw new Error(`Failed to create subtasks: ${error.message}`);
+    if (error) this.showNotification(`Failed to create subtasks.`);
   }
 
   /**
@@ -258,6 +257,28 @@ export class Supabase {
     setTimeout(() => {this.notificationMessage.set('');}, 1250);
   }
 
+  /**
+  * Updates the core details of a task in the Supabase database.
+  * @param {FullTask} task - The task object containing updated information.
+  * @returns {Promise<void>}
+  */
+  async updateFullTask(task: FullTask) {
+    const { error } = await this.supabase
+      .from('tasks')
+      .update({
+        title: task.title,
+        description: task.description,
+        due_date: task.due_date,
+        priority: task.priority,
+        category: task.category
+      })
+      .eq('id', task.id);
+    if (error) {
+      this.showNotification("Failed to update task.");
+    }
+    await this.loadBoardData();
+  }
+
   //#region testbereich
 
   async updateTaskStatus(taskId: number, newStatus: string) {
@@ -267,7 +288,7 @@ export class Supabase {
       .eq('id', taskId);
 
     if (error) {
-      console.error('Update Error:', error);
+      this.showNotification("Failed to update subtask status.");
     }
   }
 
