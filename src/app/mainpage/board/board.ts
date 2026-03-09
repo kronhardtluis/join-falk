@@ -188,29 +188,32 @@ export class Board {
     // } else {
     //   moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     // }
-  if (event.previousContainer === event.container) {
-    moveItemInArray(targetArray, event.previousIndex, event.currentIndex);
-  } else {
-    transferArrayItem(
-      event.previousContainer.data,
-      targetArray,
-      event.previousIndex,
-      event.currentIndex
-    );
-  }
-  const prevTask = targetArray[event.currentIndex - 1];
-  const nextTask = targetArray[event.currentIndex + 1];
-  let newPos: number;
-  if (!prevTask && !nextTask) {
-    newPos = 1000;
-  } else if (!prevTask) {
-    newPos = nextTask.position! / 2;
-  } else if (!nextTask) {
-    newPos = prevTask.position! + 1000;
-  } else {
-    newPos = Math.round((prevTask.position! + nextTask.position!) / 2);
-  }
-  this.dbService.updateTaskStatus(task.id!, newStatus, newPos);
+    if (event.previousContainer === event.container) {
+      moveItemInArray(targetArray, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        targetArray,
+        event.previousIndex,
+        event.currentIndex
+      );
+    }
+    const prevTask = targetArray[event.currentIndex - 1];
+    const nextTask = targetArray[event.currentIndex + 1];
+    let newPos: number;
+    const prevPos = prevTask?.position ?? 0;
+    const nextPos = nextTask?.position ?? 0;
+    if (!prevTask && !nextTask) {
+      newPos = 1000;
+    } else if (!prevTask) {
+      newPos = Math.round(nextPos / 2);
+    } else if (!nextTask) {
+      newPos = prevPos + 1000;
+    } else {
+      newPos = Math.round((prevPos + nextPos) / 2);
+    }
+    if (isNaN(newPos)) newPos = 1000;
+    this.dbService.updateTaskStatus(task.id!, newStatus, newPos);
   }
 
   /**
