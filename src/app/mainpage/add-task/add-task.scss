@@ -17,7 +17,7 @@ form {
   max-width: calc(1440px - 232px);
   max-height: 100%;
   width: 100%;
-  padding-block: 16px;
+  // padding-block: 16px;
   padding-inline: 5%;
   overflow-y: auto;
 
@@ -100,6 +100,7 @@ form {
 
     #subtask-block {
       width: 100%;
+      margin-bottom: 8px;
 
       #add-subtask {
         padding-right: 27%;
@@ -135,13 +136,13 @@ form {
 
     #subtask-content {
       width: 100%;
-      height: 100px;
+      height: 95px;
       overflow-y: auto;
-      @include all.flexi($fd: column);
+      @include all.flexi($fd: column, $jc:flex-start);
+      
 
       .subtask-row {
         width: 100%;
-        margin-top: 8px;
         @include all.flexi($jc: space-between);
         font-size: 16px;
 
