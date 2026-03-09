@@ -183,18 +183,22 @@ export class Board {
     }
   }
 
+  moveTask(){
+
+  }
+
   //#endregion
 
   orientation: 'horizontal' | 'vertical' = 'vertical';
   dragDisabled = false;
 
   constructor(private router: Router) {
-    this.updateOrientation();
+    this.updateDragAndDrop();
   }
 
   //JSDoc...???
   @HostListener('window:resize')
-  updateOrientation() {
+  updateDragAndDrop() {
     // > 1200px -> vertical (Karten stapeln sich)
     // < 1200px -> horizontal (Karten liegen nebeneinander)
     this.orientation = window.innerWidth > 1200 ? 'vertical' : 'horizontal';
