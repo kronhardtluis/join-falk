@@ -11,7 +11,7 @@ import { AddTask } from '../add-task/add-task';
 import { Supabase } from '../../services/supabase';
 import { FullTask } from '../../interfaces/task.interface';
 import { RouterLink, Router } from '@angular/router';
-import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -25,14 +25,14 @@ export class Board {
   dbService = inject(Supabase);
   isTaskEditMode = signal<boolean>(false);
   searchQuery = signal<string>('');
-  todoTasksFiltred = computed(() => this.filteredTasks().filter((task) => task.status === 'ToDo'));
+  todoTasksFiltred = computed(() => this.filteredTasks().filter((task) => task.status === 'ToDo').sort((a, b) => (a.position ?? 0) - (b.position ?? 0)));
   inProgressTasksFiltred = computed(() =>
-    this.filteredTasks().filter((task) => task.status === 'In Progress'),
+    this.filteredTasks().filter((task) => task.status === 'In Progress').sort((a, b) => (a.position ?? 0) - (b.position ?? 0)),
   );
   awaitingFeedbackTasksFiltred = computed(() =>
-    this.filteredTasks().filter((task) => task.status === 'Awaiting Feedback'),
+    this.filteredTasks().filter((task) => task.status === 'Awaiting Feedback').sort((a, b) => (a.position ?? 0) - (b.position ?? 0)),
   );
-  doneTasksFiltred = computed(() => this.filteredTasks().filter((task) => task.status === 'Done'));
+  doneTasksFiltred = computed(() => this.filteredTasks().filter((task) => task.status === 'Done').sort((a, b) => (a.position ?? 0) - (b.position ?? 0)));
   activeDropdownId = signal<number | null>(null);
   router = inject(Router);
   orientation: 'horizontal' | 'vertical' = 'vertical';
@@ -182,11 +182,35 @@ export class Board {
   drop(event: CdkDragDrop<FullTask[]>) {
     const task = event.item.data as FullTask;
     const newStatus = event.container.id;
-    if (event.previousContainer !== event.container) {
-      this.dbService.updateTaskStatus(task.id!, newStatus);
-    } else {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    }
+    const targetArray = event.container.data;
+    // if (event.previousContainer !== event.container) {
+    //   this.dbService.updateTaskStatus(task.id!, newStatus);
+    // } else {
+    //   moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    // }
+  if (event.previousContainer === event.container) {
+    moveItemInArray(targetArray, event.previousIndex, event.currentIndex);
+  } else {
+    transferArrayItem(
+      event.previousContainer.data,
+      targetArray,
+      event.previousIndex,
+      event.currentIndex
+    );
+  }
+  const prevTask = targetArray[event.currentIndex - 1];
+  const nextTask = targetArray[event.currentIndex + 1];
+  let newPos: number;
+  if (!prevTask && !nextTask) {
+    newPos = 1000;
+  } else if (!prevTask) {
+    newPos = nextTask.position! / 2;
+  } else if (!nextTask) {
+    newPos = prevTask.position! + 1000;
+  } else {
+    newPos = Math.round((prevTask.position! + nextTask.position!) / 2);
+  }
+  this.dbService.updateTaskStatus(task.id!, newStatus, newPos);
   }
 
   /**

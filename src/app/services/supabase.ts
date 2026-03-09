@@ -125,12 +125,12 @@ export class Supabase {
    */
   async getTasks(): Promise<FullTask[]> {
     const { data, error } = await this.supabase.from('tasks').select(`
-        *,
-        subtasks (*),
-        task_assignments (
-          contacts (*)
-        )
-      `);
+      *,
+      subtasks (*),
+      task_assignments (
+        contacts (*)
+      )
+    `).order('position', { ascending: true });
     if (error) {
       this.showNotification("Error fetching tasks.");
     }
@@ -191,9 +191,28 @@ export class Supabase {
   }
 
   /**
-   * Main entry point to create a task with all its dependencies.
-   */
+  * Creates a new task with its associated assignments and subtasks.
+  * This method performs several steps:
+  * 1. Calculates the next available 'position' for the task within its specific status column
+  * using a gap-based strategy (current max + 1000) to allow for future drag-and-drop insertions.
+  * 2. Inserts the core task data into the database.
+  * 3. Concurrently creates task assignments (contacts) and subtasks using the new task ID.
+  * 4. Refreshes the local board state to reflect the changes.
+  * @param taskData - The primary task information (title, description, status, etc.).
+  * @param contactIds - An array of contact IDs to be assigned to this task.
+  * @param subtasks - An array of subtask objects to be created for this task.
+  * @returns A Promise that resolves when the task and all its dependencies are successfully created.
+  */
   async createTask(taskData: TaskFormData, contactIds: number[], subtasks: { title: string }[]) {
+    const { data: maxTask } = await this.supabase
+    .from('tasks')
+    .select('position')
+    .eq('status', taskData.status)
+    .order('position', { ascending: false })
+    .limit(1)
+    .single();
+    const CURRENT_MAX = maxTask?.position ?? 0;
+    taskData.position = CURRENT_MAX + 1000;
     const NEW_TASK = await this.insertTask(taskData);
     await Promise.all([
       this.insertTaskAssignments(NEW_TASK.id, contactIds),
@@ -232,7 +251,6 @@ export class Supabase {
       is_done: false,
     }));
     const { error } = await this.supabase.from('subtasks').insert(RECORDS);
-
     if (error) this.showNotification(`Failed to create subtasks.`);
   }
 
@@ -279,18 +297,26 @@ export class Supabase {
     await this.loadBoardData();
   }
 
-  //#region testbereich
+  async updateTaskStatus(taskId: number, newStatus: string, newPosition?: number) {
+    let finalPosition = newPosition;
+    if (finalPosition === undefined) {
+      const { data: maxTask } = await this.supabase
+        .from('tasks')
+        .select('position')
+        .eq('status', newStatus)
+        .order('position', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      finalPosition = (maxTask?.position ?? 0) + 1000;
+    }
 
-  async updateTaskStatus(taskId: number, newStatus: string) {
     const { error } = await this.supabase
       .from('tasks')
-      .update({ status: newStatus })
+      .update({ status: newStatus, position: finalPosition})
       .eq('id', taskId);
 
     if (error) {
-      this.showNotification("Failed to update subtask status.");
+      this.showNotification("Failed to update task status.");
     }
   }
-
-  //#endregion testbereich
 }
