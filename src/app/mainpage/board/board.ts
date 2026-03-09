@@ -183,17 +183,21 @@ export class Board {
     }
   }
 
+  moveTask(){
+    
+  }
+
   //#endregion
 
   orientation: 'horizontal' | 'vertical' = 'vertical';
   dragDisabled = false;
 
   constructor(private router: Router) {
-    this.updateOrientation();
+    this.updateDragAndDrop();
   }
 
   @HostListener('window:resize')
-  updateOrientation() {
+  updateDragAndDrop() {
     // > 1200px -> vertical (Karten stapeln sich)
     // < 1200px -> horizontal (Karten liegen nebeneinander)
     this.orientation = window.innerWidth > 1200 ? 'vertical' : 'horizontal';
@@ -201,19 +205,23 @@ export class Board {
     this.dragDisabled = window.innerWidth <= 640;
   }
 
-  isDropDownOpen = false;
+openedTaskId = signal<number | null>(null);
 
-  toggleMenu() {
-    this.isDropDownOpen = !this.isDropDownOpen;
-  }
-  closeMenu() {
-    this.isDropDownOpen = false;
-  }
+toggleMenu(id: any) {
+  // Wenn die ID schon offen ist -> schließen (null), sonst die neue ID setzen
+  this.openedTaskId.update(currentId => currentId === id ? null : id);
+  console.log(id);
+  
+}
+
+closeMenu() {
+  this.openedTaskId.set(null);
+}
 
   @HostListener('window:resize', ['$event'])
   DropDownResizeClose(event: any) {
     if (window.innerWidth > 640) {
-      this.isDropDownOpen = false;
+      this.openedTaskId.set(null);
     }
   }
 
@@ -221,7 +229,7 @@ export class Board {
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
     if (!target.closest('#dropdown-button') && !target.closest('.dropdown')) {
-      this.isDropDownOpen = false;
+      this.openedTaskId.set(null);
     }
   }
 

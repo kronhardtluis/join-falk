@@ -458,7 +458,7 @@
   border-style: none;
 }
 
-/*Horizontal*/
+/*Vertikal*/
 /* Diese Regel sorgt für das flüssige "Platzmachen" der anderen Karten */
 .cdk-drop-list-dragging .task-library:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
@@ -468,7 +468,7 @@
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-/*Vertikal*/
+/*Horizontal*/
 /* Diese Regel sorgt für das flüssige "Platzmachen" der anderen Karten */
 .cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);

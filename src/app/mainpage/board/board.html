@@ -64,13 +64,13 @@
                   >
                     {{ task.category }}
                   </div>
-                  <button class="dropdown-button" (click)="toggleMenu(); $event.stopPropagation()">
+                  <button class="dropdown-button" (click)="toggleMenu(task.id); $event.stopPropagation()">
                     <img src="/assets/icons/swap.png" alt="swap" />
                   </button>
                   <div
                     class="dropdown"
                     (click)="$event.stopPropagation()"
-                    [class.open]="isDropDownOpen"
+                    [class.open]="openedTaskId() === task.id"
                   >
                     <div class="dropdown-content">
                       <strong>Move to</strong>
@@ -179,13 +179,13 @@
                   >
                     {{ task.category }}
                   </div>
-                  <button class="dropdown-button" (click)="toggleMenu(); $event.stopPropagation()">
+                  <button class="dropdown-button" (click)="toggleMenu(task.id); $event.stopPropagation()">
                     <img src="/assets/icons/swap.png" alt="swap" />
                   </button>
                   <div
                     class="dropdown"
                     (click)="$event.stopPropagation()"
-                    [class.open]="isDropDownOpen"
+                    [class.open]="openedTaskId() === task.id"
                   >
                     <div class="dropdown-content">
                       <strong>Move to</strong>
@@ -293,13 +293,13 @@
                   >
                     {{ task.category }}
                   </div>
-                  <button class="dropdown-button" (click)="toggleMenu(); $event.stopPropagation()">
+                  <button class="dropdown-button" (click)="toggleMenu(task.id); $event.stopPropagation()">
                     <img src="/assets/icons/swap.png" alt="swap" />
                   </button>
                   <div
                     class="dropdown"
                     (click)="$event.stopPropagation()"
-                    [class.open]="isDropDownOpen"
+                    [class.open]="openedTaskId() === task.id"
                   >
                     <div class="dropdown-content">
                       <strong>Move to</strong>
@@ -398,13 +398,13 @@
                   >
                     {{ task.category }}
                   </div>
-                  <button class="dropdown-button" (click)="toggleMenu(); $event.stopPropagation()">
+                  <button class="dropdown-button" (click)="toggleMenu(task.id); $event.stopPropagation()">
                     <img src="/assets/icons/swap.png" alt="swap" />
                   </button>
                   <div
                     class="dropdown"
                     (click)="$event.stopPropagation()"
-                    [class.open]="isDropDownOpen"
+                    [class.open]="openedTaskId() === task.id"
                   >
                     <div class="dropdown-content">
                       <strong>Move to</strong>
