@@ -504,8 +504,13 @@
         </div>
 
         <div class="title-description">
-          <h2>{{ task.title }}</h2>
-          <p>{{ task.description }}</p>
+          @if(isTaskEditMode() === true){
+            <h2>Hier ist ein Platz fur from.</h2>
+          }
+          @else {
+            <h2>{{ task.title }}</h2>
+            <p>{{ task.description }}</p>
+          }
         </div>
 
         <div class="date-priority">

@@ -11,7 +11,7 @@ import { AddTask } from '../add-task/add-task';
 import { Supabase } from '../../services/supabase';
 import { FullTask } from '../../interfaces/task.interface';
 import { RouterLink, Router } from '@angular/router';
-import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -23,17 +23,20 @@ import { FormsModule } from '@angular/forms';
 })
 export class Board {
   dbService = inject(Supabase);
-  isTaskEditMode = signal(false);
+  isTaskEditMode = signal<boolean>(false);
   searchQuery = signal<string>('');
-  todoTasksFiltred = computed(() => this.filteredTasks().filter((task) => task.status === 'ToDo'));
+  todoTasksFiltred = computed(() => this.filteredTasks().filter((task) => task.status === 'ToDo').sort((a, b) => (a.position ?? 0) - (b.position ?? 0)));
   inProgressTasksFiltred = computed(() =>
-    this.filteredTasks().filter((task) => task.status === 'In Progress'),
+    this.filteredTasks().filter((task) => task.status === 'In Progress').sort((a, b) => (a.position ?? 0) - (b.position ?? 0)),
   );
   awaitingFeedbackTasksFiltred = computed(() =>
-    this.filteredTasks().filter((task) => task.status === 'Awaiting Feedback'),
+    this.filteredTasks().filter((task) => task.status === 'Awaiting Feedback').sort((a, b) => (a.position ?? 0) - (b.position ?? 0)),
   );
-  doneTasksFiltred = computed(() => this.filteredTasks().filter((task) => task.status === 'Done'));
+  doneTasksFiltred = computed(() => this.filteredTasks().filter((task) => task.status === 'Done').sort((a, b) => (a.position ?? 0) - (b.position ?? 0)));
   activeDropdownId = signal<number | null>(null);
+  router = inject(Router);
+  orientation: 'horizontal' | 'vertical' = 'vertical';
+  dragDisabled = false;
 
   /**
    * Initializes the component by fetching initial board data and
@@ -43,6 +46,7 @@ export class Board {
   ngOnInit() {
     this.dbService.loadBoardData();
     this.dbService.subscribeToChanges();
+    this.onResize();
   }
 
   /**
@@ -68,20 +72,15 @@ export class Board {
   closeTaskDetails() {
     this.taskDetailDialog.nativeElement.close();
     this.dbService.selectedTask.set(null);
+    this.isTaskEditMode.set(false);
   }
 
   // Zugriff auf das native <dialog> Element
   @ViewChild('dialog') dialog!: ElementRef<HTMLDialogElement>;
 
-  //JSDoc...???
-  @HostListener('window:resize', [])
-  onResize() {
-    if (window.innerWidth < 640 && this.dialog.nativeElement.open) {
-      this.close();
-    }
-  }
-
-  //JSDoc...???
+  /**
+  * Navigates to the add-task page on mobile or opens the creation dialog on desktop.
+  */
   open() {
     if (window.innerWidth > 640) {
       // Desktop-Logik: Modal öffnen
@@ -92,7 +91,9 @@ export class Board {
     }
   }
 
-  //JSDoc...???
+  /**
+  * Closes the task creation dialog.
+  */
   close() {
     this.dialog.nativeElement.close();
   }
@@ -158,88 +159,116 @@ export class Board {
     }
   }
 
-  //JSDoc...???
+  /**
+  * Updates the core details of an existing task and refreshes the board state.
+  * @param task - The task object with updated fields.
+  */
   async saveEditedTask(task: FullTask) {
     try {
       await this.dbService.updateFullTask(task);
       this.isTaskEditMode.set(false);
       this.dbService.showNotification('Task updated successfully!');
     } catch (err) {
-      console.error(err);
-      this.dbService.showNotification('Update failed');
+      this.dbService.showNotification('Update failed.');
     }
   }
 
-  //JSDoc...???
-  //#region Testregion
+  /**
+  * Handles the dropping of a task card using Angular CDK Drag and Drop.
+  * If the task is moved to a different container (column), it triggers a status update in the database.
+  * If moved within the same container, it reorders the tasks locally in the array.
+  * @param event - The CdkDragDrop event containing data about the dragged item and target container.
+  */
   drop(event: CdkDragDrop<FullTask[]>) {
     const task = event.item.data as FullTask;
     const newStatus = event.container.id;
-    //console.log(`Verschiebe Task "${task?.id}" nach: ${newStatus}`);
-    if (event.previousContainer !== event.container) {
-      this.dbService.updateTaskStatus(task.id!, newStatus);
+    const targetArray = event.container.data;
+    // if (event.previousContainer !== event.container) {
+    //   this.dbService.updateTaskStatus(task.id!, newStatus);
+    // } else {
+    //   moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    // }
+    if (event.previousContainer === event.container) {
+      moveItemInArray(targetArray, event.previousIndex, event.currentIndex);
     } else {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      transferArrayItem(
+        event.previousContainer.data,
+        targetArray,
+        event.previousIndex,
+        event.currentIndex
+      );
     }
+    const prevTask = targetArray[event.currentIndex - 1];
+    const nextTask = targetArray[event.currentIndex + 1];
+    let newPos: number;
+    const prevPos = prevTask?.position ?? 0;
+    const nextPos = nextTask?.position ?? 0;
+    if (!prevTask && !nextTask) {
+      newPos = 1000;
+    } else if (!prevTask) {
+      newPos = Math.round(nextPos / 2);
+    } else if (!nextTask) {
+      newPos = prevPos + 1000;
+    } else {
+      newPos = Math.round((prevPos + nextPos) / 2);
+    }
+    if (isNaN(newPos)) newPos = 1000;
+    this.dbService.updateTaskStatus(task.id!, newStatus, newPos);
   }
 
-  moveTask(){
-
-  }
-
-  //#endregion
-
-  orientation: 'horizontal' | 'vertical' = 'vertical';
-  dragDisabled = false;
-
-  constructor(private router: Router) {
-    this.updateDragAndDrop();
-  }
-
-  //JSDoc...???
-  @HostListener('window:resize')
-  updateDragAndDrop() {
-    // > 1200px -> vertical (Karten stapeln sich)
-    // < 1200px -> horizontal (Karten liegen nebeneinander)
-    this.orientation = window.innerWidth > 1200 ? 'vertical' : 'horizontal';
-    // Drag and Drop ausschalten ab 640px
-    this.dragDisabled = window.innerWidth <= 640;
-  }
-
-  //JSDoc...???
+  /**
+  * Handles the dropping of a task card using Angular CDK Drag and Drop.
+  * If the task is moved to a different container (column), it triggers a status update in the database.
+  * If moved within the same container, it reorders the tasks locally in the array.
+  * @param event - The CdkDragDrop event containing data about the dragged item and target container.
+  */
   toggleMenu(taskId:number) {
     this.activeDropdownId.update(id => id === taskId ? null : taskId);
   }
 
-  //JSDoc...???
+  /**
+  * Toggles the visibility of the mobile "Move to" dropdown menu for a specific task.
+  * Uses a signal to track the active task ID; if the same task is clicked again, the menu closes.
+  * @param taskId - The unique numeric identifier of the task being toggled.
+  */
   closeMenu() {
     this.activeDropdownId.set(null);
   }
 
-  //JSDoc...???
-  @HostListener('window:resize', ['$event'])
-  DropDownResizeClose(event: any) {
-    if (window.innerWidth > 640) {
-      this.closeMenu();
-    }
+  /**
+   * Manages UI state changes based on window resize events.
+   * Handles drag-and-drop orientation, disables dragging on mobile,
+   * and closes open dialogs or dropdowns when switching view modes.
+   */
+  @HostListener('window:resize')
+  onResize(){
+    const WIDTH = window.innerWidth;
+    // Drag & Drop Logic
+    // > 1200px -> vertical (Karten stapeln sich)
+    // < 1200px -> horizontal (Karten liegen nebeneinander)
+    // this.orientation = window.innerWidth > 1200 ? 'vertical' : 'horizontal';
+    // Drag and Drop ausschalten ab 640px
+    // this.dragDisabled = window.innerWidth <= 640;
+    this.orientation = WIDTH > 1200 ? 'vertical' : 'horizontal';
+    this.dragDisabled = WIDTH <= 640;
+
+    //Close elements that shouldn't be open on certain screens
+    if (WIDTH < 640 && this.dialog?.nativeElement.open) this.close();
+    if (WIDTH > 640) this.closeMenu();
   }
 
-  //JSDoc...???
+  /**
+  * Handles document-wide click events to close interactive elements like
+  * dropdown menus when a user clicks outside of them.
+  * @param event - The native MouseEvent.
+  */
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-    if (!target.closest('#dropdown-button') && !target.closest('.dropdown')) {
-      //this.isDropDownOpen = false;
+    const TARGET = event.target as HTMLElement;
+    // Logic for Mobile "Move to" Dropdown
+    const IS_DROPDOWN_CLICK = TARGET.closest('.dropdown-button') || TARGET.closest('.dropdown');
+    if (!IS_DROPDOWN_CLICK) {
       this.closeMenu();
-    }
-  }
-
-  //JSDoc...???
-  checkboxSwitch(status: boolean): string {
-    if (status) {
-      return 'src="/assets/icons/cheackbox-white.png" alt="checked-checkbox"';
-    } else {
-      return 'src="/assets/icons/cheackbox.png" alt="checkbox"';
     }
   }
 }

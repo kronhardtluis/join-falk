@@ -18,6 +18,7 @@ export interface Task {
   category: TaskCategory;
   status: TaskStatus;
   created_at?: string;
+  position?: number;
 }
 
 export interface TaskFormData {
@@ -29,6 +30,7 @@ export interface TaskFormData {
   assigned_contact_ids?: number[];
   subtasks?: string[];
   status?: TaskStatus;
+  position?: number;
 }
 
 export interface TaskAssignment {
