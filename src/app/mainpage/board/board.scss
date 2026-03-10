@@ -217,13 +217,21 @@
   border-radius: 30px;
   overflow: hidden;
   overflow-y: auto;
-  animation: slide-in-right 0.2s forwards;
+  //animation: slide-in-right 0.2s forwards;
   // animation: slide-out-left 0.3s forwards;
 
   &::backdrop {
     background: rgba(0, 0, 0, 0.3);
     animation: fade-in 0.4s ease-out;
   }
+
+  &[open] {
+    animation: slide-in-right 0.4s ease-out forwards;
+  }
+  &.closing {
+    animation: slide-out-left 0.4s ease-in forwards;
+  }
+
 }
 
 .dialog-close-button {
