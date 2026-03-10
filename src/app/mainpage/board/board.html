@@ -495,7 +495,7 @@
           <button class="dialog-close-button" (click)="closeTaskDetails()">
             <img src="assets/icons/close-blue.png" alt="Close" />
           </button>
-          <app-add-task [editTaskData]="dbService.selectedTask()"></app-add-task>
+          <app-add-task [editTaskData]="dbService.selectedTask()" (taskCreated)="closeTaskDetails()">></app-add-task>
         </div>
       } @else{
       <div id="stopPropagation" (click)="$event.stopPropagation()">

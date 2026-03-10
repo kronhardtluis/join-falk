@@ -172,19 +172,21 @@ export class Board {
     }
   }
 
-  /**
-  * Updates the core details of an existing task and refreshes the board state.
-  * @param task - The task object with updated fields.
-  */
-  async saveEditedTask(task: FullTask) {
-    try {
-      await this.dbService.updateFullTask(task);
-      this.isTaskEditMode.set(false);
-      this.dbService.showNotification('Task updated successfully!');
-    } catch (err) {
-      this.dbService.showNotification('Update failed.');
-    }
-  }
+  //<-To delete
+  // /**
+  // * Updates the core details of an existing task and refreshes the board state.
+  // * @param task - The task object with updated fields.
+  // */
+  // async saveEditedTask(task: FullTask) {
+  //   try {
+  //     await this.dbService.updateFullTask(task);
+  //     this.isTaskEditMode.set(false);
+  //     this.dbService.showNotification('Task updated successfully!');
+  //   } catch (err) {
+  //     this.dbService.showNotification('Update failed.');
+  //   }
+  // }
+  //->
 
   /**
   * Handles the dropping of a task card using Angular CDK Drag and Drop.

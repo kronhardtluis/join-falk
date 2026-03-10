@@ -104,10 +104,11 @@ export class AddTask {
   * non-whitespace characters, pushes a new FormGroup into the 'subtasks' array,
   * and subsequently invokes 'clearSubtask()' to reset the input field.
   */
-  addSubtask() {
+  async addSubtask() {
     const VALUE = this.taskForm.get('subtaskInput')?.value;
     if (VALUE && VALUE.trim()) {
       this.subtaskArray.push(this.fb.group({ title: [VALUE] }));
+      this.clearSubtask();
     }
   }
 
@@ -319,7 +320,28 @@ export class AddTask {
     this.isCategoryListVisible.set(false);
   }
 
+  /**
+  * Orchestrates the complete task update workflow.
+  * This method validates the form, extracts raw data (ensuring IDs of subtasks
+  * are preserved), merges it with the current task's metadata, and triggers
+  * a full database synchronization through the Supabase service.
+  * On success, it notifies the parent component to refresh the UI.
+  * @returns {Promise<void>} Resolves when the update is complete or fails silently if form is invalid.
+  * @throws Will log an error and show a notification if the database service call fails.
+  */
   async updateTask(){
-    console.log("Task updated.")
+    if (this.taskForm.invalid || !this.editTaskData) return;
+    const rawForm = this.taskForm.getRawValue();
+    const taskToUpdate: Task = {
+      ...this.prepareTaskData(),
+      id: this.editTaskData.id,
+      status: this.editTaskData.status
+    };
+    try {
+      await this.dbService.updateFullTask(taskToUpdate, rawForm.assigned_to, rawForm.subtasks);
+      this.taskCreated.emit();
+    } catch (error) {
+      this.dbService.showNotification("Task update failed.");
+    }
   }
 }

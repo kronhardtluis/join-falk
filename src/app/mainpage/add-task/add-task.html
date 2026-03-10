@@ -172,16 +172,14 @@
         </button>
       }
     </div>
-    <div id="subtask-content">
+    <div id="subtask-content" formArrayName="subtasks">
       @for (sub of subtaskArray.controls; track $index) {
-        <div class="subtask-row">
+        <div class="subtask-row" [formGroupName]="$index">
           <img id="dot" src="/assets/icons/circle.png" alt="dot" />
           <input
             id="subtask-input"
             type="text"
-            {list-style-type:
-            disc;}
-            value="{{ sub.value.title }}"
+            formControlName="title"
           />
           <div class="subtasks-buttons">
             <button class="buttons">

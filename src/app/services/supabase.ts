@@ -2,7 +2,7 @@ import { createClient, RealtimeChannel } from '@supabase/supabase-js';
 import { Injectable, signal, computed } from '@angular/core';
 import { environment } from '../environments/environment.example';
 import { Contact } from '../interfaces/contact.interface';
-import { Subtask, FullTask, TaskFormData } from '../interfaces/task.interface';
+import { Task, Subtask, FullTask, TaskFormData } from '../interfaces/task.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -114,8 +114,6 @@ export class Supabase {
     const SECOND_LETTER = NAME.length > 1 ? NAME[1][0].toUpperCase() : '';
     return FIRST_LETTER + SECOND_LETTER;
   }
-
-  //TASK ---------------------------------------------
 
   /**
    * Fetches all tasks from the database including their related subtasks and assigned contacts.
@@ -276,11 +274,30 @@ export class Supabase {
   }
 
   /**
-  * Updates the core details of a task in the Supabase database.
-  * @param {FullTask} task - The task object containing updated information.
-  * @returns {Promise<void>}
+  * Orchestrates the full update of a task including its relations.
   */
-  async updateFullTask(task: FullTask) {
+  async updateFullTask(task: Task, contactIds: number[], subtasks: Subtask[]) {
+    if (!task.id) return;
+    try {
+      await this.updateTaskCore(task);
+      await this.updateTaskAssignments(task.id, contactIds);
+      await this.updateTaskSubtasks(task.id, subtasks);
+      this.showNotification("Task updated successfully!");
+      await this.loadBoardData();
+    } catch (error) {
+      this.showNotification("Failed to update task.");
+    }
+  }
+
+  /**
+  * Updates the primary task details in the 'tasks' table.
+  * Modifies core attributes such as title, description, due date, priority, and category
+  * based on the provided task object.
+  * @param {Task} task - The task object containing the new data and the unique identifier.
+  * @returns {Promise<void>}
+  * @private
+  */
+  private async updateTaskCore(task: Task) {
     const { error } = await this.supabase
       .from('tasks')
       .update({
@@ -291,12 +308,74 @@ export class Supabase {
         category: task.category
       })
       .eq('id', task.id);
-    if (error) {
-      this.showNotification("Failed to update task.");
-    }
-    await this.loadBoardData();
+    if (error) this.showNotification("Failed to update task.");
   }
 
+  /**
+  * Synchronizes task assignments by replacing existing ones with a new set of contacts.
+  * First, it removes all current assignments for the specified task, then inserts
+  * new records if any contact IDs are provided.
+  * @param {number} taskId - The unique ID of the task to update assignments for.
+  * @param {number[]} contactIds - An array of contact IDs to be linked to the task.
+  * @returns {Promise<void>}
+  * @private
+  */
+  private async updateTaskAssignments(taskId: number, contactIds: number[]) {
+    await this.supabase.from('task_assignments').delete().eq('task_id', taskId);
+    if (contactIds.length > 0) {
+      const ASSIGNMENTS = contactIds.map(id => ({ task_id: taskId, contact_id: id }));
+      const { error } = await this.supabase.from('task_assignments').insert(ASSIGNMENTS);
+      if (error) this.showNotification("Failed to update task.");
+    }
+  }
+
+  /**
+  * Synchronizes subtasks for a given task by comparing form data with the database.
+  * @param taskId - The unique ID of the parent task.
+  * @param formSubtasks - Current list of subtasks from the form.
+  */
+  private async updateTaskSubtasks(taskId: number, formSubtasks: Subtask[]) {
+    try {
+      const normalized = formSubtasks.map(s => ({
+        id: s.id || undefined,
+        task_id: taskId,
+        title: s.title,
+        is_done: s.is_done ?? false
+      }));
+      const originalSubtasks = this.selectedTask()?.subtasks || [];
+      const currentFormIds = normalized.map(s => s.id).filter(id => !!id);
+      const toDelete = originalSubtasks.filter(orig => !currentFormIds.includes(orig.id!));
+      if (toDelete.length > 0) {
+        await this.supabase.from('subtasks').delete().in('id', toDelete.map(s => s.id));
+      }
+      const toUpdate = normalized.filter(s => !!s.id);
+      if (toUpdate.length > 0) {
+        const { error } = await this.supabase.from('subtasks').upsert(toUpdate);
+        if (error) throw error;
+      }
+      const toInsert = normalized
+        .filter(s => !s.id)
+        .map(({ id, ...data }) => data);
+      if (toInsert.length > 0) {
+        const { error } = await this.supabase.from('subtasks').insert(toInsert);
+        if (error) throw error;
+      }
+    } catch (error) {
+      this.showNotification("Failed to sync subtasks.");
+    }
+  }
+
+  /**
+  * Updates the workflow status and board position of a specific task.
+  * If a new position is not provided, the method automatically calculates it by
+  * finding the current maximum position in the target status column and adding
+  * a gap of 1000 to allow for future drag-and-drop insertions.
+  * @param {number} taskId - The unique identifier of the task to be updated.
+  * @param {string} newStatus - The target status column (e.g., 'ToDo', 'In Progress').
+  * @param {number} [newPosition] - Optional specific position index. If omitted,
+  * it's calculated based on the highest existing position in the column.
+  * @returns {Promise<void>}
+  */
   async updateTaskStatus(taskId: number, newStatus: string, newPosition?: number) {
     let finalPosition = newPosition;
     if (finalPosition === undefined) {
@@ -309,12 +388,10 @@ export class Supabase {
         .maybeSingle();
       finalPosition = (maxTask?.position ?? 0) + 1000;
     }
-
     const { error } = await this.supabase
       .from('tasks')
       .update({ status: newStatus, position: finalPosition})
       .eq('id', taskId);
-
     if (error) {
       this.showNotification("Failed to update task status.");
     }
