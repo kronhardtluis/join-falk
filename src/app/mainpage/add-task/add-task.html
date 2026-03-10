@@ -163,11 +163,11 @@
         (keydown.enter)="$event.preventDefault(); addSubtask()"
       />
       @if (isSubtaskActive() || taskForm.get('subtaskInput')?.value) {
-        <button (click)="clearSubtask()" id="add-button">
+        <button (click)="clearSubtask()" id="delete-button">
           <img src="assets/icons/close-blue.png" alt="delete" />
         </button>
         <div id="small-line"></div>
-        <button (click)="addSubtask()" id="delete-button">
+        <button (click)="addSubtask(); clearSubtask()" id="add-button">
           <img src="assets/icons/check-blue.png" alt="check" />
         </button>
       }

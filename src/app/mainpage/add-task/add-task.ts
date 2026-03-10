@@ -72,7 +72,6 @@ export class AddTask {
     const VALUE = this.taskForm.get('subtaskInput')?.value;
     if (VALUE && VALUE.trim()) {
       this.subtaskArray.push(this.fb.group({ title: [VALUE] }));
-      this.clearSubtask();
     }
   }
 
@@ -101,7 +100,6 @@ export class AddTask {
   removeSubtask(index: number) {
     this.subtaskArray.removeAt(index);
   }
-
 
   /**
   * Resets the entire task form to its initial state.

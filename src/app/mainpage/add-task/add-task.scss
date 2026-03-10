@@ -55,7 +55,6 @@ form {
       width: 98%;
       outline: none;
       transition: 0.3s;
-
       &[type='date']:hover {
         cursor: text;
       }
@@ -63,6 +62,11 @@ form {
       &:focus {
         border-color: all.$blueLight;
       }
+    }
+    textarea{
+      min-width: 98%;
+      max-width: 98%;
+      max-height: 250px;
     }
 
     #priorities {
@@ -139,7 +143,7 @@ form {
       height: 95px;
       overflow-y: auto;
       @include all.flexi($fd: column, $jc:flex-start);
-      
+
 
       .subtask-row {
         width: 100%;
