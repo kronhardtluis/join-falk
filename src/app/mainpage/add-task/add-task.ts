@@ -24,6 +24,7 @@ export class AddTask {
   isCategoryListVisible = signal<boolean>(false);
   isSubtaskActive = signal<boolean>(false);
   taskCreated = output<void>();
+  
 
   constructor() {
     this.taskForm = this.fb.group({
