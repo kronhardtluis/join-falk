@@ -79,16 +79,6 @@ export class AddTask {
         }));
       });
     }
-    if (task.subtasks) {
-      this.subtaskArray.clear();
-      task.subtasks.forEach(sub => {
-        this.subtaskArray.push(this.fb.group({
-          id: [sub.id],
-          title: [sub.title],
-          is_done: [sub.is_done]
-        }));
-      });
-    }
   }
 
   /**
@@ -329,7 +319,7 @@ export class AddTask {
     this.isCategoryListVisible.set(false);
   }
 
-  updateTask(){
-    console.log("task updated.")
+  async updateTask(){
+    console.log("Task updated.")
   }
 }

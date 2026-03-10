@@ -70,9 +70,17 @@ export class Board {
    * Resets the dbService signal to null to prevent stale data on next opening.
    */
   closeTaskDetails() {
-    this.taskDetailDialog.nativeElement.close();
-    this.dbService.selectedTask.set(null);
-    this.isTaskEditMode.set(false);
+    //this.taskDetailDialog.nativeElement.close();
+    const DIALOG_ELEMENT = this.taskDetailDialog.nativeElement;
+    DIALOG_ELEMENT.classList.add('closing');
+    setTimeout(() => {
+      DIALOG_ELEMENT.close();
+      DIALOG_ELEMENT.classList.remove('closing');
+      this.dbService.selectedTask.set(null);
+      this.isTaskEditMode.set(false);
+    }, 400);
+
+
   }
 
   // Zugriff auf das native <dialog> Element
@@ -95,7 +103,13 @@ export class Board {
   * Closes the task creation dialog.
   */
   close() {
-    this.dialog.nativeElement.close();
+    //this.dialog.nativeElement.close();
+    const DIALOG_ELEMENT = this.dialog.nativeElement;
+    DIALOG_ELEMENT.classList.add('closing');
+    setTimeout(() => {
+      DIALOG_ELEMENT.close();
+      DIALOG_ELEMENT.classList.remove('closing');
+    }, 400);
   }
 
   /**

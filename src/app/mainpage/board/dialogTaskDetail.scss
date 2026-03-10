@@ -28,6 +28,13 @@
     animation: fade-in 0.4s ease-out;
   }
 
+  &[open] {
+    animation: slide-in-right 0.4s ease-out forwards;
+  }
+  &.closing {
+    animation: slide-out-left 0.4s ease-in forwards;
+  }
+
   #stopPropagation {
     height: 100%;
     width: 100%;
