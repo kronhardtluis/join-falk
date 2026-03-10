@@ -184,7 +184,7 @@
             </button>
             <div id="small-line"></div>
             <button (click)="addSubtask(); clearSubtask()" id="add-button">
-              <img src="/assets/icons/subtasks-check.png" alt="check" />
+              <img src="assets/icons/subtasks-check.png" alt="check" />
             </button>
           </div>
         }
@@ -192,7 +192,7 @@
       <div id="subtask-content" formArrayName="subtasks">
         @for (sub of subtaskArray.controls; track (sub.value.id || sub)) {
           <div class="subtask-row" [formGroupName]="$index">
-            <img id="dot" src="/assets/icons/circle.png" alt="dot" />
+            <img id="dot" src="assets/icons/circle.png" alt="dot" />
             <input
               #subInput
               id="subtask-input"
@@ -205,13 +205,13 @@
                   (click)="subInput.focus()"
                   id="inputFocus"
                   class="hover"
-                  src="/assets/icons/edit.png"
+                  src="assets/icons/edit.png"
                   alt="Edit"
                 />
                 <img
                   (mousedown)="removeSubtask($index)"
                   class="focus"
-                  src="/assets/icons/delete.png"
+                  src="assets/icons/delete.png"
                   alt="Delete"
                 />
               </button>
@@ -221,7 +221,7 @@
                   <img
                     class="hover"
                     (click)="removeSubtask($index)"
-                    src="/assets/icons/delete.png"
+                    src="assets/icons/delete.png"
                     alt="Delete"
                   />
                   <img class="focus" src="assets/icons/subtasks-check.png" alt="check" />

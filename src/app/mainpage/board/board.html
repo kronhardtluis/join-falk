@@ -65,7 +65,7 @@
                     {{ task.category }}
                   </div>
                   <button class="dropdown-button" (click)="toggleMenu(task.id!); $event.stopPropagation()">
-                    <img src="/assets/icons/swap.png" alt="swap" />
+                    <img src="assets/icons/swap.png" alt="swap" />
                   </button>
                   <div
                     class="dropdown"
@@ -75,13 +75,13 @@
                     <div class="dropdown-content">
                       <strong>Move to</strong>
                       <button (click)="dbService.updateTaskStatus(task.id!, 'In Progress'); closeMenu()">
-                        <img src="/assets/icons/arrow_downward.png" alt="down" /> In Progress
+                        <img src="assets/icons/arrow_downward.png" alt="down" /> In Progress
                       </button>
                       <button (click)="dbService.updateTaskStatus(task.id!, 'Awaiting Feedback'); closeMenu()">
-                        <img src="/assets/icons/arrow_downward.png" alt="down" /> Rewiew
+                        <img src="assets/icons/arrow_downward.png" alt="down" /> Rewiew
                       </button>
                       <button (click)="dbService.updateTaskStatus(task.id!, 'Done'); closeMenu()">
-                        <img src="/assets/icons/arrow_downward.png" alt="down" /> Done
+                        <img src="assets/icons/arrow_downward.png" alt="down" /> Done
                       </button>
                     </div>
                   </div>
@@ -180,7 +180,7 @@
                     {{ task.category }}
                   </div>
                   <button class="dropdown-button" (click)="toggleMenu(task.id!); $event.stopPropagation()">
-                    <img src="/assets/icons/swap.png" alt="swap" />
+                    <img src="assets/icons/swap.png" alt="swap" />
                   </button>
                   <div
                     class="dropdown"
@@ -190,13 +190,13 @@
                     <div class="dropdown-content">
                       <strong>Move to</strong>
                       <button (click)="dbService.updateTaskStatus(task.id!, 'ToDo'); closeMenu()">
-                        <img src="/assets/icons/arrow_upward.png" alt="up" /> To Do
+                        <img src="assets/icons/arrow_upward.png" alt="up" /> To Do
                       </button>
                       <button (click)="dbService.updateTaskStatus(task.id!, 'Awaiting Feedback'); closeMenu()">
-                        <img src="/assets/icons/arrow_downward.png" alt="down" /> Review
+                        <img src="assets/icons/arrow_downward.png" alt="down" /> Review
                       </button>
                       <button (click)="dbService.updateTaskStatus(task.id!, 'Done'); closeMenu()">
-                        <img src="/assets/icons/arrow_downward.png" alt="down" /> Done
+                        <img src="assets/icons/arrow_downward.png" alt="down" /> Done
                       </button>
                     </div>
                   </div>
@@ -294,7 +294,7 @@
                     {{ task.category }}
                   </div>
                   <button class="dropdown-button" (click)="toggleMenu(task.id!); $event.stopPropagation()">
-                    <img src="/assets/icons/swap.png" alt="swap" />
+                    <img src="assets/icons/swap.png" alt="swap" />
                   </button>
                   <div
                     class="dropdown"
@@ -304,13 +304,13 @@
                     <div class="dropdown-content">
                       <strong>Move to</strong>
                       <button (click)="dbService.updateTaskStatus(task.id!, 'ToDo'); closeMenu()">
-                        <img src="/assets/icons/arrow_upward.png" alt="up" /> To Do
+                        <img src="assets/icons/arrow_upward.png" alt="up" /> To Do
                       </button>
                       <button (click)="dbService.updateTaskStatus(task.id!, 'In Progress'); closeMenu()">
-                        <img src="/assets/icons/arrow_upward.png" alt="up" />In Progress
+                        <img src="assets/icons/arrow_upward.png" alt="up" />In Progress
                       </button>
                       <button (click)="dbService.updateTaskStatus(task.id!, 'Done'); closeMenu()">
-                        <img src="/assets/icons/arrow_downward.png" alt="down" /> Done
+                        <img src="assets/icons/arrow_downward.png" alt="down" /> Done
                       </button>
                     </div>
                   </div>
@@ -399,7 +399,7 @@
                     {{ task.category }}
                   </div>
                   <button class="dropdown-button" (click)="toggleMenu(task.id!);$event.stopPropagation()">
-                    <img src="/assets/icons/swap.png" alt="swap" />
+                    <img src="assets/icons/swap.png" alt="swap" />
                   </button>
                   <div
                     class="dropdown"
@@ -409,13 +409,13 @@
                     <div class="dropdown-content">
                       <strong>Move to</strong>
                       <button (click)="dbService.updateTaskStatus(task.id!, 'ToDo'); closeMenu()">
-                        <img src="/assets/icons/arrow_upward.png" alt="up" /> To Do
+                        <img src="assets/icons/arrow_upward.png" alt="up" /> To Do
                       </button>
                       <button (click)="dbService.updateTaskStatus(task.id!, 'In Progress'); closeMenu()">
-                        <img src="/assets/icons/arrow_upward.png" alt="up" /> In Progress
+                        <img src="assets/icons/arrow_upward.png" alt="up" /> In Progress
                       </button>
                       <button (click)="dbService.updateTaskStatus(task.id!, 'Awaiting Feedback'); closeMenu()">
-                        <img src="/assets/icons/arrow_upward.png" alt="up" /> Review
+                        <img src="assets/icons/arrow_upward.png" alt="up" /> Review
                       </button>
                     </div>
                   </div>
@@ -559,8 +559,8 @@
                 <img
                   [src]="
                     subtask.is_done
-                      ? '/assets/icons/cheackbox-checked.png'
-                      : '/assets/icons/cheackbox.png'
+                      ? 'assets/icons/cheackbox-checked.png'
+                      : 'assets/icons/cheackbox.png'
                   "
                   alt="status"
                 />
@@ -573,16 +573,16 @@
         <div id="task-buttons">
           <div>
             <button class="buttons" (click)="deleteTask(task.id)">
-              <img class="default" src="/assets/icons/delete.png" alt="Delete" />
-              <img class="hover" src="/assets/icons/delete-light-blue.png" alt="Delete" />
+              <img class="default" src="assets/icons/delete.png" alt="Delete" />
+              <img class="hover" src="assets/icons/delete-light-blue.png" alt="Delete" />
               Delete
             </button>
           </div>
           <span class="seperator"></span>
           <div>
             <button class="buttons" (click)="isTaskEditMode.set(true)">
-              <img class="default" src="/assets/icons/edit.png" alt="Edit" />
-              <img class="hover" src="/assets/icons/edit-light-blue.png" alt="Edit" />
+              <img class="default" src="assets/icons/edit.png" alt="Edit" />
+              <img class="hover" src="assets/icons/edit-light-blue.png" alt="Edit" />
               Edit
             </button>
           </div>
