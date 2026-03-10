@@ -184,7 +184,7 @@
         }
       </div>
       <div id="subtask-content" formArrayName="subtasks">
-        @for (sub of subtaskArray.controls; track $index) {
+        @for (sub of subtaskArray.controls; track (sub.value.id || sub)) {
           <div class="subtask-row" [formGroupName]="$index">
             <img id="dot" src="/assets/icons/circle.png" alt="dot" />
             <input
