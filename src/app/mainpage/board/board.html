@@ -490,6 +490,14 @@
     (click)="checkClickOutside($event, 'taskDetailDialog')"
   >
     @if (dbService.selectedTask(); as task) {
+      @if(isTaskEditMode() === true){
+        <div id="taskDetailDialogEdit" (click)="$event.stopPropagation()">
+          <button class="dialog-close-button" (click)="closeTaskDetails()">
+            <img src="assets/icons/close-blue.png" alt="Close" />
+          </button>
+          <app-add-task [editTaskData]="dbService.selectedTask()"></app-add-task>
+        </div>
+      } @else{
       <div id="stopPropagation" (click)="$event.stopPropagation()">
         <div class="task-detail-header">
           <span
@@ -504,18 +512,13 @@
         </div>
 
         <div class="title-description">
-          @if(isTaskEditMode() === true){
-            <h2>Hier ist ein Platz fur from.</h2>
-          }
-          @else {
             <h2>{{ task.title }}</h2>
             <p>{{ task.description }}</p>
-          }
         </div>
 
         <div class="date-priority">
-          <p>Due date:</p>
-          <span>{{ task.due_date }}</span>
+            <p>Due date:</p>
+            <span>{{ task.due_date }}</span>
           <p>Priority:</p>
           <div>
             <span>{{ task.priority }}</span>
@@ -585,6 +588,7 @@
           </div>
         </div>
       </div>
+      }
     }
   </dialog>
 

@@ -108,7 +108,6 @@ export class Board {
   checkClickOutside(event: MouseEvent, dialogTarget?: string) {
     if (dialogTarget === 'taskDetailDialog') {
       this.closeTaskDetails();
-      this.isTaskEditMode.set(false);
     }
     if (event.target === this.dialog.nativeElement) {
       this.close();
@@ -183,11 +182,6 @@ export class Board {
     const task = event.item.data as FullTask;
     const newStatus = event.container.id;
     const targetArray = event.container.data;
-    // if (event.previousContainer !== event.container) {
-    //   this.dbService.updateTaskStatus(task.id!, newStatus);
-    // } else {
-    //   moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    // }
     if (event.previousContainer === event.container) {
       moveItemInArray(targetArray, event.previousIndex, event.currentIndex);
     } else {

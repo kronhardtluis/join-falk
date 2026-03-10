@@ -1,7 +1,7 @@
-import { Component, inject, signal, computed, HostListener, output } from '@angular/core';
+import { Component, inject, signal, computed, HostListener, output, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { Supabase } from '../../services/supabase';
-import { Task, TaskCategory, TaskFormData, TaskPriority } from '../../interfaces/task.interface';
+import { FullTask, Task, TaskCategory, TaskFormData, TaskPriority } from '../../interfaces/task.interface';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -37,12 +37,58 @@ export class AddTask {
     });
   }
 
+  @Input() editTaskData: FullTask | null = null;
+
   /**
   * Lifecycle hook that initializes the component by fetching
   * the list of available contacts from the database service.
   */
   ngOnInit() {
     this.dbService.getContacts();
+    if (this.editTaskData) {
+      this.fillFormForEdit(this.editTaskData);
+    }
+  }
+
+  /**
+  * Populates the task form and internal signals with data from an existing task.
+  * This method maps core task properties to form controls, synchronizes the
+  * priority signal, and reconstructs the subtasks FormArray. It also extracts
+  * contact IDs from task assignments to initialize the assigned users field.
+  * @param {FullTask} task - The complete task object containing details,
+  * assignments, and subtasks to be loaded into the edit mode.
+  * @private
+  */
+  private fillFormForEdit(task: FullTask) {
+    this.taskForm.patchValue({
+        title: task.title,
+        description: task.description,
+        due_date: task.due_date,
+        priority: task.priority,
+        category: task.category,
+        assigned_to: task.task_assignments?.map(a => a.contacts.id) || []
+      });
+    this.selectedPriority.set(task.priority);
+    if (task.subtasks) {
+      this.subtaskArray.clear();
+      task.subtasks.forEach(sub => {
+        this.subtaskArray.push(this.fb.group({
+          id: [sub.id],
+          title: [sub.title],
+          is_done: [sub.is_done]
+        }));
+      });
+    }
+    if (task.subtasks) {
+      this.subtaskArray.clear();
+      task.subtasks.forEach(sub => {
+        this.subtaskArray.push(this.fb.group({
+          id: [sub.id],
+          title: [sub.title],
+          is_done: [sub.is_done]
+        }));
+      });
+    }
   }
 
   /**
@@ -281,5 +327,9 @@ export class AddTask {
   selectCategory(category: TaskCategory) {
     this.taskForm.get('category')?.setValue(category);
     this.isCategoryListVisible.set(false);
+  }
+
+  updateTask(){
+    console.log("task updated.")
   }
 }
