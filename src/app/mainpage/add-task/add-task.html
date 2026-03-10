@@ -1,251 +1,252 @@
-<!-- <main> -->
-
-<h2>
-  @if (!editTaskData) {
-    Add Task
-  } @else {
-    <br />
-  }
-</h2>
-
-<form [formGroup]="taskForm" id="form">
-  <div class="content">
-    <h3>Title <span class="asterisk">*</span></h3>
-    <input formControlName="title" placeholder="Enter a Title" type="text" />
-
-    <h3>Description</h3>
-    <textarea
-      formControlName="description"
-      placeholder="Enter a Description"
-      name="description"
-      id="description"
-    ></textarea>
-
-    <h3>Due date<span class="asterisk">*</span></h3>
-    <input formControlName="due_date" id="due-date" type="date" [min]="minDate" />
+<main>
+  <div id="headline">
+    <h2>
+      @if (!editTaskData) {
+        Add Task
+      } @else {
+        <br />
+      }
+    </h2>
   </div>
 
-  <div id="big-line"></div>
+  <form [formGroup]="taskForm" id="form">
+    <div class="content">
+      <h3>Title <span class="asterisk">*</span></h3>
+      <input formControlName="title" placeholder="Enter a Title" type="text" />
 
-  <div class="content">
-    <h3>Prio</h3>
-    <div id="priorities">
-      <button
-        type="button"
-        class="importance"
-        [class.active-urgent]="selectedPriority() === 'Urgent'"
-        (click)="setPriority('Urgent')"
-      >
-        <p>urgent</p>
-        @if (selectedPriority() === 'Urgent') {
-          <img src="assets/icons/urgent-white.png" alt="" />
-        } @else {
-          <img src="assets/icons/urgent-red.png" alt="" />
-        }
-      </button>
-      <button
-        type="button"
-        class="importance"
-        [class.active-medium]="selectedPriority() === 'Medium'"
-        (click)="setPriority('Medium')"
-      >
-        <p>medium</p>
-        @if (selectedPriority() === 'Medium') {
-          <img src="assets/icons/medium-white.png" alt="" />
-        } @else {
-          <img src="assets/icons/medium-orange.png" alt="" />
-        }
-      </button>
-      <button
-        type="button"
-        class="importance"
-        [class.active-low]="selectedPriority() === 'Low'"
-        (click)="setPriority('Low')"
-      >
-        <p>low</p>
-        @if (selectedPriority() === 'Low') {
-          <img src="assets/icons/low-white.png" alt="" />
-        } @else {
-          <img src="assets/icons/low-green.png" alt="" />
-        }
-      </button>
+      <h3>Description</h3>
+      <textarea
+        formControlName="description"
+        placeholder="Enter a Description"
+        name="description"
+        id="description"
+      ></textarea>
+
+      <h3>Due date<span class="asterisk">*</span></h3>
+      <input formControlName="due_date" id="due-date" type="date" [min]="minDate" />
     </div>
 
-    <h3>Assigned to</h3>
-    <div id="assign-contacts">
-      <div class="input-container">
-        <input
-          type="text"
-          placeholder="Select contacts to assign"
-          id="select-contact"
-          [value]="searchContactName()"
-          (input)="onSearchChange($event)"
-          (click)="toggleContactList()"
-        />
-        <button type="button" class="drop-down" (click)="toggleContactList()">
-          <img
-            src="assets/icons/drop-down.png"
-            [style.transform]="isContactListVisible() ? 'rotate(180deg)' : 'rotate(0)'"
-            alt="arrow"
-          />
-        </button>
-      </div>
+    <div id="big-line"></div>
 
-      @if (isContactListVisible()) {
-        <ul id="contacts-list-dropdown">
-          @for (contact of filteredContacts(); track contact.id) {
-            @if (contact.id !== undefined) {
-              <li
-                (click)="toggleContactSelection(contact.id)"
-                [class.selected-contact]="isContactSelected(contact.id)"
-              >
-                <div class="contact-info">
-                  <span class="initials-circle" [style.background-color]="contact.color">
-                    {{ dbService.getInitials(contact.name) }}
-                  </span>
-                  <span class="contact-name">{{ contact.name }}</span>
-                </div>
-
-                <div class="custom-checkbox">
-                  @if (isContactSelected(contact.id)) {
-                    <img src="assets/icons/cheackbox-white.png" alt="checked checkbox" />
-                  } @else {
-                    <img src="assets/icons/cheackbox.png" alt="checkbox" />
-                  }
-                </div>
-              </li>
-            }
-          } @empty {
-            <li class="no-results">No contacts found</li>
+    <div class="content">
+      <h3>Prio</h3>
+      <div id="priorities">
+        <button
+          type="button"
+          class="importance"
+          [class.active-urgent]="selectedPriority() === 'Urgent'"
+          (click)="setPriority('Urgent')"
+        >
+          <p>urgent</p>
+          @if (selectedPriority() === 'Urgent') {
+            <img src="assets/icons/urgent-white.png" alt="" />
+          } @else {
+            <img src="assets/icons/urgent-red.png" alt="" />
           }
-        </ul>
-      }
+        </button>
+        <button
+          type="button"
+          class="importance"
+          [class.active-medium]="selectedPriority() === 'Medium'"
+          (click)="setPriority('Medium')"
+        >
+          <p>medium</p>
+          @if (selectedPriority() === 'Medium') {
+            <img src="assets/icons/medium-white.png" alt="" />
+          } @else {
+            <img src="assets/icons/medium-orange.png" alt="" />
+          }
+        </button>
+        <button
+          type="button"
+          class="importance"
+          [class.active-low]="selectedPriority() === 'Low'"
+          (click)="setPriority('Low')"
+        >
+          <p>low</p>
+          @if (selectedPriority() === 'Low') {
+            <img src="assets/icons/low-white.png" alt="" />
+          } @else {
+            <img src="assets/icons/low-green.png" alt="" />
+          }
+        </button>
+      </div>
 
-      <div id="assigned-contacts-badges">
-        @for (id of taskForm.get('assigned_to')?.value; track id) {
-          <span class="assignee-badge" [style.background-color]="getContactColor(id)">
-            {{ getContactInitials(id) }}
-          </span>
+      <h3>Assigned to</h3>
+      <div id="assign-contacts">
+        <div class="input-container">
+          <input
+            type="text"
+            placeholder="Select contacts to assign"
+            id="select-contact"
+            [value]="searchContactName()"
+            (input)="onSearchChange($event)"
+            (click)="toggleContactList()"
+          />
+          <button type="button" class="drop-down" (click)="toggleContactList()">
+            <img
+              src="assets/icons/drop-down.png"
+              [style.transform]="isContactListVisible() ? 'rotate(180deg)' : 'rotate(0)'"
+              alt="arrow"
+            />
+          </button>
+        </div>
+
+        @if (isContactListVisible()) {
+          <ul id="contacts-list-dropdown">
+            @for (contact of filteredContacts(); track contact.id) {
+              @if (contact.id !== undefined) {
+                <li
+                  (click)="toggleContactSelection(contact.id)"
+                  [class.selected-contact]="isContactSelected(contact.id)"
+                >
+                  <div class="contact-info">
+                    <span class="initials-circle" [style.background-color]="contact.color">
+                      {{ dbService.getInitials(contact.name) }}
+                    </span>
+                    <span class="contact-name">{{ contact.name }}</span>
+                  </div>
+
+                  <div class="custom-checkbox">
+                    @if (isContactSelected(contact.id)) {
+                      <img src="assets/icons/cheackbox-white.png" alt="checked checkbox" />
+                    } @else {
+                      <img src="assets/icons/cheackbox.png" alt="checkbox" />
+                    }
+                  </div>
+                </li>
+              }
+            } @empty {
+              <li class="no-results">No contacts found</li>
+            }
+          </ul>
+        }
+
+        <div id="assigned-contacts-badges">
+          @for (id of taskForm.get('assigned_to')?.value; track id) {
+            <span class="assignee-badge" [style.background-color]="getContactColor(id)">
+              {{ getContactInitials(id) }}
+            </span>
+          }
+        </div>
+      </div>
+
+      <h3>Category<span class="asterisk">*</span></h3>
+      <div id="category-select">
+        <div class="input-container">
+          <input
+            id="select-category"
+            type="text"
+            formControlName="category"
+            placeholder="Select task category"
+            class="select-input"
+            readonly
+            (click)="toggleCategoryList()"
+          />
+          <button type="button" class="drop-down" (click)="toggleCategoryList()">
+            <img
+              src="assets/icons/drop-down.png"
+              [style.transform]="isCategoryListVisible() ? 'rotate(180deg)' : 'rotate(0)'"
+              alt="arrow"
+            />
+          </button>
+        </div>
+        @if (isCategoryListVisible()) {
+          <ul id="category-dropdown-list">
+            <li class="category-name-list" (click)="selectCategory('Technical Task')">
+              Technical Task
+            </li>
+            <li class="category-name-list" (click)="selectCategory('User Story')">User Story</li>
+          </ul>
         }
       </div>
-    </div>
 
-    <h3>Category<span class="asterisk">*</span></h3>
-    <div id="category-select">
-      <div class="input-container">
+      <h3>Subtasks</h3>
+      <div id="subtask-block">
         <input
-          id="select-category"
+          id="add-subtask"
+          formControlName="subtaskInput"
           type="text"
-          formControlName="category"
-          placeholder="Select task category"
-          class="select-input"
-          readonly
-          (click)="toggleCategoryList()"
+          placeholder="Add new Subtask"
+          (focus)="setSubtaskActive(true)"
+          (keydown.enter)="$event.preventDefault(); addSubtask(); clearSubtask()"
         />
-        <button type="button" class="drop-down" (click)="toggleCategoryList()">
-          <img
-            src="assets/icons/drop-down.png"
-            [style.transform]="isCategoryListVisible() ? 'rotate(180deg)' : 'rotate(0)'"
-            alt="arrow"
-          />
-        </button>
-      </div>
-      @if (isCategoryListVisible()) {
-        <ul id="category-dropdown-list">
-          <li class="category-name-list" (click)="selectCategory('Technical Task')">
-            Technical Task
-          </li>
-          <li class="category-name-list" (click)="selectCategory('User Story')">User Story</li>
-        </ul>
-      }
-    </div>
-
-    <h3>Subtasks</h3>
-    <div id="subtask-block">
-      <input
-        id="add-subtask"
-        formControlName="subtaskInput"
-        type="text"
-        placeholder="Add new Subtask"
-        (focus)="setSubtaskActive(true)"
-        (keydown.enter)="$event.preventDefault(); addSubtask(); clearSubtask()"
-      />
-      @if (isSubtaskActive() || taskForm.get('subtaskInput')?.value) {
-        <div id="subtask-input-buttons">
-        <button (click)="clearSubtask()" id="delete-button">
-          <img src="assets/icons/close.png" alt="delete" />
-        </button>
-        <div id="small-line"></div>
-        <button (click)="addSubtask(); clearSubtask()" id="add-button">
-          <img src="/assets/icons/subtasks-check.png" alt="check" />
-        </button>
-        </div>
-      }
-    </div>
-    <div id="subtask-content">
-      @for (sub of subtaskArray.controls; track $index) {
-        <div class="subtask-row">
-          <img id="dot" src="/assets/icons/circle.png" alt="dot" />
-          <input
-            #subInput
-            id="subtask-input"
-            type="text"
-            {list-style-type:
-            disc;}
-            value="{{ sub.value.title }}"
-          />
-          <div class="subtasks-buttons">
-            <button class="buttons">
-              <img
-                (click)="subInput.focus()"
-                id="inputFocus"
-                class="hover"
-                src="/assets/icons/edit.png"
-                alt="Edit"
-              />
-              <img
-                (mousedown)="removeSubtask($index)"
-                class="focus"
-                src="/assets/icons/delete.png"
-                alt="Delete"
-              />
+        @if (isSubtaskActive() || taskForm.get('subtaskInput')?.value) {
+          <div id="subtask-input-buttons">
+            <button (click)="clearSubtask()" id="delete-button">
+              <img src="assets/icons/close.png" alt="delete" />
             </button>
-            <p class="seperator hover"></p>
-            <div>
+            <div id="small-line"></div>
+            <button (click)="addSubtask(); clearSubtask()" id="add-button">
+              <img src="/assets/icons/subtasks-check.png" alt="check" />
+            </button>
+          </div>
+        }
+      </div>
+      <div id="subtask-content">
+        @for (sub of subtaskArray.controls; track $index) {
+          <div class="subtask-row">
+            <img id="dot" src="/assets/icons/circle.png" alt="dot" />
+            <input
+              #subInput
+              id="subtask-input"
+              type="text"
+              {list-style-type:
+              disc;}
+              value="{{ sub.value.title }}"
+            />
+            <div class="subtasks-buttons">
               <button class="buttons">
                 <img
+                  (click)="subInput.focus()"
+                  id="inputFocus"
                   class="hover"
-                  (click)="removeSubtask($index)"
+                  src="/assets/icons/edit.png"
+                  alt="Edit"
+                />
+                <img
+                  (mousedown)="removeSubtask($index)"
+                  class="focus"
                   src="/assets/icons/delete.png"
                   alt="Delete"
                 />
-                <img class="focus" src="assets/icons/subtasks-check.png" alt="check" />
               </button>
+              <p class="seperator hover"></p>
+              <div>
+                <button class="buttons">
+                  <img
+                    class="hover"
+                    (click)="removeSubtask($index)"
+                    src="/assets/icons/delete.png"
+                    alt="Delete"
+                  />
+                  <img class="focus" src="assets/icons/subtasks-check.png" alt="check" />
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        }
+      </div>
+    </div>
+  </form>
+
+  <div id="bottom">
+    <p id="declaration"><span class="asterisk">*</span> this field is required</p>
+    <div id="buttons">
+      @if (editTaskData) {
+        <button id="create" (click)="updateTask()">
+          Ok <img src="assets/icons/check-white.png" alt="Check icon" />
+        </button>
+      } @else {
+        <button id="clear" (click)="formClear()">
+          Clear
+          <img id="unhovered" src="assets/icons/close-blue.png" alt="Close icon" />
+          <img id="hovered" src="assets/icons/close-light-blue.png" alt="Close icon" />
+        </button>
+        <button id="create" (click)="addTask()">
+          Create Task <img src="assets/icons/check-white.png" alt="Check icon" />
+        </button>
       }
     </div>
   </div>
-</form>
-
-<div id="bottom">
-  <p id="declaration"><span class="asterisk">*</span> this field is required</p>
-  <div id="buttons">
-    @if (editTaskData) {
-      <button id="create" (click)="updateTask()">
-        Ok <img src="assets/icons/check-white.png" alt="Check icon" />
-      </button>
-    } @else {
-      <button id="clear" (click)="formClear()">
-        Clear
-        <img id="unhovered" src="assets/icons/close-blue.png" alt="Close icon" />
-        <img id="hovered" src="assets/icons/close-light-blue.png" alt="Close icon" />
-      </button>
-      <button id="create" (click)="addTask()">
-        Create Task <img src="assets/icons/check-white.png" alt="Check icon" />
-      </button>
-    }
-  </div>
-</div>
-<!-- </main> -->
+</main>
