@@ -238,7 +238,7 @@
     <p id="declaration"><span class="asterisk">*</span> this field is required</p>
     <div id="buttons">
       @if (editTaskData) {
-        <button id="create" (click)="updateTask()" [disabled]="taskForm.invalid">
+        <button id="create" (click)="updateTask()">
           Ok <img src="assets/icons/check-white.png" alt="Check icon" />
         </button>
       } @else {
@@ -247,7 +247,7 @@
           <img id="unhovered" src="assets/icons/close-blue.png" alt="Close icon" />
           <img id="hovered" src="assets/icons/close-light-blue.png" alt="Close icon" />
         </button>
-        <button id="create" (click)="addTask()" [disabled]="taskForm.invalid">
+        <button id="create" (click)="addTask()" >
           Create Task <img src="assets/icons/check-white.png" alt="Check icon" />
         </button>
       }

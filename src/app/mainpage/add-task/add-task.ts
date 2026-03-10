@@ -157,7 +157,11 @@ export class AddTask {
   * @returns {Promise<void>} A promise that resolves when the task creation process is complete.
   */
   async addTask() {
-    if (this.taskForm.invalid) return;
+    if (this.taskForm.invalid){
+      console.log("test");
+      this.taskForm.markAllAsTouched();
+      return;
+    }
     const taskData = this.prepareTaskData();
     const assignedTo = this.taskForm.value.assigned_to;
     const subtasks = this.taskForm.value.subtasks;
