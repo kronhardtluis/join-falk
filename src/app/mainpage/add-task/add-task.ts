@@ -158,7 +158,6 @@ export class AddTask {
   */
   async addTask() {
     if (this.taskForm.invalid){
-      console.log("test");
       this.taskForm.markAllAsTouched();
       return;
     }
