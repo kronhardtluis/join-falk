@@ -206,19 +206,17 @@
 }
 
 #add-task-dialog,#taskDetailDialogEdit {
-  // display: block;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 100;
   width: 95%;
-  height: 100%;
+  max-width: 1050px;
+  height: 90%;
   border-radius: 30px;
   overflow: hidden;
   overflow-y: auto;
-  //animation: slide-in-right 0.2s forwards;
-  // animation: slide-out-left 0.3s forwards;
 
   &::backdrop {
     background: rgba(0, 0, 0, 0.3);
