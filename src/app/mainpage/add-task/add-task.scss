@@ -2,12 +2,13 @@
 
 main{
   display: grid;
-  grid-template-rows: 20% 1fr 15%; /* Header 15%, Rest flexibel, Footer 10% */
-  height: 100%; /* Oder 100%, falls der Parent die Höhe vorgibt */
+  grid-template-rows: 20% 1fr 15%;
+  height: calc(100dvh - 160px);
   width: 100%;
   overflow: hidden;
   &.edit-mode {
     grid-template-rows: 10% 1fr 15%;
+    height: 100%;
   }
 }
 
@@ -18,6 +19,10 @@ main{
 
   h2{
     font-size: 6rem;
+  }
+
+  @media (max-width: 1250px) {
+    justify-content: center;
   }
 }
 
