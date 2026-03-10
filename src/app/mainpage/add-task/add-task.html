@@ -13,6 +13,9 @@
     <div class="content">
       <h3>Title <span class="asterisk">*</span></h3>
       <input formControlName="title" placeholder="Enter a Title" type="text" />
+      @if (taskForm.get('title')?.invalid && taskForm.get('title')?.touched) {
+      <p class="error-message">This field is required</p>
+      }
 
       <h3>Description</h3>
       <textarea
@@ -24,6 +27,9 @@
 
       <h3>Due date<span class="asterisk">*</span></h3>
       <input formControlName="due_date" id="due-date" type="date" [min]="minDate" />
+      @if (taskForm.get('due_date')?.invalid && taskForm.get('due_date')?.touched) {
+        <p class="error-message">Please select a due date</p>
+      }
     </div>
 
     <div id="big-line"></div>
@@ -133,7 +139,7 @@
 
       <h3>Category<span class="asterisk">*</span></h3>
       <div id="category-select">
-        <div class="input-container">
+        <div class="input-container" [class.invalid-border]="taskForm.get('category')?.invalid && taskForm.get('category')?.touched">
           <input
             id="select-category"
             type="text"
@@ -143,6 +149,7 @@
             readonly
             (click)="toggleCategoryList()"
           />
+
           <button type="button" class="drop-down" (click)="toggleCategoryList()">
             <img
               src="assets/icons/drop-down.png"
@@ -151,6 +158,9 @@
             />
           </button>
         </div>
+        @if (taskForm.get('category')?.invalid && taskForm.get('category')?.touched) {
+          <p class="error-message">Please select a category</p>
+        }
         @if (isCategoryListVisible()) {
           <ul id="category-dropdown-list">
             <li class="category-name-list" (click)="selectCategory('Technical Task')">
@@ -232,7 +242,7 @@
     <p id="declaration"><span class="asterisk">*</span> this field is required</p>
     <div id="buttons">
       @if (editTaskData) {
-        <button id="create" (click)="updateTask()">
+        <button id="create" (click)="updateTask()" [disabled]="taskForm.invalid">
           Ok <img src="assets/icons/check-white.png" alt="Check icon" />
         </button>
       } @else {
@@ -241,7 +251,7 @@
           <img id="unhovered" src="assets/icons/close-blue.png" alt="Close icon" />
           <img id="hovered" src="assets/icons/close-light-blue.png" alt="Close icon" />
         </button>
-        <button id="create" (click)="addTask()">
+        <button id="create" (click)="addTask()" [disabled]="taskForm.invalid">
           Create Task <img src="assets/icons/check-white.png" alt="Check icon" />
         </button>
       }

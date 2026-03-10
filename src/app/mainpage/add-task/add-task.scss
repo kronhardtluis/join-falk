@@ -70,9 +70,14 @@ form {
       &[type='date']:hover {
         cursor: text;
       }
-
       &:focus {
         border-color: all.$blueLight;
+      }
+      &.invalid-border {
+        border-color: red;
+      }
+      &.ng-invalid.ng-touched {
+        border-color: red;
       }
     }
     textarea{
@@ -527,4 +532,11 @@ button.importance {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+    min-height: 18px;
 }
