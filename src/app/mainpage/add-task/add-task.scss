@@ -1,5 +1,10 @@
 @use '../../../../public/assets/styles/all-styles.scss' as all;
 
+// main{
+//   height: 100%;
+//   width: 100%;
+// }
+
 h2 {
   margin-inline: 5%;
   font-size: 6rem;
@@ -17,7 +22,6 @@ form {
   max-width: calc(1440px - 232px);
   max-height: 100%;
   width: 100%;
-  // padding-block: 16px;
   padding-inline: 5%;
   overflow-y: auto;
 
@@ -104,19 +108,21 @@ form {
 
     #subtask-block {
       width: 100%;
-      margin-bottom: 8px;
 
-      #add-subtask {
-        padding-right: 27%;
+      #subtask-input-buttons{
+        @include all.flexi($jc: space-between);
+        position: absolute;
+        right: 5%;
+        top: 5%;
+        width: 15%;
+        height: 95%;
+        min-width: 60px;
       }
 
       button {
-        left: 70%;
-        bottom: 43px;
-        padding: 8px;
-        margin: 4px;
         background: none;
         border-radius: 50%;
+        padding: 6px;
 
         &:hover {
           background-color: all.$greyMid;
@@ -124,21 +130,15 @@ form {
         }
       }
 
-      img {
-        height: 16px;
-      }
-
       #small-line {
-        position: absolute;
-        left: calc(70% + 40px);
-        bottom: 48px;
-        height: 38px;
+        height: 70%;
         width: 1px;
         background-color: all.$greyMid;
       }
     }
 
     #subtask-content {
+      margin-top: 8px;
       width: 100%;
       height: 95px;
       overflow-y: auto;
@@ -149,8 +149,10 @@ form {
         width: 100%;
         @include all.flexi($jc: space-between);
         font-size: 16px;
+        border-radius: 8px;
 
         &:hover {
+          background-color: all.$greyMid;
           .subtasks-buttons .hover {
             display: block;
           }
@@ -187,14 +189,9 @@ form {
           border: none;
           outline: none;
           padding: 0px 70px 0px 15px;
-          border-radius: 8px;
           min-height: 30px;
           height: 30px;
           cursor: pointer;
-
-          &:hover {
-            background-color: all.$greyMid;
-          }
 
           &:focus {
             background-color: white;
@@ -229,6 +226,7 @@ form {
 
             #pointer-none {
               pointer-events: none;
+              background-color: red;
             }
           }
 
@@ -269,8 +267,8 @@ form {
 }
 
 #bottom {
-  @include all.flexi($jc: space-between);
-  margin-top: 40px;
+  @include all.flexi($jc: space-between, $ai: flex-end);
+  // margin-top: 40px;
   max-width: calc(1440px - 232px);
   width: 100%;
   padding-block: 16px;

@@ -1,4 +1,12 @@
-<h2>@if(!editTaskData){Add Task} @else {<br>}</h2>
+<!-- <main> -->
+
+<h2>
+  @if (!editTaskData) {
+    Add Task
+  } @else {
+    <br />
+  }
+</h2>
 
 <form [formGroup]="taskForm" id="form">
   <div class="content">
@@ -160,16 +168,18 @@
         type="text"
         placeholder="Add new Subtask"
         (focus)="setSubtaskActive(true)"
-        (keydown.enter)="$event.preventDefault(); addSubtask()"
+        (keydown.enter)="$event.preventDefault(); addSubtask(); clearSubtask()"
       />
       @if (isSubtaskActive() || taskForm.get('subtaskInput')?.value) {
+        <div id="subtask-input-buttons">
         <button (click)="clearSubtask()" id="delete-button">
-          <img src="assets/icons/close-blue.png" alt="delete" />
+          <img src="assets/icons/close.png" alt="delete" />
         </button>
         <div id="small-line"></div>
         <button (click)="addSubtask(); clearSubtask()" id="add-button">
-          <img src="assets/icons/check-blue.png" alt="check" />
+          <img src="/assets/icons/subtasks-check.png" alt="check" />
         </button>
+        </div>
       }
     </div>
     <div id="subtask-content">
@@ -177,6 +187,7 @@
         <div class="subtask-row">
           <img id="dot" src="/assets/icons/circle.png" alt="dot" />
           <input
+            #subInput
             id="subtask-input"
             type="text"
             {list-style-type:
@@ -185,7 +196,13 @@
           />
           <div class="subtasks-buttons">
             <button class="buttons">
-              <img class="hover" src="/assets/icons/edit.png" alt="Edit" />
+              <img
+                (click)="subInput.focus()"
+                id="inputFocus"
+                class="hover"
+                src="/assets/icons/edit.png"
+                alt="Edit"
+              />
               <img
                 (mousedown)="removeSubtask($index)"
                 class="focus"
@@ -215,18 +232,20 @@
 <div id="bottom">
   <p id="declaration"><span class="asterisk">*</span> this field is required</p>
   <div id="buttons">
-    @if(editTaskData){
+    @if (editTaskData) {
       <button id="create" (click)="updateTask()">
         Ok <img src="assets/icons/check-white.png" alt="Check icon" />
       </button>
-    }@else{
-    <button id="clear" (click)="formClear()">
-      Clear
-      <img id="unhovered" src="assets/icons/close-blue.png" alt="Close icon" />
-      <img id="hovered" src="assets/icons/close-light-blue.png" alt="Close icon" />
-    </button>
-    <button id="create" (click)="addTask()">
-      Create Task <img src="assets/icons/check-white.png" alt="Check icon" />
-    </button>}
+    } @else {
+      <button id="clear" (click)="formClear()">
+        Clear
+        <img id="unhovered" src="assets/icons/close-blue.png" alt="Close icon" />
+        <img id="hovered" src="assets/icons/close-light-blue.png" alt="Close icon" />
+      </button>
+      <button id="create" (click)="addTask()">
+        Create Task <img src="assets/icons/check-white.png" alt="Check icon" />
+      </button>
+    }
   </div>
 </div>
+<!-- </main> -->
