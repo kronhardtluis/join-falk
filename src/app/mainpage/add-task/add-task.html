@@ -1,16 +1,12 @@
-<main>
-  <div id="headline">
-    <h2>
-      @if (!editTaskData) {
-        Add Task
-      } @else {
-        <br />
-      }
-    </h2>
-  </div>
+<main [class.edit-mode]="editTaskData">
+  @if (!editTaskData) {
+    <div id="headline">
+      <h2>Add Task</h2>
+    </div>
+  }
 
-  <form [formGroup]="taskForm" id="form">
-    <div class="content">
+  <form [formGroup]="taskForm" id="form" [class.edit-mode]="editTaskData">
+    <div class="content" [class.edit-mode]="editTaskData">
       <h3>Title <span class="asterisk">*</span></h3>
       <input formControlName="title" placeholder="Enter a Title" type="text" />
       @if (taskForm.get('title')?.invalid && taskForm.get('title')?.touched) {
@@ -34,7 +30,7 @@
 
     <div id="big-line"></div>
 
-    <div class="content">
+    <div class="content" [class.edit-mode]="editTaskData">
       <h3>Prio</h3>
       <div id="priorities">
         <button

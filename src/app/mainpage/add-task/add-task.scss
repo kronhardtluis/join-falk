@@ -6,6 +6,9 @@ main{
   height: 100%; /* Oder 100%, falls der Parent die Höhe vorgibt */
   width: 100%;
   overflow: hidden;
+  &.edit-mode {
+    grid-template-rows: 10% 1fr 15%;
+  }
 }
 
 #headline {
@@ -33,6 +36,11 @@ form {
   padding-inline: 5%;
   overflow-y: auto;
 
+  &.edit-mode {
+    flex-direction: column;
+    align-items: center;
+  }
+
   @media (max-width: 1250px) {
     flex-direction: column;
     align-items: center;
@@ -45,6 +53,10 @@ form {
     max-width: 1060px;
     overflow: visible;
     @include all.flexi($fd: column, $ai: flex-start);
+
+    &.edit-mode{
+      width: 100%;
+    }
 
     @media (max-width: 1250px) {
       width: clamp(300px, 90%, 400px);
