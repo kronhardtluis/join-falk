@@ -22,7 +22,7 @@
       ></textarea>
 
       <h3>Due date<span class="asterisk">*</span></h3>
-      <input formControlName="due_date" id="due-date" type="date" [min]="minDate" />
+      <input formControlName="due_date" id="due-date" type="date" [min]="minDate" (keydown)="$event.preventDefault()" />
       @if (taskForm.get('due_date')?.invalid && taskForm.get('due_date')?.touched) {
         <p class="error-message">Please select a due date</p>
       }
