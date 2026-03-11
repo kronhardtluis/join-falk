@@ -29,8 +29,9 @@ main {
     box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.4);
   }
   &:disabled {
-    background-color: all.$greyMid; 
-    box-shadow: none;       
+    pointer-events: none;
+    background-color: all.$greyMid;
+    box-shadow: none;
   }
 }
 
@@ -56,16 +57,16 @@ header {
 
 #sign-up-header {
   width: 100%;
-//   background-color: green;
+  //   background-color: green;
   @include all.flexi();
 
-  button{
+  button {
     cursor: pointer;
     padding: 6px;
     border-radius: 50%;
 
-    &:hover{
-        background-color: all.$grey;
+    &:hover {
+      background-color: all.$grey;
     }
   }
 
@@ -93,17 +94,17 @@ header {
 
   .input-wrapper {
     margin: 20px 0px;
-    @include all.flexi($fd: column, $ai:flex-start);
+    @include all.flexi($fd: column, $ai: flex-start);
 
-    .icon{
-        position: absolute;
-        right: 5%;
-        top: 20%;
-        z-index: 1;
+    .icon {
+      position: absolute;
+      right: 5%;
+      top: 20%;
+      z-index: 1;
 
-        &--lock{
-            top: 15%;
-        }
+      &--lock {
+        top: 15%;
+      }
     }
 
     input {
@@ -115,29 +116,35 @@ header {
         outline: none;
         border: 2px solid all.$blueLight;
       }
+      &.ng-invalid.ng-touched {
+        border: 2px solid red;
+      }
     }
   }
   .error-message {
     margin-top: 3px;
     font-size: 1rem;
     color: red;
+    visibility: hidden;
+    &--visible {
+      visibility: visible;
+    }
   }
 
   #checkbox-content {
-    @include all.flexi($fd:column);
+    @include all.flexi($fd: column);
 
-    #checkbox-wrapper{
-       @include all.flexi($gap: 8px); 
+    #checkbox-wrapper {
+      @include all.flexi($gap: 8px);
 
-       a{
+      a {
         font-size: 2rem;
         color: all.$blueLight;
-       }
+      }
     }
   }
 }
 
 #sign-up-footer {
   @include all.flexi();
-//   background-color: orange;
 }

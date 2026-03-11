@@ -26,32 +26,85 @@
           <div class="input-wrapper">
             <img class="icon" src="assets/icons/person.png" alt="User" />
             <input id="name" type="text" formControlName="name" placeholder="Name" />
-            <span class="error-message">Your Name is required.</span>
+            <!-- <span class="error-message">Your Name is required.</span> -->
+            <span
+              class="error-message"
+              [class.error-message--visible]="
+                userForm.get('name')?.invalid && userForm.get('name')?.touched
+              "
+            >
+              Your Name is required.
+            </span>
           </div>
           <div class="input-wrapper">
             <img class="icon" src="assets/icons/mail.png" alt="User" />
             <input id="email" type="text" formControlName="email" placeholder="Email" />
-            <span class="error-message">Your EMail is required.</span>
-          </div>
-          <div class="input-wrapper">
-            <img class="icon icon--lock" src="assets/icons/lock.png" alt="User" />
-            <input id="password" type="text" formControlName="password" placeholder="Password" />
-            <span class="error-message">Your password is required.</span>
+            <span
+              class="error-message"
+              [class.error-message--visible]="
+                userForm.get('email')?.invalid && userForm.get('email')?.touched
+              "
+            >
+              Your EMail is required.
+            </span>
           </div>
           <div class="input-wrapper">
             <img class="icon icon--lock" src="assets/icons/lock.png" alt="User" />
             <input
+              id="password"
+              type="password"
+              formControlName="password"
+              placeholder="Password"
+            />
+            <span
+              class="error-message"
+              [class.error-message--visible]="
+                userForm.get('password')?.invalid && userForm.get('password')?.touched
+              "
+            >
+              Your password is required.
+            </span>
+          </div>
+          <div class="input-wrapper">
+            @if (!confirm.matches(':focus')) {
+              <img class="icon icon--lock" src="assets/icons/lock.png" alt="User" />
+            } @else if (!isPasswordVisible) {
+              <!-- Zustand 2: Fokus da, aber Passwort versteckt -> Auge durchgestrichen -->
+              <img
+                class="icon clickable"
+                src="assets/icons/visibility.png"
+                (mousedown)="togglePassword($event)"
+              />
+            } @else {
+              <!-- Zustand 3: Fokus da & Passwort sichtbar -> Auge offen -->
+              <img
+                class="icon clickable"
+                src="assets/icons/visible.png"
+                (mousedown)="togglePassword($event)"
+              />
+            }
+
+            <input
+              #confirm
               id="confirm"
-              type="text"
+              [type]="isPasswordVisible ? 'text' : 'password'"
               formControlName="confirm"
               placeholder="Confirm Password"
+              (blur)="isPasswordVisible = false"
             />
-            <span class="error-message">Your passwords dont`t match. Please try again.</span>
+            <span
+              class="error-message"
+              [class.error-message--visible]="
+                (userForm.get('confirm')?.touched || userForm.touched) &&
+                userForm.hasError('mismatch')
+              "
+            >
+              Your passwords don't match. Please try again.
+            </span>
           </div>
 
           <div id="checkbox-content">
             <div id="checkbox-wrapper">
-              <!-- <input formControlName="checkBox" type="checkbox" /> -->
               <div class="custom-checkbox" (click)="toggleCheckBox()" style="cursor: pointer">
                 @if (userForm.get('checkBox')?.value) {
                   <img src="assets/icons/checkbox-checked.png" alt="checked" />
@@ -61,21 +114,30 @@
               </div>
               <p>I accept the <a routerLink="privacy-policy">Privacy policy</a></p>
             </div>
-            <span class="error-message">Please accept privacy policy.</span>
+            <span
+              class="error-message"
+              [class.error-message--visible]="
+                userForm.get('checkBox')?.invalid && userForm.get('checkBox')?.touched
+              "
+            >
+              Please accept privacy policy.
+            </span>
           </div>
         </form>
       </div>
 
       <div id="sign-up-footer">
-        <button
-          type="submit"
-          [disabled]="!userForm.valid"
-          class="button"
-          form="sign-up-form"
-          (click)="formReset()"
-        >
-          Sign Up
-        </button>
+        <div (click)="handleDisabledClick()">
+          <button
+            type="submit"
+            [disabled]="!userForm.valid"
+            class="button"
+            form="sign-up-form"
+            (click)="formReset()"
+          >
+            Sign Up
+          </button>
+        </div>
       </div>
     </section>
   </section>
