@@ -1,2 +1,84 @@
+<main>
+  <img id="logo" src="assets/icons/logo.png" alt="logo" />
 
-<h2>Join</h2>
+  <header>
+    <div id="sign-up-area">
+      <p>Not a Join User?</p>
+      <button class="button">Sign Up</button>
+    </div>
+  </header>
+
+  <section id="main-content">
+    <section id="sign-up-wrapper">
+      <div id="sign-up-header">
+        <button>
+          <img src="assets/icons/arrow.png" alt="arrow-left" />
+        </button>
+        <div id="sign-up-headline">
+          <h2>Sign Up</h2>
+          <img src="assets/icons/blue-underline.png" alt="" />
+        </div>
+      </div>
+
+      <div id="form">
+        <!-- [formGroup]="userForm" (ngSubmit)="formSubmit()" -->
+        <form [formGroup]="userForm" (ngSubmit)="formSubmit()" id="sign-up-form">
+          <div class="input-wrapper">
+            <img class="icon" src="assets/icons/person.png" alt="User" />
+            <input id="name" type="text" formControlName="name" placeholder="Name" />
+            <span class="error-message">Your Name is required.</span>
+          </div>
+          <div class="input-wrapper">
+            <img class="icon" src="assets/icons/mail.png" alt="User" />
+            <input id="email" type="text" formControlName="email" placeholder="Email" />
+            <span class="error-message">Your EMail is required.</span>
+          </div>
+          <div class="input-wrapper">
+            <img class="icon icon--lock" src="assets/icons/lock.png" alt="User" />
+            <input id="password" type="text" formControlName="password" placeholder="Password" />
+            <span class="error-message">Your password is required.</span>
+          </div>
+          <div class="input-wrapper">
+            <img class="icon icon--lock" src="assets/icons/lock.png" alt="User" />
+            <input
+              id="confirm"
+              type="text"
+              formControlName="confirm"
+              placeholder="Confirm Password"
+            />
+            <span class="error-message">Your passwords dont`t match. Please try again.</span>
+          </div>
+
+          <div id="checkbox-content">
+            <div id="checkbox-wrapper">
+              <!-- <input formControlName="checkBox" type="checkbox" /> -->
+              <div class="custom-checkbox" (click)="toggleCheckBox()" style="cursor: pointer">
+                @if (userForm.get('checkBox')?.value) {
+                  <img src="assets/icons/checkbox-checked.png" alt="checked" />
+                } @else {
+                  <img src="assets/icons/cheackbox.png" alt="unchecked" />
+                }
+              </div>
+              <p>I accept the <a routerLink="privacy-policy">Privacy policy</a></p>
+            </div>
+            <span class="error-message">Please accept privacy policy.</span>
+          </div>
+        </form>
+      </div>
+
+      <div id="sign-up-footer">
+        <button
+          type="submit"
+          [disabled]="!userForm.valid"
+          class="button"
+          form="sign-up-form"
+          (click)="formReset()"
+        >
+          Sign Up
+        </button>
+      </div>
+    </section>
+  </section>
+
+  <footer></footer>
+</main>
