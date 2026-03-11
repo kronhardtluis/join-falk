@@ -39,7 +39,7 @@
           [class.active-urgent]="selectedPriority() === 'Urgent'"
           (click)="setPriority('Urgent')"
         >
-          <p>urgent</p>
+          <p>Urgent</p>
           @if (selectedPriority() === 'Urgent') {
             <img src="assets/icons/urgent-white.png" alt="" />
           } @else {
@@ -52,7 +52,7 @@
           [class.active-medium]="selectedPriority() === 'Medium'"
           (click)="setPriority('Medium')"
         >
-          <p>medium</p>
+          <p>Medium</p>
           @if (selectedPriority() === 'Medium') {
             <img src="assets/icons/medium-white.png" alt="" />
           } @else {
@@ -65,7 +65,7 @@
           [class.active-low]="selectedPriority() === 'Low'"
           (click)="setPriority('Low')"
         >
-          <p>low</p>
+          <p>Low</p>
           @if (selectedPriority() === 'Low') {
             <img src="assets/icons/low-white.png" alt="" />
           } @else {
