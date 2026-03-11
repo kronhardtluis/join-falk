@@ -15,7 +15,7 @@
             <img class="icon-hover" src="assets/icons/edit-circle-white.png" alt="Edit" />
           </div>
           <div class="information">
-            <span>0</span>
+            <span>{{todoCount()}}</span>
             <p>To-do</p>
           </div>
         </a>
@@ -26,7 +26,7 @@
             <img class="icon-hover" src="assets/icons/check-circle-white.png" alt="Check" />
           </div>
           <div class="information">
-            <span>1</span>
+            <span>{{doneCount()}}</span>
             <p>Done</p>
           </div>
         </a>
@@ -38,7 +38,7 @@
             <div id="urgent-header">
               <img src="assets/icons/urgent.png" alt="Urgent" />
               <div class="information">
-                <span>2</span>
+                <span>{{urgentCount()}}</span>
                 <p>Urgent</p>
               </div>
             </div>
@@ -46,7 +46,7 @@
 
           <div id="seperator"></div>
           <div>
-            <strong>February 18, 2026</strong>
+            <strong>{{upcomingDeadline()}}</strong>
             <p>Upcoming Deadline</p>
           </div>
         </a>
@@ -55,21 +55,21 @@
       <div class="card">
         <a [routerLink]="'/board'" class="button-three" href="">
           <div class="information">
-            <span>5</span>
-            <p>Tasks in</p> 
+            <span>{{totalTasks()}}</span>
+            <p>Tasks in</p>
             <p>Board</p>
           </div>
         </a>
         <a [routerLink]="'/board'" class="button-three" href="">
           <div class="information">
-            <span>1</span>
+            <span>{{inProgressCount()}}</span>
             <p>Tasks in </p>
             <p>Progress</p>
           </div>
         </a>
         <a [routerLink]="'/board'" class="button-three" href="">
           <div class="information">
-            <span>1</span>
+            <span>{{awaitingFeedbackCount()}}</span>
             <p>Awaiting</p>
             <p>Feedback</p>
           </div>
