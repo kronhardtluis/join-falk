@@ -23,6 +23,7 @@
       <div id="form">
         <!-- [formGroup]="userForm" (ngSubmit)="formSubmit()" -->
         <form [formGroup]="userForm" (ngSubmit)="formSubmit()" id="sign-up-form">
+            
           <div class="input-wrapper">
             <img class="icon" src="assets/icons/person.png" alt="User" />
             <input id="name" type="text" formControlName="name" placeholder="Name" />
@@ -36,6 +37,7 @@
               Your Name is required.
             </span>
           </div>
+
           <div class="input-wrapper">
             <img class="icon" src="assets/icons/mail.png" alt="User" />
             <input id="email" type="text" formControlName="email" placeholder="Email" />
@@ -48,6 +50,7 @@
               Your EMail is required.
             </span>
           </div>
+
           <div class="input-wrapper">
             <img class="icon icon--lock" src="assets/icons/lock.png" alt="User" />
             <input
@@ -65,6 +68,7 @@
               Your password is required.
             </span>
           </div>
+
           <div class="input-wrapper">
             @if (!confirm.matches(':focus')) {
               <img class="icon icon--lock" src="assets/icons/lock.png" alt="User" />
@@ -105,7 +109,7 @@
 
           <div id="checkbox-content">
             <div id="checkbox-wrapper">
-              <div class="custom-checkbox" (click)="toggleCheckBox()" style="cursor: pointer">
+              <div class="custom-checkbox" (click)="toggleCheckBox()">
                 @if (userForm.get('checkBox')?.value) {
                   <img src="assets/icons/checkbox-checked.png" alt="checked" />
                 } @else {

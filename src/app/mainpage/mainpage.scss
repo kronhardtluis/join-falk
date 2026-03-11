@@ -137,6 +137,16 @@ header {
     #checkbox-wrapper {
       @include all.flexi($gap: 8px);
 
+      .custom-checkbox{
+        padding: 1px;
+        border-radius: 8px;
+        cursor: pointer;
+
+        &:hover{
+            background-color: all.$grey;
+        }
+      }
+
       a {
         font-size: 2rem;
         color: all.$blueLight;
