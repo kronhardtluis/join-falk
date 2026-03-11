@@ -1,4 +1,4 @@
-import { Component, inject, computed, signal} from '@angular/core';
+import { Component, inject, computed, OnInit, OnDestroy, signal} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Supabase } from '../../services/supabase';
 
@@ -8,8 +8,8 @@ import { Supabase } from '../../services/supabase';
   templateUrl: './summary.html',
   styleUrl: './summary.scss',
 })
-export class Summary {
-  greeting: string = '';
+export class Summary implements OnInit, OnDestroy {
+  greeting = signal<string>('');
   dbService = inject(Supabase);
   totalTasks = computed(() => this.dbService.tasks().length);
   urgentCount = computed(() => this.dbService.tasks().filter(t => t.priority === 'Urgent').length);
@@ -17,6 +17,7 @@ export class Summary {
   doneCount = computed(() => this.dbService.tasks().filter(t => t.status === 'Done').length);
   inProgressCount = computed(() => this.dbService.tasks().filter(t => t.status === 'In Progress').length);
   awaitingFeedbackCount = computed(() => this.dbService.tasks().filter(t => t.status === 'Awaiting Feedback').length);
+  greetingInterval: ReturnType<typeof setInterval> | undefined;
 
   /**
   * Initializes the component by setting the initial greeting,
@@ -24,9 +25,19 @@ export class Summary {
   */
   ngOnInit() {
     this.setGreeting();
-    setInterval(() => this.setGreeting(), 60000); // jede Minute prüfen
+    this.greetingInterval = setInterval(() => this.setGreeting(), 60000);
     this.dbService.loadBoardData();
     this.dbService.subscribeToChanges();
+  }
+
+  /**
+   * Cleans up the component by clearing the greeting interval
+   * to prevent memory leaks.
+   */
+  ngOnDestroy() {
+    if (this.greetingInterval) {
+      clearInterval(this.greetingInterval);
+    }
   }
 
   /**
@@ -36,11 +47,11 @@ export class Summary {
   setGreeting() {
     const hour = new Date().getHours();
     if (hour >= 5 && hour < 12) {
-      this.greeting = 'Good morning';
+      this.greeting.set('Good morning');
     } else if (hour >= 12 && hour < 18) {
-      this.greeting = 'Good afternoon';
+      this.greeting.set('Good afternoon');
     } else {
-      this.greeting = 'Good evening';
+      this.greeting.set('Good evening');
     }
   }
 
