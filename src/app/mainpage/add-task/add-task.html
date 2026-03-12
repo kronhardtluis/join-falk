@@ -10,7 +10,9 @@
       <h3>Title <span class="asterisk">*</span></h3>
       <input formControlName="title" placeholder="Enter a Title" type="text" />
       @if (taskForm.get('title')?.invalid && taskForm.get('title')?.touched) {
-      <p class="error-message">This field is required</p>
+        <p class="error-message">This field is required</p>
+      } @else {
+        <p class="error-message-hidden">This field is required</p>
       }
 
       <h3>Description</h3>
@@ -22,9 +24,17 @@
       ></textarea>
 
       <h3>Due date<span class="asterisk">*</span></h3>
-      <input formControlName="due_date" id="due-date" type="date" [min]="minDate" (keydown)="$event.preventDefault()" />
+      <input
+        formControlName="due_date"
+        id="due-date"
+        type="date"
+        [min]="minDate"
+        (keydown)="$event.preventDefault()"
+      />
       @if (taskForm.get('due_date')?.invalid && taskForm.get('due_date')?.touched) {
         <p class="error-message">Please select a due date</p>
+      } @else {
+        <p class="error-message-hidden">Please select a due date</p>
       }
     </div>
 
@@ -39,7 +49,7 @@
           [class.active-urgent]="selectedPriority() === 'Urgent'"
           (click)="setPriority('Urgent')"
         >
-          <p>urgent</p>
+          <p>Urgent</p>
           @if (selectedPriority() === 'Urgent') {
             <img src="assets/icons/urgent-white.png" alt="" />
           } @else {
@@ -52,7 +62,7 @@
           [class.active-medium]="selectedPriority() === 'Medium'"
           (click)="setPriority('Medium')"
         >
-          <p>medium</p>
+          <p>Medium</p>
           @if (selectedPriority() === 'Medium') {
             <img src="assets/icons/medium-white.png" alt="" />
           } @else {
@@ -65,7 +75,7 @@
           [class.active-low]="selectedPriority() === 'Low'"
           (click)="setPriority('Low')"
         >
-          <p>low</p>
+          <p>Low</p>
           @if (selectedPriority() === 'Low') {
             <img src="assets/icons/low-white.png" alt="" />
           } @else {
@@ -140,7 +150,12 @@
 
       <h3>Category<span class="asterisk">*</span></h3>
       <div id="category-select">
-        <div class="input-container" [class.invalid-border]="taskForm.get('category')?.invalid && taskForm.get('category')?.touched">
+        <div
+          class="input-container"
+          [class.invalid-border]="
+            taskForm.get('category')?.invalid && taskForm.get('category')?.touched
+          "
+        >
           <input
             id="select-category"
             type="text"
@@ -161,6 +176,8 @@
         </div>
         @if (taskForm.get('category')?.invalid && taskForm.get('category')?.touched) {
           <p class="error-message">Please select a category</p>
+        } @else {
+          <p class="error-message-hidden">Please select a category</p>
         }
         @if (isCategoryListVisible()) {
           <ul id="category-dropdown-list">
@@ -195,15 +212,10 @@
         }
       </div>
       <div id="subtask-content" formArrayName="subtasks">
-        @for (sub of subtaskArray.controls; track (sub.value.id || sub)) {
+        @for (sub of subtaskArray.controls; track sub.value.id || sub) {
           <div class="subtask-row" [formGroupName]="$index">
             <img id="dot" src="assets/icons/circle.png" alt="dot" />
-            <input
-              #subInput
-              id="subtask-input"
-              type="text"
-              formControlName="title"
-            />
+            <input #subInput id="subtask-input" type="text" formControlName="title" />
             <div class="subtasks-buttons">
               <button class="buttons">
                 <img
@@ -252,7 +264,7 @@
           <img id="unhovered" src="assets/icons/close-blue.png" alt="Close icon" />
           <img id="hovered" src="assets/icons/close-light-blue.png" alt="Close icon" />
         </button>
-        <button id="create" (click)="addTask()" >
+        <button id="create" (click)="addTask()">
           Create Task <img src="assets/icons/check-white.png" alt="Check icon" />
         </button>
       }
