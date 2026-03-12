@@ -2,7 +2,7 @@
   <img id="logo" src="assets/icons/logo.png" alt="logo" />
 
   <header>
-    @if(activeState()==="log-in"){
+    @if (activeState() === 'log-in') {
       <div id="sign-up-area">
         <p>Not a Join User?</p>
         <button class="button" (click)="moveTo('sign-up')">Sign Up</button>
@@ -13,38 +13,44 @@
   <section id="main-content">
     <section id="sign-up-wrapper">
       <div id="sign-up-header">
-        @if(activeState()==="sign-up"){
-        <button (click)="moveTo('log-in')">
-          <img src="assets/icons/arrow.png" alt="arrow-left" />
-        </button>
+        @if (activeState() === 'sign-up') {
+          <button (click)="moveTo('log-in')">
+            <img src="assets/icons/arrow.png" alt="arrow-left" />
+          </button>
         }
         <div id="sign-up-headline">
-          <h2>@if(activeState() === "log-in"){Log in} @else{Sign Up}</h2>
-          <img src="assets/icons/blue-underline.png" alt="" />
+          <h2>
+            @if (activeState() === 'log-in') {
+              Log in
+            } @else {
+              Sign up
+            }
+          </h2>
+          <img src="assets/icons/blue-underline.png" alt="underline" />
         </div>
       </div>
 
       <div id="form">
         <!-- [formGroup]="userForm" (ngSubmit)="formSubmit()" -->
         <form [formGroup]="userForm" (ngSubmit)="formSubmit()" id="sign-up-form">
-          @if(activeState() === "sign-up"){
-          <div class="input-wrapper">
-            <img class="icon" src="assets/icons/person.png" alt="User" />
-            <input id="name" type="text" formControlName="name" placeholder="Name" />            <span
-              class="error-message"
-            >
-            @if(userForm.get('name')?.invalid && userForm.get('name')?.touched){Your Name is required.}
-            </span>
-          </div>
-        }
+          @if (activeState() === 'sign-up') {
+            <div class="input-wrapper">
+              <img class="icon" src="assets/icons/person.png" alt="User" />
+              <input id="name" type="text" formControlName="name" placeholder="Name" />
+              <span class="error-message">
+                @if (userForm.get('name')?.invalid && userForm.get('name')?.touched) {
+                  Your Name is required.
+                }
+              </span>
+            </div>
+          }
           <div class="input-wrapper">
             <img class="icon" src="assets/icons/mail.png" alt="User" />
             <input id="email" type="text" formControlName="email" placeholder="Email" />
-            <span
-              class="error-message"
-            >
-            @if(userForm.get('email')?.invalid && userForm.get('email')?.touched){Your Email is required.}
-
+            <span class="error-message">
+              @if (userForm.get('email')?.invalid && userForm.get('email')?.touched) {
+                Your Email is required.
+              }
             </span>
           </div>
 
@@ -67,7 +73,7 @@
               />
             }
             <input
-            #password
+              #password
               id="password"
               type="password"
               formControlName="password"
@@ -75,14 +81,14 @@
               [type]="isPasswordVisible ? 'text' : 'password'"
               (blur)="isPasswordVisible = false"
             />
-            <span
-              class="error-message"
-            >@if(userForm.get('password')?.invalid && userForm.get('password')?.touched){Your password is required.}
-
+            <span class="error-message">
+              @if (userForm.get('password')?.invalid && userForm.get('password')?.touched) {
+                Your password is required.
+              }
             </span>
           </div>
 
-          @if(activeState() === "sign-up"){
+          @if (activeState() === 'sign-up') {
             <div class="input-wrapper">
               @if (!confirm.matches(':focus')) {
                 <img class="icon icon--lock" src="assets/icons/lock.png" alt="User" />
@@ -102,57 +108,59 @@
                 />
               }
 
-            <input
-              #confirm
-              id="confirm"
-              [type]="isConfirmVisible ? 'text' : 'password'"
-              formControlName="confirm"
-              placeholder="Confirm Password"
-              (blur)="isConfirmVisible = false"
-            />
-            <span
-              class="error-message"
-            >
-            @if(userForm.get('confirm')?.invalid && userForm.get('confirm')?.touched){Your passwords don't match. Please try again.}
-            </span>
-          </div>
-
-          <div id="checkbox-content">
-            <div id="checkbox-wrapper">
-              <div class="custom-checkbox" (click)="toggleCheckBox()">
-                @if (userForm.get('checkBox')?.value) {
-                  <img src="assets/icons/checkbox-checked.png" alt="checked" />
-                } @else {
-                  <img src="assets/icons/cheackbox.png" alt="unchecked" />
+              <input
+                #confirm
+                id="confirm"
+                [type]="isConfirmVisible ? 'text' : 'password'"
+                formControlName="confirm"
+                placeholder="Confirm Password"
+                (blur)="isConfirmVisible = false"
+              />
+              <span class="error-message">
+                @if (userForm.get('confirm')?.invalid && userForm.get('confirm')?.touched) {
+                  Your passwords don't match. Please try again.
                 }
-              </div>
-              <p>I accept the <a routerLink="privacy-policy">Privacy policy</a></p>
+              </span>
             </div>
-            <span
-              class="error-message"
-            >
-            @if(userForm.get('checkBox')?.invalid && userForm.get('checkBox')?.touched){Please accept privacy policy.}
 
-            </span>
-          </div>}
+            <div id="checkbox-content">
+              <div id="checkbox-wrapper">
+                <div class="custom-checkbox" (click)="toggleCheckBox()">
+                  @if (userForm.get('checkBox')?.value) {
+                    <img src="assets/icons/checkbox-checked.png" alt="checked" />
+                  } @else {
+                    <img src="assets/icons/cheackbox.png" alt="unchecked" />
+                  }
+                </div>
+                <p>I accept the <a routerLink="privacy-policy">Privacy policy</a></p>
+              </div>
+              <span class="error-message">
+                @if (userForm.get('checkBox')?.invalid && userForm.get('checkBox')?.touched) {
+                  Please accept privacy policy.
+                }
+              </span>
+            </div>
+          }
         </form>
       </div>
 
       <div id="sign-up-footer">
         <div (click)="handleDisabledClick()">
-          @if(activeState() === "sign-up"){
-          <button
-            type="submit"
-            [disabled]="!userForm.valid"
-            class="button"
-            form="sign-up-form"
-            (click)="formReset()"
-          >
-            Sign Up
-          </button>}
-          @else {
-          <button class="button" (click)="test('loged-in')">Log in</button>
-          <button class="button" (click)="test('loged-in as Guest')">Guest Log in</button>
+          @if (activeState() === 'sign-up') {
+            <button
+              type="submit"
+              [disabled]="!userForm.valid"
+              class="button"
+              form="sign-up-form"
+              (click)="formReset()"
+            >
+              Sign Up
+            </button>
+          } @else {
+            <div id="log-in-buttons">
+              <button class="button" (click)="test('loged-in')">Log in</button>
+              <button class="button-light" (click)="test('loged-in as Guest')">Guest Log in</button>
+            </div>
           }
         </div>
       </div>

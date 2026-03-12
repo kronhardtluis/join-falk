@@ -3,8 +3,6 @@
 main {
   width: 100%;
   height: fit-content;
-  // display: grid;
-  // grid-template-rows: 15% 1fr 15%;
   padding: 20px 5% 0px;
 }
 
@@ -17,9 +15,9 @@ main {
 
 .button {
   background-color: all.$blue;
-  font-size: 1.6rem;
+  font-size: 2rem;
   color: white;
-  padding: 12px 16px;
+  padding: 12px 20px;
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
@@ -32,6 +30,23 @@ main {
     pointer-events: none;
     background-color: all.$greyMid;
     box-shadow: none;
+  }
+}
+
+.button-light{
+  background-color: white;
+  font-size: 2rem;
+  color: all.$blue;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  border: 2px solid all.$blue;
+
+  &:hover {
+    color: all.$blueLight;
+    border: 2px solid all.$blueLight;
+    box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.4);
   }
 }
 
@@ -49,12 +64,13 @@ header {
 
 #sign-up-wrapper {
   background-color: white;
-  height: 80%;
+  height: fit-content;
+  padding: clamp(10px, 3vw, 30px);
   width: 50%;
+  min-width: 300px;
   border-radius: 30px;
-  // display: grid;
-  // grid-template-rows: 20% 1fr 10%;
   overflow: hidden;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.1));
 }
 
 #sign-up-header {
@@ -100,25 +116,26 @@ header {
 
   .input-wrapper {
     width: 100%;
-    margin: 20px 0px;
+    margin-bottom: 15px;
     @include all.flexi($fd: column, $ai: center);
 
     .icon {
       position: absolute;
-      right: 15%;
-      top: 20%;
+      right: 16%;
+      top: 27%;
       z-index: 1;
 
       &--lock {
-        top: 15%;
+        top: 23%;
       }
     }
 
     input {
-      width: 80%;
+      width: 75%;
       border-radius: 10px;
       border: 2px solid rgb(232, 232, 232);
-      padding: 8px 40px 8px 15px;
+      padding: 10px 40px 10px 15px;
+      cursor: pointer;
 
       &::placeholder{
         color:rgb(209, 209, 209)
@@ -173,9 +190,14 @@ header {
   margin-top: 24px;
 }
 
+#log-in-buttons{
+  @include all.flexi($gap: 35px);
+  margin: 20px 0;
+}
+
 footer {
   @include all.flexi($gap: 40px);
-  color: grey;
+  color: rgb(189, 189, 189);
   cursor: pointer;
   height: 100px;
 
