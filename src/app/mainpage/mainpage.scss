@@ -137,17 +137,17 @@ header {
     #checkbox-wrapper {
       @include all.flexi($gap: 8px);
 
-      .custom-checkbox{
+      .custom-checkbox {
         padding: 1px;
         border-radius: 8px;
         cursor: pointer;
 
-        &:hover{
-            background-color: all.$grey;
+        &:hover {
+          background-color: all.$grey;
         }
       }
 
-      p{
+      p {
         color: grey;
       }
 
@@ -161,4 +161,19 @@ header {
 
 #sign-up-footer {
   @include all.flexi();
+}
+
+footer {
+  @include all.flexi($gap: 40px);
+  color: grey;
+  cursor: pointer;
+
+  a {
+    &:hover {
+      color: all.$blueLight;
+      filter: drop-shadow(0.3px 0 0 currentcolor) 
+            drop-shadow(-0.3px 0 0 currentcolor)
+            drop-shadow(0 0.3px 0 currentcolor);
+    }
+  }
 }
