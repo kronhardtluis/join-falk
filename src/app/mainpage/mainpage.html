@@ -158,8 +158,8 @@
             </button>
           } @else {
             <div id="log-in-buttons">
-              <button class="button" (click)="test('loged-in')">Log in</button>
-              <button class="button-light" (click)="test('loged-in as Guest')">Guest Log in</button>
+              <a routerLink="summary" class="button" (click)="test('loged-in')">Log in</a>
+              <a routerLink="summary" class="button-light" (click)="test('loged-in as Guest')">Guest Log in</a>
             </div>
           }
         </div>
