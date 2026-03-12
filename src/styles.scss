@@ -53,7 +53,7 @@ app-root {
   }
 }
 
-body{
+body {
   background-color: all.$grey;
 }
 
@@ -68,6 +68,56 @@ body{
 .content {
   grid-area: content;
   overflow-y: auto;
+}
+
+.legals {
+  padding: 5%;
+  width: 100%;
+  @include all.flexi($ai: start, $fd: column);
+
+  h1 {
+    font-size: 5.4rem;
+    margin-bottom: 16px;
+  }
+
+  h2 {
+    font-size: 3.2rem;
+    margin-block: 12px 6px;
+  }
+
+  h3 {
+    font-size: 2.6rem;
+    margin-block: 12px 6px;
+  }
+
+  p,
+  span,
+  a,
+  li {
+    font-size: 1.6rem;
+  }
+
+  a {
+    color: all.$blueLight;
+  }
+
+  li {
+    list-style: inside;
+  }
+
+  @include all.tablet {
+    h1 {
+      font-size: 4rem;
+    }
+
+    h2 {
+      font-size: 2.6rem;
+    }
+
+    h3 {
+      font-size: 2rem;
+    }
+  }
 }
 
 ::-webkit-scrollbar {
@@ -104,9 +154,9 @@ body{
 }
 
 ::-webkit-scrollbar-button:vertical:start:decrement {
-  background-image: url("../public/assets/icons/scroll-up.png");
+  background-image: url('../public/assets/icons/scroll-up.png');
 }
 
 ::-webkit-scrollbar-button:vertical:end:increment {
-  background-image: url("../public/assets/icons/scroll-down.png");
+  background-image: url('../public/assets/icons/scroll-down.png');
 }
