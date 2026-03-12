@@ -263,7 +263,7 @@ export class Board {
     // Drag and Drop ausschalten ab 640px
     // this.dragDisabled = window.innerWidth <= 640;
     this.orientation = WIDTH > 1200 ? 'vertical' : 'horizontal';
-    this.dragDisabled = WIDTH <= 640;
+    this.dragDisabled = WIDTH <= 1200;
 
     //Close elements that shouldn't be open on certain screens
     if (WIDTH < 640 && this.dialog?.nativeElement.open) this.close();
