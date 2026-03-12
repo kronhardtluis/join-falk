@@ -27,32 +27,26 @@
       <div id="form">
         <!-- [formGroup]="userForm" (ngSubmit)="formSubmit()" -->
         <form [formGroup]="userForm" (ngSubmit)="formSubmit()" id="sign-up-form">
-          @if(activeState() === "sign-up"){
-            <div class="input-wrapper">
-              <img class="icon" src="assets/icons/person.png" alt="User" />
-              <input id="name" type="text" formControlName="name" placeholder="Name" />
-              <!-- <span class="error-message">Your Name is required.</span> -->
-              <span
-                class="error-message"
-                [class.error-message--visible]="
-                  userForm.get('name')?.invalid && userForm.get('name')?.touched
-                "
-              >
-                Your Name is required.
-              </span>
-            </div>
-          }
+
+          <div class="input-wrapper">
+            <img class="icon" src="assets/icons/person.png" alt="User" />
+            <input id="name" type="text" formControlName="name" placeholder="Name" />
+            <!-- <span class="error-message">Your Name is required.</span> -->
+            <span
+              class="error-message"
+            >
+            @if(userForm.get('name')?.invalid && userForm.get('name')?.touched){Your Name is required.}
+            </span>
+          </div>
 
           <div class="input-wrapper">
             <img class="icon" src="assets/icons/mail.png" alt="User" />
             <input id="email" type="text" formControlName="email" placeholder="Email" />
             <span
               class="error-message"
-              [class.error-message--visible]="
-                userForm.get('email')?.invalid && userForm.get('email')?.touched
-              "
             >
-              Your EMail is required.
+            @if(userForm.get('email')?.invalid && userForm.get('email')?.touched){Your Email is required.}
+
             </span>
           </div>
 
@@ -110,44 +104,39 @@
                 />
               }
 
-              <input
-                #confirm
-                id="confirm"
-                [type]="isConfirmVisible ? 'text' : 'password'"
-                formControlName="confirm"
-                placeholder="Confirm Password"
-                (blur)="isConfirmVisible = false"
-              />
-              <span
-                class="error-message"
-              >
-              @if(userForm.get('confirm')?.invalid && userForm.get('confirm')?.touched){Your passwords don't match. Please try again.}
+            <input
+              #confirm
+              id="confirm"
+              [type]="isConfirmVisible ? 'text' : 'password'"
+              formControlName="confirm"
+              placeholder="Confirm Password"
+              (blur)="isConfirmVisible = false"
+            />
+            <span
+              class="error-message"
+            >
+            @if(userForm.get('confirm')?.invalid && userForm.get('confirm')?.touched){Your passwords don't match. Please try again.}
+            </span>
+          </div>
 
-              </span>
-            </div>
-          }
-          @if(activeState()==="sign-up"){
-            <div id="checkbox-content">
-              <div id="checkbox-wrapper">
-                <div class="custom-checkbox" (click)="toggleCheckBox()">
-                  @if (userForm.get('checkBox')?.value) {
-                    <img src="assets/icons/checkbox-checked.png" alt="checked" />
-                  } @else {
-                    <img src="assets/icons/cheackbox.png" alt="unchecked" />
-                  }
-                </div>
-                <p>I accept the <a routerLink="privacy-policy">Privacy policy</a></p>
+          <div id="checkbox-content">
+            <div id="checkbox-wrapper">
+              <div class="custom-checkbox" (click)="toggleCheckBox()">
+                @if (userForm.get('checkBox')?.value) {
+                  <img src="assets/icons/checkbox-checked.png" alt="checked" />
+                } @else {
+                  <img src="assets/icons/cheackbox.png" alt="unchecked" />
+                }
               </div>
-              <span
-                class="error-message"
-                [class.error-message--visible]="
-                  userForm.get('checkBox')?.invalid && userForm.get('checkBox')?.touched
-                "
-              >
-                Please accept privacy policy.
-              </span>
+              <p>I accept the <a routerLink="privacy-policy">Privacy policy</a></p>
             </div>
-          }
+            <span
+              class="error-message"
+            >
+            @if(userForm.get('checkBox')?.invalid && userForm.get('checkBox')?.touched){Please accept privacy policy.}
+
+            </span>
+          </div>
         </form>
       </div>
 
