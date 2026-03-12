@@ -1,6 +1,6 @@
 import { Component, signal, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { Supabase } from '../services/supabase';
 
 @Component({
@@ -41,6 +41,18 @@ export class Mainpage {
       },
     },
   );
+  router = inject(Router);
+
+  ngOnInit(){
+    this.dbService.activeSite.set("log-in");
+    if (this.dbService.logingStatus() !== 'guest') {
+      this.router.navigate(['/summary']);
+    }
+  }
+
+  ngOnDestroy() {
+    this.dbService.activeSite.set("");
+  }
 
   formSubmit() {
     if (this.userForm.valid) {
@@ -87,15 +99,16 @@ export class Mainpage {
 }
 
   //JSDoc...???
-  moveTo(place:string | "log-in" | "sign-up"){
+  setFormular(place:string | "log-in" | "sign-up"){
     this.activeState.set(place);
   }
 
-  test(value:string){
-    console.log(value);
-    if(value === 'loged-in as Guest'){
+  //JSDoc...???
+  loging(value:string){
+    //console.log(value);
+    if(value === 'Guest'){
       this.dbService.setLoginStatus('Guest');
+      this.dbService.logedUser.set('Guest')
     }
   }
-
 }

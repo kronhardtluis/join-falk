@@ -7,29 +7,32 @@
 
       <div>
         <nav>
-          <a
-            routerLink="summary"
-            routerLinkActive="active"
-            class="navigation"
-          >
-            <img src="assets/icons/summary.png" alt="Summary" />
-            <span>Summary</span>
-          </a>
+          @if(dbService.logingStatus() != 'guest'){
+            <a routerLink="summary" routerLinkActive="active" class="navigation">
+              <img src="assets/icons/summary.png" alt="Summary" />
+              <span>Summary</span>
+            </a>
 
-          <a routerLink="add-task" routerLinkActive="active" class="navigation">
-            <img src="assets/icons/add-task.png" alt="Add Task" />
-            <span>Add Task</span>
-          </a>
+            <a routerLink="add-task" routerLinkActive="active" class="navigation">
+              <img src="assets/icons/add-task.png" alt="Add Task" />
+              <span>Add Task</span>
+            </a>
 
-          <a routerLink="board" routerLinkActive="active" class="navigation">
-            <img src="assets/icons/board.png" alt="Board" />
-            <span>Board</span>
-          </a>
+            <a routerLink="board" routerLinkActive="active" class="navigation">
+              <img src="assets/icons/board.png" alt="Board" />
+              <span>Board</span>
+            </a>
 
-          <a routerLink="contacts" routerLinkActive="active" class="navigation">
-            <img src="assets/icons/contacts.png" alt="Contacts" />
-            <span>Contacts</span>
-          </a>
+            <a routerLink="contacts" routerLinkActive="active" class="navigation">
+              <img src="assets/icons/contacts.png" alt="Contacts" />
+              <span>Contacts</span>
+            </a>
+          } @else {
+            <a routerLink="/" class="navigation">
+              <img src="assets/icons/login.png" alt="Login" />
+              <span>Log In</span>
+            </a>
+          }
         </nav>
       </div>
     </section>
