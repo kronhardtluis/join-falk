@@ -2,20 +2,24 @@
   <img id="logo" src="assets/icons/logo.png" alt="logo" />
 
   <header>
-    <div id="sign-up-area">
-      <p>Not a Join User?</p>
-      <button class="button">Sign Up</button>
-    </div>
+    @if(activeState()==="log-in"){
+      <div id="sign-up-area">
+        <p>Not a Join User?</p>
+        <button class="button" (click)="moveTo('sign-up')">Sign Up</button>
+      </div>
+    }
   </header>
 
   <section id="main-content">
     <section id="sign-up-wrapper">
       <div id="sign-up-header">
-        <button>
+        @if(activeState()==="sign-up"){
+        <button (click)="moveTo('log-in')">
           <img src="assets/icons/arrow.png" alt="arrow-left" />
         </button>
+        }
         <div id="sign-up-headline">
-          <h2>Sign Up</h2>
+          <h2>@if(activeState() === "log-in"){Log in} @else{Sign Up}</h2>
           <img src="assets/icons/blue-underline.png" alt="" />
         </div>
       </div>
@@ -23,31 +27,24 @@
       <div id="form">
         <!-- [formGroup]="userForm" (ngSubmit)="formSubmit()" -->
         <form [formGroup]="userForm" (ngSubmit)="formSubmit()" id="sign-up-form">
-
+          @if(activeState() === "sign-up"){
           <div class="input-wrapper">
             <img class="icon" src="assets/icons/person.png" alt="User" />
-            <input id="name" type="text" formControlName="name" placeholder="Name" />
-            <!-- <span class="error-message">Your Name is required.</span> -->
-            <span
+            <input id="name" type="text" formControlName="name" placeholder="Name" />            <span
               class="error-message"
-              [class.error-message--visible]="
-                userForm.get('name')?.invalid && userForm.get('name')?.touched
-              "
             >
-              Your Name is required.
+            @if(userForm.get('name')?.invalid && userForm.get('name')?.touched){Your Name is required.}
             </span>
           </div>
-
+        }
           <div class="input-wrapper">
             <img class="icon" src="assets/icons/mail.png" alt="User" />
             <input id="email" type="text" formControlName="email" placeholder="Email" />
             <span
               class="error-message"
-              [class.error-message--visible]="
-                userForm.get('email')?.invalid && userForm.get('email')?.touched
-              "
             >
-              Your EMail is required.
+            @if(userForm.get('email')?.invalid && userForm.get('email')?.touched){Your Email is required.}
+
             </span>
           </div>
 
@@ -85,24 +82,25 @@
             </span>
           </div>
 
-          <div class="input-wrapper">
-            @if (!confirm.matches(':focus')) {
-              <img class="icon icon--lock" src="assets/icons/lock.png" alt="User" />
-            } @else if (!isConfirmVisible) {
-              <!-- Zustand 2: Fokus da, aber Passwort versteckt -> Auge durchgestrichen -->
-              <img
-                class="icon clickable"
-                src="assets/icons/visibility.png"
-                (mousedown)="togglePassword($event, 'confirm')"
-              />
-            } @else {
-              <!-- Zustand 3: Fokus da & Passwort sichtbar -> Auge offen -->
-              <img
-                class="icon clickable"
-                src="assets/icons/visible.png"
-                (mousedown)="togglePassword($event, 'confirm')"
-              />
-            }
+          @if(activeState() === "sign-up"){
+            <div class="input-wrapper">
+              @if (!confirm.matches(':focus')) {
+                <img class="icon icon--lock" src="assets/icons/lock.png" alt="User" />
+              } @else if (!isConfirmVisible) {
+                <!-- Zustand 2: Fokus da, aber Passwort versteckt -> Auge durchgestrichen -->
+                <img
+                  class="icon clickable"
+                  src="assets/icons/visibility.png"
+                  (mousedown)="togglePassword($event, 'confirm')"
+                />
+              } @else {
+                <!-- Zustand 3: Fokus da & Passwort sichtbar -> Auge offen -->
+                <img
+                  class="icon clickable"
+                  src="assets/icons/visible.png"
+                  (mousedown)="togglePassword($event, 'confirm')"
+                />
+              }
 
             <input
               #confirm
@@ -116,7 +114,6 @@
               class="error-message"
             >
             @if(userForm.get('confirm')?.invalid && userForm.get('confirm')?.touched){Your passwords don't match. Please try again.}
-              
             </span>
           </div>
 
@@ -133,18 +130,17 @@
             </div>
             <span
               class="error-message"
-              [class.error-message--visible]="
-                userForm.get('checkBox')?.invalid && userForm.get('checkBox')?.touched
-              "
             >
-              Please accept privacy policy.
+            @if(userForm.get('checkBox')?.invalid && userForm.get('checkBox')?.touched){Please accept privacy policy.}
+
             </span>
-          </div>
+          </div>}
         </form>
       </div>
 
       <div id="sign-up-footer">
         <div (click)="handleDisabledClick()">
+          @if(activeState() === "sign-up"){
           <button
             type="submit"
             [disabled]="!userForm.valid"
@@ -153,7 +149,11 @@
             (click)="formReset()"
           >
             Sign Up
-          </button>
+          </button>}
+          @else {
+          <button class="button" (click)="test('loged-in')">Log in</button>
+          <button class="button" (click)="test('loged-in as Guest')">Guest Log in</button>
+          }
         </div>
       </div>
     </section>

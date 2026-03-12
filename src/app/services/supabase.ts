@@ -22,7 +22,8 @@ export class Supabase {
   public doneTasks = computed(() => this.tasks().filter((t) => t.status === 'Done'));
   public selectedTask = signal<FullTask | null>(null);
   public notificationMessage = signal<string>('');
-  public logingstatus = signal<string>("guest");
+  public logingStatus = signal<string>("guest");
+  public logedUser = signal<string>("");
 
   /**
    * Fetches all contacts from the database, sorted alphabetically by name.
@@ -399,6 +400,6 @@ export class Supabase {
   }
 
   setLoginStatus(status:string){
-    this.logingstatus.set(status);
+    this.logingStatus.set(status);
   }
 }
