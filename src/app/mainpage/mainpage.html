@@ -52,12 +52,31 @@
           </div>
 
           <div class="input-wrapper">
-            <img class="icon icon--lock" src="assets/icons/lock.png" alt="User" />
+            @if (!password.matches(':focus')) {
+              <img class="icon icon--lock" src="assets/icons/lock.png" alt="User" />
+            } @else if (!isPasswordVisible) {
+              <!-- Zustand 2: Fokus da, aber Passwort versteckt -> Auge durchgestrichen -->
+              <img
+                class="icon clickable"
+                src="assets/icons/visibility.png"
+                (mousedown)="togglePassword($event, 'password')"
+              />
+            } @else {
+              <!-- Zustand 3: Fokus da & Passwort sichtbar -> Auge offen -->
+              <img
+                class="icon clickable"
+                src="assets/icons/visible.png"
+                (mousedown)="togglePassword($event, 'password')"
+              />
+            }
             <input
+            #password
               id="password"
               type="password"
               formControlName="password"
               placeholder="Password"
+              [type]="isPasswordVisible ? 'text' : 'password'"
+              (blur)="isPasswordVisible = false"
             />
             <span
               class="error-message"
@@ -72,29 +91,29 @@
           <div class="input-wrapper">
             @if (!confirm.matches(':focus')) {
               <img class="icon icon--lock" src="assets/icons/lock.png" alt="User" />
-            } @else if (!isPasswordVisible) {
+            } @else if (!isConfirmVisible) {
               <!-- Zustand 2: Fokus da, aber Passwort versteckt -> Auge durchgestrichen -->
               <img
                 class="icon clickable"
                 src="assets/icons/visibility.png"
-                (mousedown)="togglePassword($event)"
+                (mousedown)="togglePassword($event, 'confirm')"
               />
             } @else {
               <!-- Zustand 3: Fokus da & Passwort sichtbar -> Auge offen -->
               <img
                 class="icon clickable"
                 src="assets/icons/visible.png"
-                (mousedown)="togglePassword($event)"
+                (mousedown)="togglePassword($event, 'confirm')"
               />
             }
 
             <input
               #confirm
               id="confirm"
-              [type]="isPasswordVisible ? 'text' : 'password'"
+              [type]="isConfirmVisible ? 'text' : 'password'"
               formControlName="confirm"
               placeholder="Confirm Password"
-              (blur)="isPasswordVisible = false"
+              (blur)="isConfirmVisible = false"
             />
             <span
               class="error-message"

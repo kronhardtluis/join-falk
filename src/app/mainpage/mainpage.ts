@@ -71,9 +71,15 @@ export class Mainpage {
   }
 
   isPasswordVisible = false;
+  isConfirmVisible = false;
 
-  togglePassword(event: MouseEvent) {
-    event.preventDefault(); // Verhindert, dass der Input den Fokus verliert
+  togglePassword(event: MouseEvent, field: 'password' | 'confirm') {
+  event.preventDefault();
+  
+  if (field === 'password') {
     this.isPasswordVisible = !this.isPasswordVisible;
+  } else {
+    this.isConfirmVisible = !this.isConfirmVisible;
   }
+}
 }
