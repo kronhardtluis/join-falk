@@ -1,12 +1,11 @@
 import { Component, signal, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { CdkDropList, CdkDropListGroup } from "@angular/cdk/drag-drop";
 import { Supabase } from '../services/supabase';
 
 @Component({
   selector: 'app-mainpage',
-  imports: [ReactiveFormsModule, RouterLink, CdkDropList, CdkDropListGroup],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './mainpage.html',
   styleUrl: './mainpage.scss',
 })

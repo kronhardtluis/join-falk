@@ -61,8 +61,8 @@ header {
 }
 
 #main-content {
-  @include all.flexi(); 
-  // height: 50dvh; 
+  @include all.flexi();
+  // height: 50dvh;
 }
 
 #sign-up-wrapper {
@@ -208,7 +208,7 @@ footer {
   a {
     &:hover {
       color: all.$blueLight;
-      filter: drop-shadow(0.3px 0 0 currentcolor) 
+      filter: drop-shadow(0.3px 0 0 currentcolor)
             drop-shadow(-0.3px 0 0 currentcolor)
             drop-shadow(0 0.3px 0 currentcolor);
     }
