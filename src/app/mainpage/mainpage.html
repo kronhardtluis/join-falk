@@ -23,7 +23,7 @@
       <div id="form">
         <!-- [formGroup]="userForm" (ngSubmit)="formSubmit()" -->
         <form [formGroup]="userForm" (ngSubmit)="formSubmit()" id="sign-up-form">
-            
+
           <div class="input-wrapper">
             <img class="icon" src="assets/icons/person.png" alt="User" />
             <input id="name" type="text" formControlName="name" placeholder="Name" />
@@ -83,8 +83,8 @@
               [class.error-message--visible]="
                 userForm.get('password')?.invalid && userForm.get('password')?.touched
               "
-            >
-              Your password is required.
+            >@if(userForm.get('password')?.invalid && userForm.get('password')?.touched){Your password is required.}
+
             </span>
           </div>
 

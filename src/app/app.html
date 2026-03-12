@@ -1,7 +1,7 @@
-<!-- @if(dbService.logingstatus() != "guest"){ -->
-<app-navbar class="navbar"></app-navbar>
-<app-header class="header"></app-header>
-<!-- } -->
+@if(dbService.logingstatus() == "guest"){
+  <app-navbar class="navbar"></app-navbar>
+  <app-header class="header"></app-header>
+}
 
 <main class="content">
   <router-outlet />
