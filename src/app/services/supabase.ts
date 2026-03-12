@@ -22,6 +22,7 @@ export class Supabase {
   public doneTasks = computed(() => this.tasks().filter((t) => t.status === 'Done'));
   public selectedTask = signal<FullTask | null>(null);
   public notificationMessage = signal<string>('');
+  public logingstatus = signal<string>("guest");
 
   /**
    * Fetches all contacts from the database, sorted alphabetically by name.
@@ -208,7 +209,7 @@ export class Supabase {
     .eq('status', taskData.status)
     .order('position', { ascending: false })
     .limit(1)
-    .single();
+    .maybeSingle();
     const CURRENT_MAX = maxTask?.position ?? 0;
     taskData.position = CURRENT_MAX + 1000;
     const NEW_TASK = await this.insertTask(taskData);
@@ -395,5 +396,9 @@ export class Supabase {
     if (error) {
       this.showNotification("Failed to update task status.");
     }
+  }
+
+  setLoginStatus(status:string){
+    this.logingstatus.set(status);
   }
 }

@@ -1,2 +1,172 @@
+<main>
+  <img id="logo" src="assets/icons/logo.png" alt="logo" />
 
-<h2>Join</h2>
+  <header>
+    <div id="sign-up-area">
+      <p>Not a Join User?</p>
+      <button class="button">Sign Up</button>
+    </div>
+  </header>
+
+  <section id="main-content">
+    <section id="sign-up-wrapper">
+      <div id="sign-up-header">
+        <button>
+          <img src="assets/icons/arrow.png" alt="arrow-left" />
+        </button>
+        <div id="sign-up-headline">
+          <h2>Sign Up</h2>
+          <img src="assets/icons/blue-underline.png" alt="" />
+        </div>
+      </div>
+
+      <div id="form">
+        <!-- [formGroup]="userForm" (ngSubmit)="formSubmit()" -->
+        <form [formGroup]="userForm" (ngSubmit)="formSubmit()" id="sign-up-form">
+
+          <div class="input-wrapper">
+            <img class="icon" src="assets/icons/person.png" alt="User" />
+            <input id="name" type="text" formControlName="name" placeholder="Name" />
+            <!-- <span class="error-message">Your Name is required.</span> -->
+            <span
+              class="error-message"
+              [class.error-message--visible]="
+                userForm.get('name')?.invalid && userForm.get('name')?.touched
+              "
+            >
+              Your Name is required.
+            </span>
+          </div>
+
+          <div class="input-wrapper">
+            <img class="icon" src="assets/icons/mail.png" alt="User" />
+            <input id="email" type="text" formControlName="email" placeholder="Email" />
+            <span
+              class="error-message"
+              [class.error-message--visible]="
+                userForm.get('email')?.invalid && userForm.get('email')?.touched
+              "
+            >
+              Your EMail is required.
+            </span>
+          </div>
+
+          <div class="input-wrapper">
+            @if (!password.matches(':focus')) {
+              <img class="icon icon--lock" src="assets/icons/lock.png" alt="User" />
+            } @else if (!isPasswordVisible) {
+              <!-- Zustand 2: Fokus da, aber Passwort versteckt -> Auge durchgestrichen -->
+              <img
+                class="icon clickable"
+                src="assets/icons/visibility.png"
+                (mousedown)="togglePassword($event, 'password')"
+              />
+            } @else {
+              <!-- Zustand 3: Fokus da & Passwort sichtbar -> Auge offen -->
+              <img
+                class="icon clickable"
+                src="assets/icons/visible.png"
+                (mousedown)="togglePassword($event, 'password')"
+              />
+            }
+            <input
+            #password
+              id="password"
+              type="password"
+              formControlName="password"
+              placeholder="Password"
+              [type]="isPasswordVisible ? 'text' : 'password'"
+              (blur)="isPasswordVisible = false"
+            />
+            <span
+              class="error-message"
+              [class.error-message--visible]="
+                userForm.get('password')?.invalid && userForm.get('password')?.touched
+              "
+            >@if(userForm.get('password')?.invalid && userForm.get('password')?.touched){Your password is required.}
+
+            </span>
+          </div>
+
+          <div class="input-wrapper">
+            @if (!confirm.matches(':focus')) {
+              <img class="icon icon--lock" src="assets/icons/lock.png" alt="User" />
+            } @else if (!isConfirmVisible) {
+              <!-- Zustand 2: Fokus da, aber Passwort versteckt -> Auge durchgestrichen -->
+              <img
+                class="icon clickable"
+                src="assets/icons/visibility.png"
+                (mousedown)="togglePassword($event, 'confirm')"
+              />
+            } @else {
+              <!-- Zustand 3: Fokus da & Passwort sichtbar -> Auge offen -->
+              <img
+                class="icon clickable"
+                src="assets/icons/visible.png"
+                (mousedown)="togglePassword($event, 'confirm')"
+              />
+            }
+
+            <input
+              #confirm
+              id="confirm"
+              [type]="isConfirmVisible ? 'text' : 'password'"
+              formControlName="confirm"
+              placeholder="Confirm Password"
+              (blur)="isConfirmVisible = false"
+            />
+            <span
+              class="error-message"
+              [class.error-message--visible]="
+                (userForm.get('confirm')?.touched || userForm.touched) &&
+                userForm.hasError('mismatch')
+              "
+            >
+              Your passwords don't match. Please try again.
+            </span>
+          </div>
+
+          <div id="checkbox-content">
+            <div id="checkbox-wrapper">
+              <div class="custom-checkbox" (click)="toggleCheckBox()">
+                @if (userForm.get('checkBox')?.value) {
+                  <img src="assets/icons/checkbox-checked.png" alt="checked" />
+                } @else {
+                  <img src="assets/icons/cheackbox.png" alt="unchecked" />
+                }
+              </div>
+              <p>I accept the <a routerLink="privacy-policy">Privacy policy</a></p>
+            </div>
+            <span
+              class="error-message"
+              [class.error-message--visible]="
+                userForm.get('checkBox')?.invalid && userForm.get('checkBox')?.touched
+              "
+            >
+              Please accept privacy policy.
+            </span>
+          </div>
+        </form>
+      </div>
+
+      <div id="sign-up-footer">
+        <div (click)="handleDisabledClick()">
+          <button
+            type="submit"
+            [disabled]="!userForm.valid"
+            class="button"
+            form="sign-up-form"
+            (click)="formReset()"
+          >
+            Sign Up
+          </button>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <footer>
+    <a routerLink="privacy-policy">Privacy Policy</a>
+    <a routerLink="legal-notice">Legal notice</a>
+  </footer>
+</main>

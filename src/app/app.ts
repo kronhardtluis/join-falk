@@ -14,4 +14,6 @@ import { Supabase } from './services/supabase';
 export class App {
   protected readonly title = signal('join-falk');
   dbService = inject(Supabase);
+
+
 }
