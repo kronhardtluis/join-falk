@@ -1,11 +1,14 @@
-@if(dbService.logingstatus() == "guest"){
+@if(dbService.logingstatus() === "guest"){
+  <main class="content auth-mode">
+    <router-outlet />
+  </main>
+} @else {
   <app-navbar class="navbar"></app-navbar>
   <app-header class="header"></app-header>
+  <main class="content">
+    <router-outlet />
+  </main>
 }
-
-<main class="content">
-  <router-outlet />
-</main>
 
 
 <div id="notification-msg" [class.show]="dbService.notificationMessage()">
