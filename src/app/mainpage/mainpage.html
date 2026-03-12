@@ -30,11 +30,8 @@
             <!-- <span class="error-message">Your Name is required.</span> -->
             <span
               class="error-message"
-              [class.error-message--visible]="
-                userForm.get('name')?.invalid && userForm.get('name')?.touched
-              "
             >
-              Your Name is required.
+            @if(userForm.get('name')?.invalid && userForm.get('name')?.touched){Your Name is required.}
             </span>
           </div>
 
@@ -43,11 +40,9 @@
             <input id="email" type="text" formControlName="email" placeholder="Email" />
             <span
               class="error-message"
-              [class.error-message--visible]="
-                userForm.get('email')?.invalid && userForm.get('email')?.touched
-              "
             >
-              Your EMail is required.
+            @if(userForm.get('email')?.invalid && userForm.get('email')?.touched){Your Email is required.}
+              
             </span>
           </div>
 
@@ -115,8 +110,7 @@
             <span
               class="error-message"
             >
-            @if(userForm.get('confirm')?.invalid && userForm.get('confirm')?.touched){Your passwords don't match. Please try again.}
-              
+            @if(userForm.get('confirm')?.invalid && userForm.get('confirm')?.touched){Your passwords don't match. Please try again.}   
             </span>
           </div>
 
@@ -133,11 +127,9 @@
             </div>
             <span
               class="error-message"
-              [class.error-message--visible]="
-                userForm.get('checkBox')?.invalid && userForm.get('checkBox')?.touched
-              "
             >
-              Please accept privacy policy.
+            @if(userForm.get('checkBox')?.invalid && userForm.get('checkBox')?.touched){Please accept privacy policy.}
+              
             </span>
           </div>
         </form>
