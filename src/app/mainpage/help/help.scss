@@ -1,0 +1,46 @@
+@use '../../../../public/assets/styles/all-styles.scss' as all;
+
+main {
+  max-width: calc(1440px - 232px);
+  padding: clamp(50px, 10vw, 100px) 8%;
+
+  button {
+    position: fixed;
+    right: 5%;
+    margin-top: 10px;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 50%;
+    z-index: 10;
+
+    &:hover {
+      background-color: rgb(234, 234, 234);
+      transform: scale(1.1);
+    }
+  }
+}
+
+h2 {
+  font-size: clamp(48px, 10vw, 60px);
+  margin-bottom: 32px;
+}
+
+h3 {
+  font-size: 28px;
+  margin-bottom: 24px;
+}
+
+p {
+  font-size: 16px;
+  margin-bottom: 24px;
+}
+
+span {
+  font-size: 16px;
+  color: all.$blueLight;
+}
+
+.howToUse {
+  @include all.flexi($ai: start, $gap: 35px);
+}
