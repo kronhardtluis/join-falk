@@ -15,8 +15,8 @@
           <img src="assets/icons/arrow.png" alt="arrow-left" />
         </button>
         <div id="sign-up-headline">
-          <h2>Sign Up</h2>
-          <img src="assets/icons/blue-underline.png" alt="" />
+          <h2>Sign up</h2>
+          <img src="assets/icons/blue-underline.png" alt="underline" />
         </div>
       </div>
 
@@ -26,9 +26,7 @@
 
           <div class="input-wrapper">
             <img class="icon" src="assets/icons/person.png" alt="User" />
-            <input id="name" type="text" formControlName="name" placeholder="Name" />
-            <!-- <span class="error-message">Your Name is required.</span> -->
-            <span
+            <input id="name" type="text" formControlName="name" placeholder="Name" />            <span
               class="error-message"
             >
             @if(userForm.get('name')?.invalid && userForm.get('name')?.touched){Your Name is required.}
