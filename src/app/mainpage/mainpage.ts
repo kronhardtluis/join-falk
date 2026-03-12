@@ -1,14 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { CdkDropList, CdkDropListGroup } from "@angular/cdk/drag-drop";
+import { Supabase } from '../services/supabase';
 
 @Component({
   selector: 'app-mainpage',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, CdkDropList, CdkDropListGroup],
   templateUrl: './mainpage.html',
   styleUrl: './mainpage.scss',
 })
 export class Mainpage {
+  activeState = signal<string>("log-in");
+  dbService = inject(Supabase);
   userForm = new FormGroup(
     {
       name: new FormControl('', {
@@ -75,11 +79,24 @@ export class Mainpage {
 
   togglePassword(event: MouseEvent, field: 'password' | 'confirm') {
   event.preventDefault();
-  
+
   if (field === 'password') {
     this.isPasswordVisible = !this.isPasswordVisible;
   } else {
     this.isConfirmVisible = !this.isConfirmVisible;
   }
 }
+
+  //JSDoc...???
+  moveTo(place:string | "log-in" | "sign-in"){
+    this.activeState.set(place);
+  }
+
+  test(value:string){
+    console.log(value);
+    if(value === 'loged-in as Guest'){
+      this.dbService.setLoginStatus('Guest');
+    }
+  }
+
 }
