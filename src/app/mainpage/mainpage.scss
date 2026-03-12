@@ -126,10 +126,10 @@ header {
     font-size: 1rem;
     color: red;
     height: 12px;
-    visibility: hidden;
-    &--visible {
-      visibility: visible;
-    }
+    // visibility: hidden;
+    // &--visible {
+    //   visibility: visible;
+    // }
   }
 
   #checkbox-content {
