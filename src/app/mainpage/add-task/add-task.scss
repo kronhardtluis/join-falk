@@ -3,7 +3,8 @@
 main{
   display: grid;
   grid-template-rows: 20% 1fr 15%;
-  height: calc(100dvh - 160px);
+  height: calc(100dvh - 100px);
+  max-height: 100%;
   width: 100%;
   overflow: hidden;
   &.edit-mode {
