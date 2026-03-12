@@ -22,8 +22,12 @@ export class Supabase {
   public doneTasks = computed(() => this.tasks().filter((t) => t.status === 'Done'));
   public selectedTask = signal<FullTask | null>(null);
   public notificationMessage = signal<string>('');
-  public logingStatus = signal<string>("guest");
+  public logingStatus = signal<string>(localStorage.getItem('join_login_status') || 'guest');
   public logedUser = signal<string>("");
+
+  constructor(){
+    this.checkPersistedSession();
+  }
 
   /**
    * Fetches all contacts from the database, sorted alphabetically by name.
@@ -401,5 +405,16 @@ export class Supabase {
 
   setLoginStatus(status:string){
     this.logingStatus.set(status);
+    localStorage.setItem('join_login_status', status);
+  }
+
+  private async checkPersistedSession() {
+    const { data } = await this.supabase.auth.getSession();
+    if (data.session && this.logingStatus() === 'guest') {
+      this.setLoginStatus('User');
+    }
+    else if (!data.session && this.logingStatus() !== 'Guest' && this.logingStatus() !== 'guest') {
+      this.setLoginStatus('guest');
+    }
   }
 }

@@ -4,6 +4,7 @@ main {
   width: 100%;
   height: fit-content;
   padding: 20px 5% 0px;
+  max-width: 1440px;
 }
 
 #logo {
@@ -51,15 +52,17 @@ main {
 }
 
 header {
+  @include all.flexi($ai:start, $jc:flex-end);
+  height: 200px;
   #sign-up-area {
     @include all.flexi($jc: flex-end, $gap: 16px);
-    height: 100px;
+    padding-top: 40px;
   }
 }
 
 #main-content {
   @include all.flexi();
-  
+  // height: 50dvh;
 }
 
 #sign-up-wrapper {
@@ -200,11 +203,12 @@ footer {
   color: rgb(189, 189, 189);
   cursor: pointer;
   height: 100px;
+  margin-top: 100px;
 
   a {
     &:hover {
       color: all.$blueLight;
-      filter: drop-shadow(0.3px 0 0 currentcolor) 
+      filter: drop-shadow(0.3px 0 0 currentcolor)
             drop-shadow(-0.3px 0 0 currentcolor)
             drop-shadow(0 0.3px 0 currentcolor);
     }
