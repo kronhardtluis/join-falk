@@ -125,9 +125,14 @@
         }
 
         <div id="assigned-contacts-badges">
-          @for (id of taskForm.get('assigned_to')?.value; track id) {
+          @for (id of taskForm.get('assigned_to')?.value.slice(0, 3); track id) {
             <span class="assignee-badge" [style.background-color]="getContactColor(id)">
               {{ getContactInitials(id) }}
+            </span>
+          }
+          @if (taskForm.get('assigned_to')?.value?.length > 3) {
+            <span class="assignee-badge extra-count">
+              +{{ taskForm.get('assigned_to')?.value.length - 3 }}
             </span>
           }
         </div>

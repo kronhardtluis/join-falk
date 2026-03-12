@@ -37,6 +37,7 @@ export class Board {
   router = inject(Router);
   orientation: 'horizontal' | 'vertical' = 'vertical';
   dragDisabled = false;
+  currentColumnStatus = signal<string>('ToDo');
 
   /**
    * Initializes the component by fetching initial board data and
@@ -88,8 +89,10 @@ export class Board {
 
   /**
   * Navigates to the add-task page on mobile or opens the creation dialog on desktop.
+  * @param status The status of the column where the plus was clicked.
   */
-  open() {
+  open(status: string = 'ToDo') {
+    this.currentColumnStatus.set(status);
     if (window.innerWidth > 640) {
       // Desktop-Logik: Modal öffnen
       this.dialog.nativeElement.showModal();

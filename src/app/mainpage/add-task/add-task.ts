@@ -1,9 +1,9 @@
-import { Component, inject, signal, computed, HostListener, output, Input } from '@angular/core';
+import { Component, inject, signal, computed, HostListener, output, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { Supabase } from '../../services/supabase';
 import { FullTask, Task, TaskCategory, TaskFormData, TaskPriority } from '../../interfaces/task.interface';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-task',
@@ -12,10 +12,11 @@ import { Router } from '@angular/router';
   styleUrl: './add-task.scss',
 })
 
-export class AddTask {
+export class AddTask implements OnInit {
   public fb = inject(FormBuilder);
   public dbService = inject(Supabase);
   public router = inject(Router);
+  public route = inject(ActivatedRoute);
   minDate = new Date().toISOString().split('T')[0];
   taskForm: FormGroup;
   selectedPriority = signal<TaskPriority>('Medium');
@@ -24,7 +25,7 @@ export class AddTask {
   isCategoryListVisible = signal<boolean>(false);
   isSubtaskActive = signal<boolean>(false);
   taskCreated = output<void>();
-
+  private _initialStatus: string = 'ToDo';
 
   constructor() {
     this.taskForm = this.fb.group({
@@ -38,16 +39,30 @@ export class AddTask {
     });
   }
 
+  @Input() set initialStatus(value: string | undefined) {
+    this._initialStatus = value || 'ToDo';
+    if (this.taskForm) {
+      this.applyInitialStatus();
+    }
+  }
+
   @Input() editTaskData: FullTask | null = null;
 
+  get initialStatus(): string {
+    return this._initialStatus;
+  }
+
   /**
-  * Lifecycle hook that initializes the component by fetching
-  * the list of available contacts from the database service.
+  * Lifecycle hook that initializes the component.
+  * Fetches contacts and determines if the form should be pre-filled for editing
+  * or initialized with a specific status from Input or Query Parameters.
   */
   ngOnInit() {
     this.dbService.getContacts();
     if (this.editTaskData) {
       this.fillFormForEdit(this.editTaskData);
+    } else {
+      this.applyInitialStatus();
     }
   }
 
@@ -79,6 +94,21 @@ export class AddTask {
           is_done: [sub.is_done]
         }));
       });
+    }
+  }
+
+  /**
+  * Checks for status in Inputs or URL Query Params and applies it to the form.
+  * @private
+  */
+  applyInitialStatus(){
+    const STATUS_FROM_URL = this.route.snapshot.queryParamMap.get('status');
+    const FINAL_STATUS = this.initialStatus || STATUS_FROM_URL || 'ToDo';
+
+    if (!this.taskForm.contains('status')) {
+      this.taskForm.addControl('status', this.fb.control(FINAL_STATUS));
+    } else {
+      this.taskForm.get('status')?.setValue(FINAL_STATUS);
     }
   }
 
@@ -172,7 +202,11 @@ export class AddTask {
     }
   }
 
-  /** Prepares the main task object from the form and signals */
+  /** * Prepares the main task object from the form and signals.
+  * Extracts values from the reactive form and combines them with the priority signal.
+  * @returns {TaskFormData} The prepared data object ready for database insertion.
+  * @private
+  */
   private prepareTaskData(): TaskFormData {
     const FORM_VALUE = this.taskForm.value;
     return {
@@ -181,7 +215,7 @@ export class AddTask {
       due_date: FORM_VALUE.due_date,
       category: FORM_VALUE.category,
       priority: this.selectedPriority(),
-      status: "ToDo"
+      status: FORM_VALUE.status || 'ToDo'
     };
   }
 

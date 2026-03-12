@@ -146,7 +146,7 @@
       <div class="board-column">
         <div class="column-header">
           <p>In progress</p>
-          <button class="add-button" (click)="open()">
+          <button class="add-button" (click)="open('In Progress')">
             <img class="add-button-default" src="assets/icons/add-task-blue.png" alt="Add-Button" />
             <img
               class="add-button-hover"
@@ -260,7 +260,7 @@
       <div class="board-column">
         <div class="column-header">
           <p>Await feedback</p>
-          <button class="add-button" (click)="open()">
+          <button class="add-button" (click)="open('Awaiting Feedback')">
             <img class="add-button-default" src="assets/icons/add-task-blue.png" alt="Add-Button" />
             <img
               class="add-button-hover"
@@ -481,7 +481,7 @@
     <button class="dialog-close-button" (click)="close()">
       <img src="assets/icons/close-blue.png" alt="Close" />
     </button>
-    <app-add-task (taskCreated)="close()"></app-add-task>
+    <app-add-task (taskCreated)="close()" [initialStatus]="currentColumnStatus()"></app-add-task>
   </dialog>
 
   <dialog
@@ -591,6 +591,4 @@
       }
     }
   </dialog>
-
-
 </main>
