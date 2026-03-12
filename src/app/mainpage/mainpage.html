@@ -27,7 +27,7 @@
       <div id="form">
         <!-- [formGroup]="userForm" (ngSubmit)="formSubmit()" -->
         <form [formGroup]="userForm" (ngSubmit)="formSubmit()" id="sign-up-form">
-
+          @if(activeState() === "sign-up"){
           <div class="input-wrapper">
             <img class="icon" src="assets/icons/person.png" alt="User" />
             <input id="name" type="text" formControlName="name" placeholder="Name" />
@@ -38,7 +38,7 @@
             @if(userForm.get('name')?.invalid && userForm.get('name')?.touched){Your Name is required.}
             </span>
           </div>
-
+        }
           <div class="input-wrapper">
             <img class="icon" src="assets/icons/mail.png" alt="User" />
             <input id="email" type="text" formControlName="email" placeholder="Email" />
@@ -136,13 +136,13 @@
             @if(userForm.get('checkBox')?.invalid && userForm.get('checkBox')?.touched){Please accept privacy policy.}
 
             </span>
-          </div>
+          </div>}
         </form>
       </div>
 
       <div id="sign-up-footer">
         <div (click)="handleDisabledClick()">
-          @if(activeState()==="sign-in"){
+          @if(activeState() === "sign-up"){
           <button
             type="submit"
             [disabled]="!userForm.valid"

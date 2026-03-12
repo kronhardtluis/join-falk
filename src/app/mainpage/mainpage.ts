@@ -88,7 +88,7 @@ export class Mainpage {
 }
 
   //JSDoc...???
-  moveTo(place:string | "log-in" | "sign-in"){
+  moveTo(place:string | "log-in" | "sign-up"){
     this.activeState.set(place);
   }
 
