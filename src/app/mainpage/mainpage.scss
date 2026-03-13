@@ -7,11 +7,21 @@ main {
   max-width: 1440px;
 }
 
+#background-animation{
+  animation: backgroundAnimation 2s forwards;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
 #logo {
   position: absolute;
   left: 10%;
   top: 8%;
   z-index: 10;
+  width: 100px;
+  height: auto;
+  animation: midToLeft 2s ease-in-out forwards;
 }
 
 .button {
