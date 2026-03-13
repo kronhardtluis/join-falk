@@ -7,7 +7,7 @@ main {
   max-width: 1440px;
 }
 
-#background-animation{
+#background-animation {
   animation: backgroundAnimation 2s forwards;
   position: absolute;
   left: 0;
@@ -22,6 +22,13 @@ main {
   width: 100px;
   height: auto;
   animation: midToLeft 2s ease-in-out forwards;
+
+  @include all.mobile {
+    left: 4%;
+    top: 4%;
+    width: 80px;
+    height: auto;
+  }
 }
 
 .button {
@@ -42,9 +49,24 @@ main {
     background-color: all.$greyMid;
     box-shadow: none;
   }
+
+  @include all.tablet {
+    width: 180px;
+    text-align: center;
+  }
+
+  &--responsive {
+    padding: 8px 20px;
+
+    @include all.tablet {
+      width: 100px; // Ein festerer Wert für Tablets
+      padding: 12px 16px; // Etwas flacher halten
+      font-size: 1.5rem; // Eventuell die Schrift hier etwas verkleinern?
+    }
+  }
 }
 
-.button-light{
+.button-light {
   background-color: white;
   font-size: 2rem;
   color: all.$blue;
@@ -59,20 +81,28 @@ main {
     border: 2px solid all.$blueLight;
     box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.4);
   }
+
+  @include all.tablet {
+    width: 180px;
+    text-align: center;
+  }
 }
 
 header {
-  @include all.flexi($ai:start, $jc:flex-end);
+  @include all.flexi($ai: start, $jc: flex-end);
   height: 200px;
   #sign-up-area {
     @include all.flexi($jc: flex-end, $gap: 16px);
     padding-top: 40px;
+
+    @include all.tablet{
+      display: none;
+    }
   }
 }
 
 #main-content {
   @include all.flexi();
-  // height: 50dvh;
 }
 
 #sign-up-wrapper {
@@ -103,10 +133,10 @@ header {
   #sign-up-headline {
     @include all.flexi($fd: column, $gap: 8px);
     h2 {
-      font-size: 6rem;
+      font-size: clamp(4rem, 5vw, 6rem);
     }
 
-    img{
+    img {
       width: 130px;
       height: 3.5px;
     }
@@ -115,13 +145,12 @@ header {
   button {
     background-color: transparent;
     position: absolute;
-    top: 30%;
+    top: 35%;
     left: 5%;
   }
 }
 
 #form {
-  // @include all.flexi($ai: center);
   #sign-up-form {
     height: 100%;
     width: 100%;
@@ -150,8 +179,9 @@ header {
       padding: 10px 40px 10px 15px;
       cursor: pointer;
 
-      &::placeholder{
-        color:rgb(209, 209, 209)
+      &::placeholder {
+        font-size: clamp(1.6rem, 2vw, 2rem);
+        color: rgb(209, 209, 209);
       }
 
       &:focus {
@@ -188,10 +218,11 @@ header {
 
       p {
         color: grey;
+        font-size: clamp(1.6rem, 2vw, 2rem);
       }
 
       a {
-        font-size: 2rem;
+        font-size: clamp(1.6rem, 2vw, 2rem);
         color: all.$blueLight;
       }
     }
@@ -203,24 +234,43 @@ header {
   margin-top: 24px;
 }
 
-#log-in-buttons{
+#log-in-buttons {
   @include all.flexi($gap: 35px);
   margin: 20px 0;
+
+  @include all.tablet {
+    @include all.flexi($fd: column, $gap: 15px);
+  }
 }
 
 footer {
-  @include all.flexi($gap: 40px);
-  color: rgb(189, 189, 189);
-  cursor: pointer;
+  @include all.flexi($gap: 40px, $fd: column);
   height: 100px;
   margin-top: 100px;
 
-  a {
-    &:hover {
-      color: all.$blueLight;
-      filter: drop-shadow(0.3px 0 0 currentcolor)
-            drop-shadow(-0.3px 0 0 currentcolor)
-            drop-shadow(0 0.3px 0 currentcolor);
+  #sign-up-area-responsive {
+    @include all.flexi($gap:clamp(8px,5vw,40px));
+    display: none;
+    p{
+      font-size: clamp(1.6rem, 2vw, 2rem);
+    }
+
+    @include all.tablet{
+      display: flex;
+    }
+  }
+
+  #legal-links {
+    @include all.flexi($gap: 40px);
+    padding-bottom: 20px;
+    a {
+      color: rgb(189, 189, 189);
+      cursor: pointer;
+      &:hover {
+        color: all.$blueLight;
+        filter: drop-shadow(0.3px 0 0 currentcolor) drop-shadow(-0.3px 0 0 currentcolor)
+          drop-shadow(0 0.3px 0 currentcolor);
+      }
     }
   }
 }

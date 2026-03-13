@@ -1,4 +1,3 @@
-
 <main>
   <div id="background-animation"></div>
   <img id="logo" src="assets/icons/logo-big.png" alt="logo" />
@@ -160,7 +159,9 @@
           } @else {
             <div id="log-in-buttons">
               <a routerLink="summary" class="button" (click)="loging('loged-in')">Log in</a>
-              <a routerLink="summary" class="button-light" (click)="loging('Guest')">Guest Log in</a>
+              <a routerLink="summary" class="button-light" (click)="loging('Guest')"
+                >Guest Log in</a
+              >
             </div>
           }
         </div>
@@ -169,7 +170,15 @@
   </section>
 
   <footer>
-    <a routerLink="privacy-policy" >Privacy Policy</a>
-    <a routerLink="legal-notice" >Legal notice</a>
+    @if (activeState() === 'log-in') {
+    <div id="sign-up-area-responsive">
+      <p>Not a Join User?</p>
+      <button class="button button--responsive" (click)="setFormular('sign-up')">Sign Up</button>
+    </div>
+  }
+    <div id="legal-links">
+      <a routerLink="privacy-policy">Privacy Policy</a>
+      <a routerLink="legal-notice">Legal notice</a>
+    </div>
   </footer>
 </main>
