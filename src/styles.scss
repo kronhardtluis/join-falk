@@ -72,6 +72,7 @@ body {
 .legals {
   padding: 5%;
   width: 100%;
+  max-width: calc(1440px - 232px);
   @include all.flexi($ai: start, $fd: column);
 
   h1 {
