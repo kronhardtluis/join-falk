@@ -72,11 +72,15 @@ body {
 .legals {
   padding: 5%;
   width: 100%;
+  max-width: calc(1440px - 232px);
   @include all.flexi($ai: start, $fd: column);
+
+  .heading {
+    margin-bottom: 16px;
+  }
 
   h1 {
     font-size: 5.4rem;
-    margin-bottom: 16px;
   }
 
   h2 {
@@ -105,7 +109,7 @@ body {
   }
 
   @include all.tablet {
-    h1 {
+    .heading {
       font-size: 4rem;
     }
 
@@ -115,6 +119,25 @@ body {
 
     h3 {
       font-size: 2rem;
+    }
+  }
+}
+
+.heading {
+  width: 100%;
+  @include all.flexi($jc: space-between);
+
+  button {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 50%;
+
+    &:hover {
+      background-color: rgb(234, 234, 234);
+      transform: scale(1.1);
     }
   }
 }
