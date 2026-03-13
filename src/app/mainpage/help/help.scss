@@ -2,27 +2,15 @@
 
 main {
   max-width: calc(1440px - 232px);
-  padding: clamp(50px, 10vw, 100px) 8%;
+  padding: 5%;
 
-  button {
-    position: fixed;
-    right: 5%;
-    margin-top: 10px;
-    background-color: transparent;
-    cursor: pointer;
-    padding: 6px;
-    border-radius: 50%;
-
-    &:hover {
-      background-color: rgb(234, 234, 234);
-      transform: scale(1.1);
-    }
+  .heading {
+    margin-bottom: 32px;
   }
 }
 
 h2 {
   font-size: clamp(48px, 10vw, 60px);
-  margin-bottom: 32px;
 }
 
 h3 {
