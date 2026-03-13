@@ -59,6 +59,10 @@ nav {
   }
 }
 
+  .active {
+    background-color: all.$blueDark;
+    color: white;}
+
 #legal-links {
   width: 100%;
   @include all.flexi($fd: column, $ai: flex-start);
@@ -72,7 +76,7 @@ nav {
       cursor: pointer;
       color: all.$blueLight;
       font-weight: bold;
-      transform: translateX(6px) scale(1.1);
+      // transform: translateX(6px) scale(1.1);
     }
   }
 }

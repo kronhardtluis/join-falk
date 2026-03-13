@@ -24,6 +24,7 @@ export class Supabase {
   public notificationMessage = signal<string>('');
   public logingStatus = signal<string>(localStorage.getItem('join_login_status') || 'guest');
   public logedUser = signal<string>("");
+  public activeSite = signal<string>("");
 
   constructor(){
     this.checkPersistedSession();
@@ -416,5 +417,9 @@ export class Supabase {
     else if (!data.session && this.logingStatus() !== 'Guest' && this.logingStatus() !== 'guest') {
       this.setLoginStatus('guest');
     }
+  }
+
+  logout(){
+    localStorage.setItem('join_login_status', "");
   }
 }

@@ -5,7 +5,7 @@
     @if (activeState() === 'log-in') {
       <div id="sign-up-area">
         <p>Not a Join User?</p>
-        <button class="button" (click)="moveTo('sign-up')">Sign Up</button>
+        <button class="button" (click)="setFormular('sign-up')">Sign Up</button>
       </div>
     }
   </header>
@@ -14,7 +14,7 @@
     <section id="sign-up-wrapper">
       <div id="sign-up-header">
         @if (activeState() === 'sign-up') {
-          <button (click)="moveTo('log-in')">
+          <button (click)="setFormular('log-in')">
             <img src="assets/icons/arrow.png" alt="arrow-left" />
           </button>
         }
@@ -158,8 +158,8 @@
             </button>
           } @else {
             <div id="log-in-buttons">
-              <a routerLink="summary" class="button" (click)="test('loged-in')">Log in</a>
-              <a routerLink="summary" class="button-light" (click)="test('loged-in as Guest')">Guest Log in</a>
+              <a routerLink="summary" class="button" (click)="loging('loged-in')">Log in</a>
+              <a routerLink="summary" class="button-light" (click)="loging('Guest')">Guest Log in</a>
             </div>
           }
         </div>
@@ -168,7 +168,7 @@
   </section>
 
   <footer>
-    <a routerLink="privacy-policy">Privacy Policy</a>
-    <a routerLink="legal-notice">Legal notice</a>
+    <a routerLink="privacy-policy" >Privacy Policy</a>
+    <a routerLink="legal-notice" >Legal notice</a>
   </footer>
 </main>

@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { inject, signal, OnInit, computed } from '@angular/core';
 import { Supabase } from '../../services/supabase';
@@ -29,6 +30,7 @@ export class Contact implements OnInit {
     email: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
     phone: ['', [Validators.required, Validators.pattern(/^[0-9+ ]{9,15}$/)]]
   });
+  router = inject(Router);
 
   /**
   * Lifecycle hook that initializes the component by fetching the initial contact list
@@ -36,6 +38,9 @@ export class Contact implements OnInit {
   * @returns {void}
   */
   ngOnInit(){
+    if (this.dbService.logingStatus() === 'guest') {
+      this.router.navigate(['/']);
+    }
     this.dbService.getContacts();
     this.dbService.subscribeToChanges();
   }

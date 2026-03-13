@@ -1,14 +1,16 @@
-import { Component, HostListener } from '@angular/core';
-import { RouterLink } from "@angular/router";
+import { Component, HostListener, inject } from '@angular/core';
+import { RouterLink, RouterLinkActive } from "@angular/router";
+import { Supabase } from '../../services/supabase';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
 export class Header {
   isMenuOpen = false;
+  dbService = inject(Supabase);
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
@@ -23,5 +25,10 @@ export class Header {
     if (!target.closest('#user') && !target.closest('.dropdown')) {
       this.isMenuOpen = false;
     }
+  }
+
+  logOut(){
+    this.dbService.setLoginStatus('guest');
+    this.dbService.logout();
   }
 }

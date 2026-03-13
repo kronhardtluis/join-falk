@@ -1,5 +1,5 @@
 import { Component, inject, computed, OnInit, OnDestroy, signal} from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { Supabase } from '../../services/supabase';
 
 @Component({
@@ -18,12 +18,16 @@ export class Summary implements OnInit, OnDestroy {
   inProgressCount = computed(() => this.dbService.tasks().filter(t => t.status === 'In Progress').length);
   awaitingFeedbackCount = computed(() => this.dbService.tasks().filter(t => t.status === 'Awaiting Feedback').length);
   greetingInterval: ReturnType<typeof setInterval> | undefined;
+  router = inject(Router);
 
   /**
   * Initializes the component by setting the initial greeting,
   * starting the update interval, and loading data from the database.
   */
   ngOnInit() {
+    if (this.dbService.logingStatus() === 'guest') {
+      this.router.navigate(['/']);
+    }
     this.setGreeting();
     this.greetingInterval = setInterval(() => this.setGreeting(), 60000);
     this.dbService.loadBoardData();

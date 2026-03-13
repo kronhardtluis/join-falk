@@ -58,6 +58,9 @@ export class AddTask implements OnInit {
   * or initialized with a specific status from Input or Query Parameters.
   */
   ngOnInit() {
+    if (this.dbService.logingStatus() === 'guest' && !this.editTaskData) {
+      this.router.navigate(['/']);
+    }
     this.dbService.getContacts();
     if (this.editTaskData) {
       this.fillFormForEdit(this.editTaskData);
