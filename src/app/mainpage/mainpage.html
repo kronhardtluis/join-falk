@@ -38,7 +38,7 @@
               <img class="icon" src="assets/icons/person.png" alt="User" />
               <input id="name" type="text" formControlName="name" placeholder="Name" />
               <span class="error-message">
-                @if (userForm.get('name')?.invalid && userForm.get('name')?.touched) {
+                @if (userForm.get('name')?.invalid && userForm.get('name')?.touched && activeState() === 'sign-up') {
                   Your Name is required.
                 }
               </span>
@@ -48,7 +48,7 @@
             <img class="icon" src="assets/icons/mail.png" alt="User" />
             <input id="email" type="text" formControlName="email" placeholder="Email" />
             <span class="error-message">
-              @if (userForm.get('email')?.invalid && userForm.get('email')?.touched) {
+              @if (userForm.get('email')?.invalid && userForm.get('email')?.touched && activeState() === 'sign-up') {
                 Your Email is required.
               }
             </span>
@@ -82,8 +82,10 @@
               (blur)="isPasswordVisible = false"
             />
             <span class="error-message">
-              @if (userForm.get('password')?.invalid && userForm.get('password')?.touched) {
+              @if (userForm.get('password')?.invalid && userForm.get('password')?.touched && activeState() === 'sign-up') {
                 Your password is required.
+              } @else if (userForm.get('password')?.hasError('supabase') || userForm.get('email')?.hasError('supabase')) {
+                Check your email and password. Please try again.
               }
             </span>
           </div>
@@ -117,12 +119,12 @@
                 (blur)="isConfirmVisible = false"
               />
               <span class="error-message">
-                @if (userForm.get('confirm')?.invalid && userForm.get('confirm')?.touched) {
+                @if (userForm.get('confirm')?.invalid && userForm.get('confirm')?.touched && activeState() === 'sign-up') {
                   Your passwords don't match. Please try again.
                 }
               </span>
             </div>
-
+          }
             <div id="checkbox-content">
               <div id="checkbox-wrapper">
                 <div class="custom-checkbox" (click)="toggleCheckBox()">
@@ -132,15 +134,20 @@
                     <img src="assets/icons/cheackbox.png" alt="unchecked" />
                   }
                 </div>
-                <p>I accept the <a routerLink="privacy-policy">Privacy policy</a></p>
+                <p>
+                  @if (activeState() === 'sign-up') {
+                    I accept the <a routerLink="privacy-policy">Privacy policy</a>
+                  } @else {
+                    Remember me
+                  }
+                </p>
               </div>
               <span class="error-message">
-                @if (userForm.get('checkBox')?.invalid && userForm.get('checkBox')?.touched) {
+                @if (userForm.get('checkBox')?.invalid && userForm.get('checkBox')?.touched && activeState() === 'sign-up') {
                   Please accept privacy policy.
                 }
               </span>
             </div>
-          }
         </form>
       </div>
 
@@ -152,16 +159,15 @@
               [disabled]="!userForm.valid"
               class="button"
               form="sign-up-form"
-              (click)="formReset()"
+
             >
               Sign Up
             </button>
           } @else {
             <div id="log-in-buttons">
-              <a routerLink="summary" class="button" (click)="loging('loged-in')">Log in</a>
-              <a routerLink="summary" class="button-light" (click)="loging('Guest')"
-                >Guest Log in</a
-              >
+              <button class="button" form="sign-up-form">Log in</button>
+              <button class="button-light" (click)="loging('Guest')"
+                >Guest Log in</button>
             </div>
           }
         </div>

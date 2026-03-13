@@ -16,9 +16,7 @@ export class Supabase {
   public tasks = signal<FullTask[]>([]);
   public todoTasks = computed(() => this.tasks().filter((t) => t.status === 'ToDo'));
   public inProgressTasks = computed(() => this.tasks().filter((t) => t.status === 'In Progress'));
-  public awaitingFeedbackTasks = computed(() =>
-    this.tasks().filter((t) => t.status === 'Awaiting Feedback'),
-  );
+  public awaitingFeedbackTasks = computed(() => this.tasks().filter((t) => t.status === 'Awaiting Feedback'));
   public doneTasks = computed(() => this.tasks().filter((t) => t.status === 'Done'));
   public selectedTask = signal<FullTask | null>(null);
   public notificationMessage = signal<string>('');
@@ -358,14 +356,14 @@ export class Supabase {
       const toUpdate = normalized.filter(s => !!s.id);
       if (toUpdate.length > 0) {
         const { error } = await this.supabase.from('subtasks').upsert(toUpdate);
-        if (error) throw error;
+        if (error) this.showNotification("Failed to sync subtasks.");;
       }
       const toInsert = normalized
         .filter(s => !s.id)
         .map(({ id, ...data }) => data);
       if (toInsert.length > 0) {
         const { error } = await this.supabase.from('subtasks').insert(toInsert);
-        if (error) throw error;
+        if (error) this.showNotification("Failed to sync subtasks.");;
       }
     } catch (error) {
       this.showNotification("Failed to sync subtasks.");
@@ -404,22 +402,89 @@ export class Supabase {
     }
   }
 
+  /**
+   * Registers a new user with Supabase Auth and stores additional metadata.
+   * @param email - User's email address.
+   * @param pass - User's chosen password.
+   * @param name - Full name to be stored in user_metadata.
+   * @throws Will throw the Supabase error object if registration fails.
+   */
+  async signUp(email: string, pass: string, name: string) {
+    const { data, error } = await this.supabase.auth.signUp({
+      email,
+      password: pass,
+      options: { data: { full_name: name } }
+    });
+    if (error) {
+      this.showNotification("Registration failed.");
+      throw error;
+    }
+    this.showNotification("Registration successful.");
+  }
+
+  /**
+   * Authenticates a user and manages the persistence of the login state.
+   * @param email - User's email address.
+   * @param pass - User's password.
+   * @param rememberMe - If true, the 'User' status is saved in localStorage for persistence across sessions.
+   * @throws Will throw the Supabase error object if authentication fails.
+   */
+  async signIn(email: string, pass: string, rememberMe: boolean = false) {
+    const { data, error } = await this.supabase.auth.signInWithPassword({
+      email,
+      password: pass,
+    });
+    if (error) {
+      this.showNotification("Invalid email or password.");
+      throw error;
+    }
+    const STATUS = 'User';
+    this.logingStatus.set(STATUS);
+    this.logedUser.set(data.user?.user_metadata['full_name'] || data.user?.email);
+    if (rememberMe) {
+      localStorage.setItem('join_login_status', STATUS);
+    } else {
+      localStorage.removeItem('join_login_status');
+    }
+    return data;
+  }
+
+  /**
+   * Manually sets the login status (e.g., for Guest access).
+   * @param status - The status string to set ('Guest', 'User', or 'guest').
+   */
   setLoginStatus(status:string){
     this.logingStatus.set(status);
     localStorage.setItem('join_login_status', status);
   }
 
+  /**
+   * Verifies if a session exists in Supabase Auth or falls back to localStorage status.
+   * Called automatically in the constructor to maintain user state after page refresh.
+   */
   private async checkPersistedSession() {
     const { data } = await this.supabase.auth.getSession();
-    if (data.session && this.logingStatus() === 'guest') {
-      this.setLoginStatus('User');
-    }
-    else if (!data.session && this.logingStatus() !== 'Guest' && this.logingStatus() !== 'guest') {
-      this.setLoginStatus('guest');
+    if (data.session) {
+      this.logingStatus.set('User');
+      this.logedUser.set(data.session.user.user_metadata['full_name']);
+    } else {
+      const SAVED_STATUS = localStorage.getItem('join_login_status');
+      if (SAVED_STATUS === 'Guest') {
+        this.logingStatus.set('Guest');
+      } else {
+        this.logingStatus.set('guest');
+      }
     }
   }
 
-  logout(){
-    localStorage.setItem('join_login_status', "");
+  /**
+   * Signs out the current user from Supabase Auth and clears all local storage and signals.
+   */
+  async logout() {
+    const { error } = await this.supabase.auth.signOut();
+    if (error) this.showNotification("Logout error.");
+    this.logingStatus.set('guest');
+    this.logedUser.set('');
+    localStorage.removeItem('join_login_status');
   }
 }
