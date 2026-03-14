@@ -1,8 +1,9 @@
 import { createClient, RealtimeChannel } from '@supabase/supabase-js';
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
 import { environment } from '../environments/environment.example';
 import { Contact } from '../interfaces/contact.interface';
 import { Task, Subtask, FullTask, TaskFormData } from '../interfaces/task.interface';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -20,9 +21,11 @@ export class Supabase {
   public doneTasks = computed(() => this.tasks().filter((t) => t.status === 'Done'));
   public selectedTask = signal<FullTask | null>(null);
   public notificationMessage = signal<string>('');
-  public logingStatus = signal<string>(localStorage.getItem('join_login_status') || 'guest');
-  public logedUser = signal<string>("");
+  public logingStatus = signal<string>(localStorage.getItem('join_login_status') || 'nobody');
+  public logedUser = signal<string>(localStorage.getItem('join_user_name') || "");
   public activeSite = signal<string>("");
+  public activeForm = signal<'log-in' | 'sign-up'>('log-in');
+  router = inject(Router);
 
   constructor(){
     this.checkPersistedSession();
@@ -40,12 +43,28 @@ export class Supabase {
   }
 
   /**
+  * Selects a random hex color code from a predefined professional color palette.
+  * These colors are used as background colors for contact avatars.
+  * @returns {string} A string representing a hex color code (e.g., '#FF7A00').
+  */
+  getRandomColor():string{
+    const COLORS = [
+    '#FF7A00', '#FF5EB3', '#6E52FF', '#9327FF', '#00BEE8',
+    '#1FD7C1', '#FF745E', '#FFA35E', '#FC71FF', '#FFC701',
+    '#0038FF','#C3FF2B', '#FFE62B','#FF4646','#FFBB2B'
+    ];
+    const INDEX = Math.floor(Math.random() * COLORS.length);
+    return COLORS[INDEX];
+  }
+
+  /**
    * Establishes a real-time subscription to the 'contacts' table.
    * Automatically calls getContacts() whenever an INSERT, UPDATE, or DELETE event occurs
    * to ensure the local UI state is synchronized with the database.
    * @returns {void}
    */
   subscribeToChanges() {
+    if (this.channels) return;
     this.channels = this.supabase
       .channel('custom-all-channel')
       .on('postgres_changes', { event: '*', schema: 'public' }, () => {
@@ -61,7 +80,10 @@ export class Supabase {
    * @returns {void}
    */
   ngOnDestroy() {
-    if (this.channels) this.supabase.removeChannel(this.channels);
+    if (this.channels) {
+      this.supabase.removeChannel(this.channels);
+      this.channels = undefined;
+    }
   }
 
   /**
@@ -114,6 +136,7 @@ export class Supabase {
    * Returns an empty string if the input is empty or invalid.
    */
   getInitials(name: string): string {
+    if (!name || typeof name !== 'string') {return '';}
     const NAME = name.trim().split(/\s+/);
     const FIRST_LETTER = NAME.length > 0 ? NAME[0][0].toUpperCase() : '';
     const SECOND_LETTER = NAME.length > 1 ? NAME[1][0].toUpperCase() : '';
@@ -417,17 +440,33 @@ export class Supabase {
     });
     if (error) {
       this.showNotification("Registration failed.");
-      throw error;
+      return { data: null, error };
+    }
+    if (data.user) {
+      try {
+        const NEW_CONTACT: Contact = {
+          name: name,
+          email: email,
+          phone: "0",
+          color: this.getRandomColor()
+        };
+        await this.addContact(NEW_CONTACT);
+        this.showNotification("Contact created successful.");
+      } catch (contactError) {
+        this.showNotification("Failed to create contact.");
+      }
     }
     this.showNotification("Registration successful.");
+    this.signIn(email, pass)
+    return { data, error: null };
   }
 
   /**
    * Authenticates a user and manages the persistence of the login state.
    * @param email - User's email address.
    * @param pass - User's password.
-   * @param rememberMe - If true, the 'User' status is saved in localStorage for persistence across sessions.
-   * @throws Will throw the Supabase error object if authentication fails.
+   * @param rememberMe - If true, the 'User' status is saved in localStorage.
+   * @returns The data object on success, or an object with error on failure. // ZMIENIONO
    */
   async signIn(email: string, pass: string, rememberMe: boolean = false) {
     const { data, error } = await this.supabase.auth.signInWithPassword({
@@ -436,17 +475,51 @@ export class Supabase {
     });
     if (error) {
       this.showNotification("Invalid email or password.");
-      throw error;
+      return { data: null, error };
     }
-    const STATUS = 'User';
-    this.logingStatus.set(STATUS);
-    this.logedUser.set(data.user?.user_metadata['full_name'] || data.user?.email);
+    const USER_NAME = data.user?.user_metadata['full_name'] || data.user?.email || "";
+    await this.ensureContactExists(email, USER_NAME);
+    localStorage.setItem('join_remember_me', rememberMe.toString());
+    this.setLoginStatus('user');
+    this.logedUser.set(USER_NAME)
     if (rememberMe) {
-      localStorage.setItem('join_login_status', STATUS);
+      localStorage.setItem('join_user_name', USER_NAME)
     } else {
-      localStorage.removeItem('join_login_status');
+      localStorage.removeItem('join_user_name');
     }
     return data;
+  }
+
+  /**
+   * Ensures that a contact corresponding to the authenticated user exists in the database.
+   * * This method performs a synchronization check:
+   * 1. Fetches the current contact list if the local state is empty.
+   * 2. Verifies if the user's email is already present in the contacts collection.
+   * 3. If missing (e.g., after manual deletion), it creates a new contact using
+   * provided metadata and assigns a random color from the predefined palette.
+   * 4. Refreshes the local contacts signal after a successful insertion to maintain data integrity.
+   * @param email - The email address of the user to check or create.
+   * @param name - The full name of the user used for contact creation.
+   * @returns {Promise<void>} A promise that resolves when the synchronization check is complete.
+   * @private
+   */
+  private async ensureContactExists(email: string, name: string) {
+    if (this.contacts().length === 0) {
+      await this.getContacts();
+    }
+    const CONTACT_EXISTS = this.contacts().some(c => c.email === email);
+    if (!CONTACT_EXISTS) {
+      const NEW_CONTACT: Contact = {
+        name: name,
+        email: email,
+        phone: "0",
+        color: this.getRandomColor(),
+      };
+      const { error } = await this.supabase.from('contacts').insert([NEW_CONTACT]);
+      if (!error) {
+        await this.getContacts();
+      }
+    }
   }
 
   /**
@@ -456,6 +529,10 @@ export class Supabase {
   setLoginStatus(status:string){
     this.logingStatus.set(status);
     localStorage.setItem('join_login_status', status);
+    if (status === 'guest') {
+      this.logedUser.set('Guest');
+      localStorage.setItem('join_user_name', 'Guest');
+    }
   }
 
   /**
@@ -464,15 +541,27 @@ export class Supabase {
    */
   private async checkPersistedSession() {
     const { data } = await this.supabase.auth.getSession();
+    const REMEMBER_ME = localStorage.getItem('join_remember_me') === 'true';
     if (data.session) {
-      this.logingStatus.set('User');
-      this.logedUser.set(data.session.user.user_metadata['full_name']);
+      const NAME = data.session.user.user_metadata['full_name'];
+      const EMAIL = data.session.user.email!;
+      await this.ensureContactExists(EMAIL, NAME);
+    }
+    if (data.session && !REMEMBER_ME) {
+      await this.logout();
+    return;
+    }
+    if (data.session && REMEMBER_ME) {
+      const NAME = data.session.user.user_metadata['full_name'];
+      this.logedUser.set(NAME);
+      localStorage.setItem('join_user_name', NAME);
     } else {
       const SAVED_STATUS = localStorage.getItem('join_login_status');
-      if (SAVED_STATUS === 'Guest') {
-        this.logingStatus.set('Guest');
-      } else {
+      if (SAVED_STATUS === 'guest') {
         this.logingStatus.set('guest');
+        this.logedUser.set('Guest');
+      } else {
+        this.logingStatus.set('nobody');
       }
     }
   }
@@ -481,10 +570,12 @@ export class Supabase {
    * Signs out the current user from Supabase Auth and clears all local storage and signals.
    */
   async logout() {
-    const { error } = await this.supabase.auth.signOut();
-    if (error) this.showNotification("Logout error.");
-    this.logingStatus.set('guest');
+    await this.supabase.auth.signOut();
+    this.logingStatus.set('nobody');
     this.logedUser.set('');
+    localStorage.removeItem('join_user_name');
     localStorage.removeItem('join_login_status');
+    localStorage.removeItem('join_remember_me');
+    this.router.navigate(['/']);
   }
 }

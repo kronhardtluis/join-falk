@@ -28,7 +28,6 @@ export class Header {
   }
 
   logOut(){
-    this.dbService.setLoginStatus('guest');
     this.dbService.logout();
   }
 }

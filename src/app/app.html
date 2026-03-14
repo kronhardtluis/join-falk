@@ -1,4 +1,4 @@
-@if(dbService.logingStatus() === "guest" && dbService.activeSite() === "log-in"){
+@if(dbService.logingStatus() === "nobody" && dbService.activeSite() === "log-in"){
   <main class="content auth-mode">
     <router-outlet />
   </main>

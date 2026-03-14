@@ -45,7 +45,7 @@ export class Board {
    * Part of the Angular Lifecycle hook.
    */
   ngOnInit() {
-    if (this.dbService.logingStatus() === 'guest') {
+    if (this.dbService.logingStatus() === 'nobody') {
       this.router.navigate(['/']);
     }
     this.dbService.loadBoardData();

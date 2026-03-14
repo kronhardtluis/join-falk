@@ -38,7 +38,7 @@ export class Contact implements OnInit {
   * @returns {void}
   */
   ngOnInit(){
-    if (this.dbService.logingStatus() === 'guest') {
+    if (this.dbService.logingStatus() === 'nobody') {
       this.router.navigate(['/']);
     }
     this.dbService.getContacts();
@@ -174,7 +174,7 @@ export class Contact implements OnInit {
   private async createNewContact(formData: ContactFormData) {
     const NEW_CONTACT = {
       ...formData,
-      color: this.getRandomColor()
+      color: this.dbService.getRandomColor()
     };
     await this.dbService.addContact(NEW_CONTACT);
   }
@@ -198,22 +198,6 @@ export class Contact implements OnInit {
   */
   private handleError(error: unknown) {
     console.error('Form submission failed:', error);
-  }
-
-  /**
-  * Selects a random hex color code from a predefined professional color palette.
-  * These colors are used as background colors for contact avatars.
-  * @private
-  * @returns {string} A string representing a hex color code (e.g., '#FF7A00').
-  */
-  private getRandomColor():string{
-    const COLORS = [
-    '#FF7A00', '#FF5EB3', '#6E52FF', '#9327FF', '#00BEE8',
-    '#1FD7C1', '#FF745E', '#FFA35E', '#FC71FF', '#FFC701',
-    '#0038FF','#C3FF2B', '#FFE62B','#FF4646','#FFBB2B'
-    ];
-    const INDEX = Math.floor(Math.random() * COLORS.length);
-    return COLORS[INDEX];
   }
 
   /**

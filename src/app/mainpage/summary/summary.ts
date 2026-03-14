@@ -25,13 +25,15 @@ export class Summary implements OnInit, OnDestroy {
   * starting the update interval, and loading data from the database.
   */
   ngOnInit() {
-    if (this.dbService.logingStatus() === 'guest') {
+    if (this.dbService.logingStatus() === 'nobody') {
       this.router.navigate(['/']);
     }
     this.setGreeting();
     this.greetingInterval = setInterval(() => this.setGreeting(), 60000);
     this.dbService.loadBoardData();
-    this.dbService.subscribeToChanges();
+    setTimeout(() => {
+      this.dbService.subscribeToChanges();
+    }, 500);
   }
 
   /**

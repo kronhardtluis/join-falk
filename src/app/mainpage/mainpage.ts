@@ -10,10 +10,10 @@ import { Supabase } from '../services/supabase';
   styleUrl: './mainpage.scss',
 })
 export class Mainpage {
-  activeState = signal<'log-in' | 'sign-up'>("log-in");
   loginFailed = signal<boolean>(false);
   dbService = inject(Supabase);
   router = inject(Router);
+  activeState = this.dbService.activeForm;
   userForm = new FormGroup(
     {
       name: new FormControl('', {
@@ -22,10 +22,10 @@ export class Mainpage {
         //validators: [Validators.required],
       }),
       email: new FormControl('', {
-        //validators: [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)],
+        validators: [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)],
       }),
       password: new FormControl('', {
-        //validators: [Validators.required, Validators.minLength(8)],
+        validators: [Validators.required],
       }),
       confirm: new FormControl('', {
         //validators: [Validators.required, Validators.minLength(8)],
@@ -46,9 +46,10 @@ export class Mainpage {
 
   ngOnInit(){
     this.dbService.activeSite.set("log-in");
-    if (this.dbService.logingStatus() !== 'guest') {
+    if (this.dbService.logingStatus() !== 'nobody') {
       this.router.navigate(['/summary']);
     }
+    this.dbService.getContacts();
   }
 
   ngOnDestroy() {
@@ -62,27 +63,38 @@ export class Mainpage {
    */
   async formSubmit() {
     this.loginFailed.set(false);
+    //this.userForm.markAllAsTouched();
     if (this.activeState() === 'sign-up' && this.userForm.invalid) {
       this.handleDisabledClick();
       return;
     }
     const { email, password, name, checkBox } = this.userForm.value;
-    try {
-      if (this.activeState() === 'sign-up') {
-        await this.dbService.signUp(email!, password!, name!);
-        this.setFormular('log-in');
-      } else {
-        await this.dbService.signIn(email!, password!, checkBox!);
-        this.router.navigate(['/summary']);
-      }
-    } catch (error:any) {
-      if (this.activeState() === 'log-in') {
+    if (this.activeState() === 'sign-up') {
+        const EXISTS = this.dbService.contacts().some(c => c.email === email);
+        if (EXISTS) {
+          this.dbService.showNotification("This email is already registered.");
+          return;
+        }
+      const RESULT = await this.dbService.signUp(email!, password!, name!);
+       if (RESULT && 'error' in RESULT && RESULT.error){
         this.loginFailed.set(true);
-        this.userForm.get('email')?.setErrors({ supabase: true });
-        this.userForm.get('password')?.setErrors({ supabase: true });
+        this.dbService.showNotification("Registration failed.");
+       }
+       else {
+          this.setFormular('log-in');
+          this.router.navigate(['/summary']);
+        }
+      } else {
+        const RESULT = await this.dbService.signIn(email!, password!, checkBox!);
+        if (RESULT && 'error' in RESULT && RESULT.error) {
+          this.loginFailed.set(true);
+          this.userForm.get('email')?.setErrors({ supabase: true });
+          this.userForm.get('password')?.setErrors({ supabase: true });
+        } else {
+          this.router.navigate(['/summary']);
+        }
       }
     }
-  }
 
   formReset() {
     this.userForm.reset();
@@ -113,14 +125,13 @@ export class Mainpage {
   isConfirmVisible = false;
 
   togglePassword(event: MouseEvent, field: 'password' | 'confirm') {
-  event.preventDefault();
-
-  if (field === 'password') {
-    this.isPasswordVisible = !this.isPasswordVisible;
-  } else {
-    this.isConfirmVisible = !this.isConfirmVisible;
+    event.preventDefault();
+    if (field === 'password') {
+      this.isPasswordVisible = !this.isPasswordVisible;
+    } else {
+      this.isConfirmVisible = !this.isConfirmVisible;
+    }
   }
-}
 
   /**
    * Switches between login and signup modes and adjusts field requirements.
@@ -130,33 +141,50 @@ export class Mainpage {
     this.activeState.set(state);
     this.userForm.reset();
     this.loginFailed.set(false);
-
-    const NAME_CTRL = this.userForm.get('name');
-    const EMAIL_CTRL = this.userForm.get('email');
-    const PASSWORD_CTRL = this.userForm.get('password');
-    const CONFIRM_CTRL = this.userForm.get('confirm');
-    const CHECK_CTRL = this.userForm.get('checkBox');
-
     if (state === 'sign-up') {
-      NAME_CTRL?.setValidators([Validators.required]);
-      EMAIL_CTRL?.setValidators([Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]);
-      PASSWORD_CTRL?.setValidators([Validators.required, Validators.minLength(8)]);
-      CONFIRM_CTRL?.setValidators([Validators.required, Validators.minLength(8)]);
-      CHECK_CTRL?.setValidators([Validators.requiredTrue]);
+      this.setValid(this.userForm);
     } else {
-      NAME_CTRL?.clearValidators();
-      EMAIL_CTRL?.clearValidators();
-      PASSWORD_CTRL?.clearValidators();
-      CONFIRM_CTRL?.clearValidators();
-      CHECK_CTRL?.clearValidators();
+      this.clearValid(this.userForm)
     }
+    this.updateValid(this.userForm)
+  }
 
-    NAME_CTRL?.updateValueAndValidity();
-    EMAIL_CTRL?.updateValueAndValidity();
-    PASSWORD_CTRL?.updateValueAndValidity();
-    CONFIRM_CTRL?.updateValueAndValidity();
-    CHECK_CTRL?.updateValueAndValidity();
+  /**
+  * Applies validation rules to the form controls required for the sign-up process.
+  * @param form - The FormGroup containing the user registration controls.
+  */
+  setValid(form: FormGroup): void{
+    form.get('name')?.setValidators([Validators.required]);
+    //form.get('email')?.setValidators([Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]);
+    form.get('password')?.setValidators([Validators.required, Validators.minLength(8)]);
+    form.get('confirm')?.setValidators([Validators.required, Validators.minLength(8)]);
+    form.get('checkBox')?.setValidators([Validators.requiredTrue]);
+  }
 
+  /**
+  * Removes all validators from the form controls.
+  * Used when switching to login mode where certain fields are not required.
+  * @param form - The FormGroup whose controls' validators should be cleared.
+  */
+  clearValid(form: FormGroup): void{
+    form.get('name')?.clearValidators();
+    //form.get('email')?.clearValidators();
+    form.get('password')?.clearValidators();
+    form.get('confirm')?.clearValidators();
+    form.get('checkBox')?.clearValidators();
+  }
+
+  /**
+  * Re-evaluates the value and validity status of each form control.
+  * This ensures the UI reflects the current validation state after changes.
+  * @param form - The FormGroup containing the controls to be updated.
+  */
+  updateValid(form: FormGroup): void{
+    form.get('name')?.updateValueAndValidity();
+    form.get('email')?.updateValueAndValidity();
+    form.get('password')?.updateValueAndValidity();
+    form.get('confirm')?.updateValueAndValidity();
+    form.get('checkBox')?.updateValueAndValidity();
   }
 
   /**
@@ -165,9 +193,8 @@ export class Mainpage {
    * @param value - The login mode, typically 'Guest'.
    */
   loging(value:string){
-    //console.log(value);
-    if(value === 'Guest'){
-      this.dbService.setLoginStatus('Guest');
+    if(value === 'guest'){
+      this.dbService.setLoginStatus('guest');
       this.dbService.logedUser.set('Guest')
     }
   }
