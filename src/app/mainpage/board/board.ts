@@ -12,7 +12,9 @@ import { Supabase } from '../../services/supabase';
 import { FullTask } from '../../interfaces/task.interface';
 import { RouterLink, Router } from '@angular/router';
 import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { FormsModule } from '@angular/forms';
+import { ContactService } from '../../services/contact-service.ts';
+import { TasksService } from '../../services/tasks-service';
+import { OAuthService } from '../../services/o-auth-service';
 
 @Component({
   selector: 'app-board',
@@ -23,6 +25,9 @@ import { FormsModule } from '@angular/forms';
 })
 export class Board {
   dbService = inject(Supabase);
+  contactService = inject(ContactService);
+  taskService = inject(TasksService);
+  oAuthService = inject(OAuthService);
   isTaskEditMode = signal<boolean>(false);
   searchQuery = signal<string>('');
   todoTasksFiltred = computed(() => this.filteredTasks().filter((task) => task.status === 'ToDo').sort((a, b) => (a.position ?? 0) - (b.position ?? 0)));
@@ -40,47 +45,45 @@ export class Board {
   currentColumnStatus = signal<string>('ToDo');
 
   /**
-   * Initializes the component by fetching initial board data and
-   * setting up real-time database subscriptions.
-   * Part of the Angular Lifecycle hook.
-   */
+  * Initializes the component by fetching initial board data and
+  * setting up real-time database subscriptions.
+  * Part of the Angular Lifecycle hook.
+  */
   ngOnInit() {
-    if (this.dbService.logingStatus() === 'nobody') {
+    if (this.oAuthService.logingStatus() === 'nobody') {
       this.router.navigate(['/']);
     }
-    this.dbService.loadBoardData();
-    this.dbService.subscribeToChanges();
+    this.taskService.loadBoardData();
     this.onResize();
   }
 
   /**
-   * Reference to the native HTML dialog element used for displaying task details.
-   * Injected via ViewChild after the view is initialized.
-   */
+  * Reference to the native HTML dialog element used for displaying task details.
+  * Injected via ViewChild after the view is initialized.
+  */
   @ViewChild('taskDetailDialog') taskDetailDialog!: ElementRef<HTMLDialogElement>;
 
   /**
-   * Opens the task detail modal and populates it with the provided task data.
-   * Updates the global state via the dbService signal to trigger the detail view rendering.
-   * @param task - The full task object (including subtasks and assignments) to be displayed.
-   */
+  * Opens the task detail modal and populates it with the provided task data.
+  * Updates the global state via the dbService signal to trigger the detail view rendering.
+  * @param task - The full task object (including subtasks and assignments) to be displayed.
+  */
   openTaskDetails(task: FullTask) {
-    this.dbService.selectedTask.set(task);
+    this.taskService.selectedTask.set(task);
     this.taskDetailDialog.nativeElement.showModal();
   }
 
   /**
-   * Closes the task detail modal and clears the selected task from the global state.
-   * Resets the dbService signal to null to prevent stale data on next opening.
-   */
+  * Closes the task detail modal and clears the selected task from the global state.
+  * Resets the dbService signal to null to prevent stale data on next opening.
+  */
   closeTaskDetails() {
-    //this.taskDetailDialog.nativeElement.close();
     const DIALOG_ELEMENT = this.taskDetailDialog.nativeElement;
     DIALOG_ELEMENT.classList.add('closing');
     setTimeout(() => {
       DIALOG_ELEMENT.close();
       DIALOG_ELEMENT.classList.remove('closing');
-      this.dbService.selectedTask.set(null);
+      this.taskService.selectedTask.set(null);
       this.isTaskEditMode.set(false);
     }, 400);
 
@@ -109,7 +112,6 @@ export class Board {
   * Closes the task creation dialog.
   */
   close() {
-    //this.dialog.nativeElement.close();
     const DIALOG_ELEMENT = this.dialog.nativeElement;
     DIALOG_ELEMENT.classList.add('closing');
     setTimeout(() => {
@@ -119,12 +121,12 @@ export class Board {
   }
 
   /**
-   * Handles click events on the dialog backdrop to close the modal.
-   * Logic differentiates between the task detail view and the general task creation dialog.
-   * @param event - The native MouseEvent triggered by the click.
-   * @param dialogTarget - Optional identifier to specify which dialog is being targeted (e.g., 'taskDetailDialog').
-   * @returns void
-   */
+  * Handles click events on the dialog backdrop to close the modal.
+  * Logic differentiates between the task detail view and the general task creation dialog.
+  * @param event - The native MouseEvent triggered by the click.
+  * @param dialogTarget - Optional identifier to specify which dialog is being targeted (e.g., 'taskDetailDialog').
+  * @returns void
+  */
   checkClickOutside(event: MouseEvent, dialogTarget?: string) {
     if (dialogTarget === 'taskDetailDialog') {
       this.closeTaskDetails();
@@ -135,15 +137,15 @@ export class Board {
   }
 
   /**
-   * A computed signal that reactively filters the global task list.
-   * It combines the current search query and the raw task data from the database service.
-   * The filter is case-insensitive and checks for matches in both the task title and description.
-   * If the search query is empty, it returns the full list of tasks.
-   * @returns {Signal<FullTask[]>} A memoized list of tasks matching the search criteria.
-   */
+  * A computed signal that reactively filters the global task list.
+  * It combines the current search query and the raw task data from the database service.
+  * The filter is case-insensitive and checks for matches in both the task title and description.
+  * If the search query is empty, it returns the full list of tasks.
+  * @returns {Signal<FullTask[]>} A memoized list of tasks matching the search criteria.
+  */
   filteredTasks = computed(() => {
     const QUERY = this.searchQuery().toLowerCase().trim();
-    const ALL_TASKS = this.dbService.tasks();
+    const ALL_TASKS = this.taskService.tasks();
     if (!QUERY) return ALL_TASKS;
     return ALL_TASKS.filter(
       (task) =>
@@ -152,25 +154,25 @@ export class Board {
   });
 
   /**
-   * Updates the search query signal based on user input.
-   * This method is triggered by the input event in the search field,
-   * effectively driving the reactive updates of the 'filteredTasks' signal.
-   * @param event - The native DOM event from the search input element.
-   */
+  * Updates the search query signal based on user input.
+  * This method is triggered by the input event in the search field,
+  * effectively driving the reactive updates of the 'filteredTasks' signal.
+  * @param event - The native DOM event from the search input element.
+  */
   onSearch(event: Event) {
     const input = event.target as HTMLInputElement;
     this.searchQuery.set(input.value);
   }
 
   /**
-   * Triggers the deletion of a task after user confirmation.
-   * Closes the detail dialog upon success.
-   * @param taskId - The ID of the task to be deleted.
-   */
+  * Triggers the deletion of a task after user confirmation.
+  * Closes the detail dialog upon success.
+  * @param taskId - The ID of the task to be deleted.
+  */
   async deleteTask(taskId: number | undefined) {
     if (taskId === undefined) return;
     try {
-      await this.dbService.deleteTask(taskId);
+      await this.taskService.deleteTask(taskId);
       this.closeTaskDetails();
       this.dbService.showNotification('Task deleted.');
     } catch (err) {
@@ -178,58 +180,53 @@ export class Board {
     }
   }
 
-  //<-To delete
-  // /**
-  // * Updates the core details of an existing task and refreshes the board state.
-  // * @param task - The task object with updated fields.
-  // */
-  // async saveEditedTask(task: FullTask) {
-  //   try {
-  //     await this.dbService.updateFullTask(task);
-  //     this.isTaskEditMode.set(false);
-  //     this.dbService.showNotification('Task updated successfully!');
-  //   } catch (err) {
-  //     this.dbService.showNotification('Update failed.');
-  //   }
-  // }
-  //->
-
   /**
   * Handles the dropping of a task card using Angular CDK Drag and Drop.
-  * If the task is moved to a different container (column), it triggers a status update in the database.
-  * If moved within the same container, it reorders the tasks locally in the array.
-  * @param event - The CdkDragDrop event containing data about the dragged item and target container.
+  * Manages the UI transition between columns and triggers the database update with a new calculated position.
+  * @param event - The CdkDragDrop event containing task data and container references.
   */
   drop(event: CdkDragDrop<FullTask[]>) {
-    const task = event.item.data as FullTask;
-    const newStatus = event.container.id;
-    const targetArray = event.container.data;
+    const TASK = event.item.data as FullTask;
+    const TARGET_ARRAY = event.container.data;
     if (event.previousContainer === event.container) {
-      moveItemInArray(targetArray, event.previousIndex, event.currentIndex);
+      moveItemInArray(TARGET_ARRAY, event.previousIndex, event.currentIndex);
     } else {
       transferArrayItem(
         event.previousContainer.data,
-        targetArray,
+        TARGET_ARRAY,
         event.previousIndex,
         event.currentIndex
       );
     }
-    const prevTask = targetArray[event.currentIndex - 1];
-    const nextTask = targetArray[event.currentIndex + 1];
+    const NEW_POSITION = this.calculateNewPosition(TARGET_ARRAY, event.currentIndex);
+    const NEW_STATUS = event.container.id;
+    this.taskService.updateTaskStatus(TASK.id!, NEW_STATUS, NEW_POSITION);
+  }
+
+  /**
+  * Calculates a new position value for a task based on its neighbors in the target array.
+  * Uses a midpoint strategy to allow insertions between existing tasks without reindexing the whole list.
+  * @param targetArray - The array where the task was dropped.
+  * @param currentIndex - The new index of the task within the target array.
+  * @returns {number} The calculated position value for database synchronization.
+  * @private
+  */
+  private calculateNewPosition(targetArray: FullTask[], currentIndex: number): number {
+    const PREV_TASK = targetArray[currentIndex - 1];
+    const NEXT_TASK = targetArray[currentIndex + 1];
+    const PREV_POS = PREV_TASK?.position ?? 0;
+    const NEXT_POS = NEXT_TASK?.position ?? 0;
     let newPos: number;
-    const prevPos = prevTask?.position ?? 0;
-    const nextPos = nextTask?.position ?? 0;
-    if (!prevTask && !nextTask) {
+    if (!PREV_TASK && !NEXT_TASK) {
       newPos = 1000;
-    } else if (!prevTask) {
-      newPos = Math.round(nextPos / 2);
-    } else if (!nextTask) {
-      newPos = prevPos + 1000;
+    } else if (!PREV_TASK) {
+      newPos = Math.round(NEXT_POS / 2);
+    } else if (!NEXT_TASK) {
+      newPos = PREV_POS + 1000;
     } else {
-      newPos = Math.round((prevPos + nextPos) / 2);
+      newPos = Math.round((PREV_POS + NEXT_POS) / 2);
     }
-    if (isNaN(newPos)) newPos = 1000;
-    this.dbService.updateTaskStatus(task.id!, newStatus, newPos);
+    return isNaN(newPos) ? 1000 : newPos;
   }
 
   /**
@@ -252,10 +249,10 @@ export class Board {
   }
 
   /**
-   * Manages UI state changes based on window resize events.
-   * Handles drag-and-drop orientation, disables dragging on mobile,
-   * and closes open dialogs or dropdowns when switching view modes.
-   */
+  * Manages UI state changes based on window resize events.
+  * Handles drag-and-drop orientation, disables dragging on mobile,
+  * and closes open dialogs or dropdowns when switching view modes.
+  */
   @HostListener('window:resize')
   onResize(){
     const WIDTH = window.innerWidth;

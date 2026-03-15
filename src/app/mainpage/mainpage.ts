@@ -2,6 +2,8 @@ import { Component, signal, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { Supabase } from '../services/supabase';
+import { ContactService } from '../services/contact-service.ts';
+import { OAuthService } from '../services/o-auth-service';
 
 @Component({
   selector: 'app-mainpage',
@@ -12,8 +14,10 @@ import { Supabase } from '../services/supabase';
 export class Mainpage {
   loginFailed = signal<boolean>(false);
   dbService = inject(Supabase);
+  oAuthService = inject(OAuthService)
   router = inject(Router);
-  activeState = this.dbService.activeForm;
+  contactService = inject(ContactService);
+  activeState = this.oAuthService.activeForm;
   userForm = new FormGroup(
     {
       name: new FormControl('', {
@@ -44,68 +48,114 @@ export class Mainpage {
     },
   );
 
+  /**
+  * Initializes the component and performs essential startup checks.
+  * 1. Sets the current active site state to 'log-in'.
+  * 2. Redirects authenticated users or guests (anyone not 'nobody') to the summary page
+  * to prevent re-accessing the login screen while active.
+  * 3. Pre-fetches the contacts list from the database to ensure data availability
+  * for validation and UI components.
+  */
   ngOnInit(){
-    this.dbService.activeSite.set("log-in");
-    if (this.dbService.logingStatus() !== 'nobody') {
+    this.oAuthService.activeSite.set("log-in");
+    if (this.oAuthService.logingStatus() !== 'nobody') {
       this.router.navigate(['/summary']);
     }
-    this.dbService.getContacts();
-  }
-
-  ngOnDestroy() {
-    this.dbService.activeSite.set("");
+    this.contactService.getContacts();
   }
 
   /**
-   * Handles the submission of the user form.
-   * Depending on the active state, it either registers a new user or signs in an existing one.
-   * On failure during login, it triggers custom 'supabase' errors to highlight the inputs.
-   */
+  * Cleans up the component state before destruction.
+  * Resets the global active site signal to an empty string to ensure
+  * other parts of the application (like the sidebar or header) correctly
+  * reflect the navigation state.
+  */
+  ngOnDestroy() {
+    this.oAuthService.activeSite.set("");
+  }
+
+  /**
+  * Handles the submission of the user form by delegating tasks
+  * to either registration or login handlers based on the active state.
+  */
   async formSubmit() {
     this.loginFailed.set(false);
-    //this.userForm.markAllAsTouched();
     if (this.activeState() === 'sign-up' && this.userForm.invalid) {
       this.handleDisabledClick();
       return;
     }
-    const { email, password, name, checkBox } = this.userForm.value;
     if (this.activeState() === 'sign-up') {
-        const EXISTS = this.dbService.contacts().some(c => c.email === email);
-        if (EXISTS) {
-          this.dbService.showNotification("This email is already registered.");
-          return;
-        }
-      const RESULT = await this.dbService.signUp(email!, password!, name!);
-       if (RESULT && 'error' in RESULT && RESULT.error){
-        this.loginFailed.set(true);
-        this.dbService.showNotification("Registration failed.");
-       }
-       else {
-          this.setFormular('log-in');
-          this.router.navigate(['/summary']);
-        }
-      } else {
-        const RESULT = await this.dbService.signIn(email!, password!, checkBox!);
-        if (RESULT && 'error' in RESULT && RESULT.error) {
-          this.loginFailed.set(true);
-          this.userForm.get('email')?.setErrors({ supabase: true });
-          this.userForm.get('password')?.setErrors({ supabase: true });
-        } else {
-          this.router.navigate(['/summary']);
-        }
-      }
+      await this.handleSignUp();
+    } else {
+      await this.handleSignIn();
     }
+  }
 
+  /**
+  * Manages the user registration process, including local validation and service calls.
+  * @private
+  */
+  private async handleSignUp() {
+    const { email, password, name } = this.userForm.value;
+    const RESULT = await this.oAuthService.signUp(email!, password!, name!);
+    if (RESULT?.error) {
+      this.loginFailed.set(true);
+    } else {
+      this.setFormular('log-in');
+      this.router.navigate(['/summary']);
+    }
+  }
+
+  /**
+  * Manages the user authentication process and handles potential login errors.
+  * @private
+  */
+  private async handleSignIn() {
+    const { email, password, checkBox } = this.userForm.value;
+    const RESULT = await this.oAuthService.signIn(email!, password!, checkBox!);
+    if (RESULT && 'error' in RESULT && RESULT.error) {
+      this.loginFailed.set(true);
+      this.applySupabaseErrors();
+    } else {
+      this.router.navigate(['/summary']);
+    }
+  }
+
+  /**
+  * Applies custom 'supabase' errors to form controls to trigger UI feedback.
+  * @private
+  */
+  private applySupabaseErrors() {
+    const CONTROLS = ['email', 'password'];
+    CONTROLS.forEach(key => this.userForm.get(key)?.setErrors({ supabase: true }));
+  }
+
+  /**
+  * Resets the entire user form to its initial state.
+  * Clears all input values and resets the validation statuses (pristine, untouched).
+  */
   formReset() {
     this.userForm.reset();
   }
 
+  /**
+  * Toggles the value of the custom checkbox within the reactive form.
+  * Manually updates the form control value and marks it as touched
+  * to ensure that any associated validation messages are immediately
+  * triggered in the UI.
+  */
   toggleCheckBox() {
     const currentValue = this.userForm.get('checkBox')?.value;
     this.userForm.get('checkBox')?.setValue(!currentValue);
     this.userForm.get('checkBox')?.markAsTouched(); // Damit Fehlermeldungen getriggert werden
   }
 
+  /**
+  * Custom validator that checks if the password and password confirmation fields match.
+  * Used at the FormGroup level to ensure data consistency during sign-up.
+  * @param form - The FormGroup containing the password and confirm controls.
+  * @returns {Object | null} Returns a 'mismatch' error object if values differ, otherwise null.
+  */
   passwordMatchValidator(form: FormGroup) {
     const password = form.get('password')?.value;
     const confirm = form.get('confirm')?.value;
@@ -114,6 +164,11 @@ export class Mainpage {
     return password === confirm ? null : { mismatch: true };
   }
 
+  /**
+  * Handles interaction when the submit button is clicked while in a disabled or invalid state.
+  * Forces the validation UI to update by marking all form controls as touched,
+  * making any hidden error messages and red borders visible to the user.
+  */
   handleDisabledClick() {
     if (this.userForm.invalid) {
       // Das lässt alle Fehlermeldungen und roten Ränder aufleuchten
@@ -124,6 +179,15 @@ export class Mainpage {
   isPasswordVisible = false;
   isConfirmVisible = false;
 
+  /**
+  * Toggles the visibility of password characters in the UI.
+  * This method switches the state of visibility flags for either the main
+  * password field or the confirmation field. It prevents the default mouse
+  * event behavior (like accidental form submission or focus loss) when
+  * clicking the toggle icon.
+  * @param event - The MouseEvent triggered by clicking the visibility toggle.
+  * @param field - Specifies which field to toggle: 'password' or 'confirm'.
+  */
   togglePassword(event: MouseEvent, field: 'password' | 'confirm') {
     event.preventDefault();
     if (field === 'password') {
@@ -194,8 +258,8 @@ export class Mainpage {
    */
   loging(value:string){
     if(value === 'guest'){
-      this.dbService.setLoginStatus('guest');
-      this.dbService.logedUser.set('Guest')
+      this.oAuthService.setLoginStatus('guest');
+      this.oAuthService.logedUser.set('Guest')
     }
   }
 

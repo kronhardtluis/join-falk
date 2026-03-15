@@ -4,6 +4,9 @@ import { Supabase } from '../../services/supabase';
 import { FullTask, Task, TaskCategory, TaskFormData, TaskPriority } from '../../interfaces/task.interface';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ContactService } from '../../services/contact-service.ts';
+import { TasksService } from '../../services/tasks-service';
+import { OAuthService } from '../../services/o-auth-service';
 
 @Component({
   selector: 'app-add-task',
@@ -15,6 +18,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class AddTask implements OnInit {
   public fb = inject(FormBuilder);
   public dbService = inject(Supabase);
+  contactService = inject(ContactService);
+  taskService = inject(TasksService);
+  oAuthService = inject(OAuthService);
   public router = inject(Router);
   public route = inject(ActivatedRoute);
   minDate = new Date().toISOString().split('T')[0];
@@ -27,6 +33,12 @@ export class AddTask implements OnInit {
   taskCreated = output<void>();
   private _initialStatus: string = 'ToDo';
 
+  /**
+  * Initializes the component and sets up the reactive task form.
+  * The form includes validation for mandatory fields (title, due_date, category)
+  * and manages complex data structures like the assigned contacts array
+  * and a FormArray for subtasks.
+  */
   constructor() {
     this.taskForm = this.fb.group({
       title: ['', [Validators.required]],
@@ -39,6 +51,13 @@ export class AddTask implements OnInit {
     });
   }
 
+  /**
+  * Sets the initial workflow status for a new task.
+  * This setter ensures that a task always has a valid status. If the provided
+  * value is undefined, it defaults to 'ToDo'. It also triggers the form
+  * update logic if the form has already been initialized.
+  * @param value - The target status (e.g., 'ToDo', 'In Progress') or undefined.
+  */
   @Input() set initialStatus(value: string | undefined) {
     this._initialStatus = value || 'ToDo';
     if (this.taskForm) {
@@ -46,8 +65,17 @@ export class AddTask implements OnInit {
     }
   }
 
+  /**
+  * Holds the data of an existing task when the component is used in edit mode.
+  * If provided, this object is used to pre-populate the form fields,
+  * task assignments, and subtasks.
+  */
   @Input() editTaskData: FullTask | null = null;
 
+  /**
+  * Returns the current initial status assigned to the task.
+  * @returns {string} The workflow status string.
+  */
   get initialStatus(): string {
     return this._initialStatus;
   }
@@ -58,10 +86,10 @@ export class AddTask implements OnInit {
   * or initialized with a specific status from Input or Query Parameters.
   */
   ngOnInit() {
-    if (this.dbService.logingStatus() === 'nobody' && !this.editTaskData) {
+    if (this.oAuthService.logingStatus() === 'nobody' && !this.editTaskData) {
       this.router.navigate(['/']);
     }
-    this.dbService.getContacts();
+    this.contactService.getContacts();
     if (this.editTaskData) {
       this.fillFormForEdit(this.editTaskData);
     } else {
@@ -102,12 +130,10 @@ export class AddTask implements OnInit {
 
   /**
   * Checks for status in Inputs or URL Query Params and applies it to the form.
-  * @private
   */
   applyInitialStatus(){
     const STATUS_FROM_URL = this.route.snapshot.queryParamMap.get('status');
     const FINAL_STATUS = this.initialStatus || STATUS_FROM_URL || 'ToDo';
-
     if (!this.taskForm.contains('status')) {
       this.taskForm.addControl('status', this.fb.control(FINAL_STATUS));
     } else {
@@ -198,14 +224,14 @@ export class AddTask implements OnInit {
     const assignedTo = this.taskForm.value.assigned_to;
     const subtasks = this.taskForm.value.subtasks;
     try {
-      await this.dbService.createTask(taskData, assignedTo, subtasks);
+      await this.taskService.createTask(taskData, assignedTo, subtasks);
       this.handleSuccess();
     } catch (error) {
-      this.handleError(error);
+      this.dbService.showNotification('Failed to create task.');
     }
   }
 
-  /** * Prepares the main task object from the form and signals.
+  /** Prepares the main task object from the form and signals.
   * Extracts values from the reactive form and combines them with the priority signal.
   * @returns {TaskFormData} The prepared data object ready for database insertion.
   * @private
@@ -232,11 +258,6 @@ export class AddTask implements OnInit {
     }, 1500);
   }
 
-  /** Error handling logic */
-  private handleError(error: any) {
-    this.dbService.showNotification('Failed to create task.');
-  }
-
   /**
   * Retrieves the initials of a contact based on their unique identifier.
   * Searches the synchronized contacts list and uses the database service
@@ -245,8 +266,8 @@ export class AddTask implements OnInit {
   * @returns {string} The contact's initials or an empty string if not found.
   */
   getContactInitials(id: number): string {
-    const CONTACT = this.dbService.contacts().find(contact => contact.id === id);
-    return CONTACT ? this.dbService.getInitials(CONTACT.name) : '';
+    const CONTACT = this.contactService.contacts().find(contact => contact.id === id);
+    return CONTACT ? this.contactService.getInitials(CONTACT.name) : '';
   }
 
   /**
@@ -255,7 +276,7 @@ export class AddTask implements OnInit {
   * @returns {string} The HEX color string or a default gray fallback ('#ccc').
   */
   getContactColor(id: number): string {
-    const CONTACT = this.dbService.contacts().find(contact => contact.id === id);
+    const CONTACT = this.contactService.contacts().find(contact => contact.id === id);
     return CONTACT?.color || '#ccc';
   }
 
@@ -265,7 +286,7 @@ export class AddTask implements OnInit {
   * the full list of contacts is displayed.
   */
   toggleContactList() {
-    this.isContactListVisible.update(v => !v);
+    this.isContactListVisible.update(visible => !visible);
     if (this.isContactListVisible()) {
       this.searchContactName.set('');
     }
@@ -315,9 +336,9 @@ export class AddTask implements OnInit {
   */
   filteredContacts = computed(() => {
     const TERM = this.searchContactName().toLowerCase().trim();
-    if (!TERM) return this.dbService.contacts();
+    if (!TERM) return this.contactService.contacts();
 
-    return this.dbService.contacts().filter(contact =>
+    return this.contactService.contacts().filter(contact =>
       contact.name.toLowerCase().includes(TERM)
     );
   });
@@ -349,7 +370,7 @@ export class AddTask implements OnInit {
   * Toggles the visibility of the category dropdown list.
   */
   toggleCategoryList() {
-    this.isCategoryListVisible.update(v => !v);
+    this.isCategoryListVisible.update(visible => !visible);
   }
 
   /**
@@ -368,7 +389,7 @@ export class AddTask implements OnInit {
   * a full database synchronization through the Supabase service.
   * On success, it notifies the parent component to refresh the UI.
   * @returns {Promise<void>} Resolves when the update is complete or fails silently if form is invalid.
-  * @throws Will log an error and show a notification if the database service call fails.
+  * Show a notification if the database service call fails.
   */
   async updateTask(){
     if (this.taskForm.invalid || !this.editTaskData) return;
@@ -379,7 +400,7 @@ export class AddTask implements OnInit {
       status: this.editTaskData.status
     };
     try {
-      await this.dbService.updateFullTask(taskToUpdate, rawForm.assigned_to, rawForm.subtasks);
+      await this.taskService.updateFullTask(taskToUpdate, rawForm.assigned_to, rawForm.subtasks);
       this.taskCreated.emit();
     } catch (error) {
       this.dbService.showNotification("Task update failed.");

@@ -74,13 +74,13 @@
                   >
                     <div class="dropdown-content">
                       <strong>Move to</strong>
-                      <button (click)="dbService.updateTaskStatus(task.id!, 'In Progress'); closeMenu()">
+                      <button (click)="taskService.updateTaskStatus(task.id!, 'In Progress'); closeMenu()">
                         <img src="assets/icons/arrow_downward.png" alt="down" /> In Progress
                       </button>
-                      <button (click)="dbService.updateTaskStatus(task.id!, 'Awaiting Feedback'); closeMenu()">
+                      <button (click)="taskService.updateTaskStatus(task.id!, 'Awaiting Feedback'); closeMenu()">
                         <img src="assets/icons/arrow_downward.png" alt="down" /> Rewiew
                       </button>
-                      <button (click)="dbService.updateTaskStatus(task.id!, 'Done'); closeMenu()">
+                      <button (click)="taskService.updateTaskStatus(task.id!, 'Done'); closeMenu()">
                         <img src="assets/icons/arrow_downward.png" alt="down" /> Done
                       </button>
                     </div>
@@ -95,11 +95,11 @@
                     <div
                       class="subtask-done"
                       [style.--progress]="
-                        dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length
+                        taskService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length
                       "
                     ></div>
                     <span class="subtasks-nummery"
-                      >{{ dbService.getDoneSubtasksCount(task.subtasks) }}/{{
+                      >{{ taskService.getDoneSubtasksCount(task.subtasks) }}/{{
                         task.subtasks.length
                       }}
                       Subtasks</span
@@ -113,7 +113,7 @@
                       track assignment.contacts.id
                     ) {
                       <span class="assignee" [style.background-color]="assignment.contacts.color">
-                        {{ dbService.getInitials(assignment.contacts.name) }}
+                        {{ contactService.getInitials(assignment.contacts.name) }}
                       </span>
                     }
                     @if (task.task_assignments.length > 3) {
@@ -189,13 +189,13 @@
                   >
                     <div class="dropdown-content">
                       <strong>Move to</strong>
-                      <button (click)="dbService.updateTaskStatus(task.id!, 'ToDo'); closeMenu()">
+                      <button (click)="taskService.updateTaskStatus(task.id!, 'ToDo'); closeMenu()">
                         <img src="assets/icons/arrow_upward.png" alt="up" /> To Do
                       </button>
-                      <button (click)="dbService.updateTaskStatus(task.id!, 'Awaiting Feedback'); closeMenu()">
+                      <button (click)="taskService.updateTaskStatus(task.id!, 'Awaiting Feedback'); closeMenu()">
                         <img src="assets/icons/arrow_downward.png" alt="down" /> Review
                       </button>
-                      <button (click)="dbService.updateTaskStatus(task.id!, 'Done'); closeMenu()">
+                      <button (click)="taskService.updateTaskStatus(task.id!, 'Done'); closeMenu()">
                         <img src="assets/icons/arrow_downward.png" alt="down" /> Done
                       </button>
                     </div>
@@ -209,11 +209,11 @@
                     <div
                       class="subtask-done"
                       [style.--progress]="
-                        dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length
+                        taskService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length
                       "
                     ></div>
                     <span class="subtasks-nummery"
-                      >{{ dbService.getDoneSubtasksCount(task.subtasks) }}/{{
+                      >{{ taskService.getDoneSubtasksCount(task.subtasks) }}/{{
                         task.subtasks.length
                       }}
                       Subtasks</span
@@ -227,7 +227,7 @@
                       track assignment.contacts.id
                     ) {
                       <span class="assignee" [style.background-color]="assignment.contacts.color">
-                        {{ dbService.getInitials(assignment.contacts.name) }}
+                        {{ contactService.getInitials(assignment.contacts.name) }}
                       </span>
                     }
                     @if (task.task_assignments.length > 3) {
@@ -303,13 +303,13 @@
                   >
                     <div class="dropdown-content">
                       <strong>Move to</strong>
-                      <button (click)="dbService.updateTaskStatus(task.id!, 'ToDo'); closeMenu()">
+                      <button (click)="taskService.updateTaskStatus(task.id!, 'ToDo'); closeMenu()">
                         <img src="assets/icons/arrow_upward.png" alt="up" /> To Do
                       </button>
-                      <button (click)="dbService.updateTaskStatus(task.id!, 'In Progress'); closeMenu()">
+                      <button (click)="taskService.updateTaskStatus(task.id!, 'In Progress'); closeMenu()">
                         <img src="assets/icons/arrow_upward.png" alt="up" />In Progress
                       </button>
-                      <button (click)="dbService.updateTaskStatus(task.id!, 'Done'); closeMenu()">
+                      <button (click)="taskService.updateTaskStatus(task.id!, 'Done'); closeMenu()">
                         <img src="assets/icons/arrow_downward.png" alt="down" /> Done
                       </button>
                     </div>
@@ -323,11 +323,11 @@
                     <div
                       class="subtask-done"
                       [style.--progress]="
-                        dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length
+                        taskService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length
                       "
                     ></div>
                     <span class="subtasks-nummery"
-                      >{{ dbService.getDoneSubtasksCount(task.subtasks) }}/{{
+                      >{{ taskService.getDoneSubtasksCount(task.subtasks) }}/{{
                         task.subtasks.length
                       }}
                       Subtasks</span
@@ -341,7 +341,7 @@
                       track assignment.contacts.id
                     ) {
                       <span class="assignee" [style.background-color]="assignment.contacts.color">
-                        {{ dbService.getInitials(assignment.contacts.name) }}
+                        {{ contactService.getInitials(assignment.contacts.name) }}
                       </span>
                     }
                     @if (task.task_assignments.length > 3) {
@@ -408,13 +408,13 @@
                   >
                     <div class="dropdown-content">
                       <strong>Move to</strong>
-                      <button (click)="dbService.updateTaskStatus(task.id!, 'ToDo'); closeMenu()">
+                      <button (click)="taskService.updateTaskStatus(task.id!, 'ToDo'); closeMenu()">
                         <img src="assets/icons/arrow_upward.png" alt="up" /> To Do
                       </button>
-                      <button (click)="dbService.updateTaskStatus(task.id!, 'In Progress'); closeMenu()">
+                      <button (click)="taskService.updateTaskStatus(task.id!, 'In Progress'); closeMenu()">
                         <img src="assets/icons/arrow_upward.png" alt="up" /> In Progress
                       </button>
-                      <button (click)="dbService.updateTaskStatus(task.id!, 'Awaiting Feedback'); closeMenu()">
+                      <button (click)="taskService.updateTaskStatus(task.id!, 'Awaiting Feedback'); closeMenu()">
                         <img src="assets/icons/arrow_upward.png" alt="up" /> Review
                       </button>
                     </div>
@@ -428,11 +428,11 @@
                     <div
                       class="subtask-done"
                       [style.--progress]="
-                        dbService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length
+                        taskService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length
                       "
                     ></div>
                     <span class="subtasks-nummery"
-                      >{{ dbService.getDoneSubtasksCount(task.subtasks) }}/{{
+                      >{{ taskService.getDoneSubtasksCount(task.subtasks) }}/{{
                         task.subtasks.length
                       }}
                       Subtasks</span
@@ -446,7 +446,7 @@
                       track assignment.contacts.id
                     ) {
                       <span class="assignee" [style.background-color]="assignment.contacts.color">
-                        {{ dbService.getInitials(assignment.contacts.name) }}
+                        {{ contactService.getInitials(assignment.contacts.name) }}
                       </span>
                     }
                     @if (task.task_assignments.length > 3) {
@@ -489,13 +489,13 @@
     id="taskDetailDialog"
     (click)="checkClickOutside($event, 'taskDetailDialog')"
   >
-    @if (dbService.selectedTask(); as task) {
+    @if (taskService.selectedTask(); as task) {
       @if(isTaskEditMode() === true){
         <div id="taskDetailDialogEdit" (click)="$event.stopPropagation()">
           <button class="dialog-close-button" (click)="closeTaskDetails()">
             <img src="assets/icons/close-blue.png" alt="Close" />
           </button>
-          <app-add-task [editTaskData]="dbService.selectedTask()" (taskCreated)="closeTaskDetails()">></app-add-task>
+          <app-add-task [editTaskData]="taskService.selectedTask()" (taskCreated)="closeTaskDetails()">></app-add-task>
         </div>
       } @else{
       <div id="stopPropagation" (click)="$event.stopPropagation()">
@@ -543,7 +543,7 @@
             @for (assignment of task.task_assignments; track assignment.contacts.id) {
               <div class="assigned-to-user">
                 <span [style.background-color]="assignment.contacts.color">
-                  {{ dbService.getInitials(assignment.contacts.name) }}
+                  {{ contactService.getInitials(assignment.contacts.name) }}
                 </span>
                 <p>{{ assignment.contacts.name }}</p>
               </div>
@@ -555,7 +555,7 @@
           <p class="subtitle">Subtasks:</p>
           <div class="scroll-div scroll-div--subtask">
             @for (subtask of task.subtasks; track subtask.id) {
-              <button class="subtasks" (click)="dbService.toggleSubtaskStatus(subtask)">
+              <button class="subtasks" (click)="taskService.toggleSubtaskStatus(subtask)">
                 <img
                   [src]="
                     subtask.is_done

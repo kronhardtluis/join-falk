@@ -5,6 +5,8 @@ import { Supabase } from '../../services/supabase';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HostListener } from '@angular/core';
 import { ContactFormData } from '../../interfaces/contact.interface';
+import { ContactService } from '../../services/contact-service.ts';
+import { OAuthService } from '../../services/o-auth-service';
 
 @Component({
   selector: 'app-contact',
@@ -18,12 +20,14 @@ export class Contact implements OnInit {
   public selectedContactId = signal<number | null>(null);
   public selectedContactData = computed(() => {
     const ID = this.selectedContactId();
-    return ID ? this.dbService.contacts().find(c => c.id === ID) || null : null;
+    return ID ? this.contactService.contacts().find(c => c.id === ID) || null : null;
   });
   public isVisible = signal(false);
   public isEditMode = signal(false);
   public isMobileMenuOpen = signal(false);
   dbService = inject(Supabase);
+  contactService = inject(ContactService);
+  oAuthService = inject(OAuthService);
   private fb = inject(FormBuilder);
   public userForm: FormGroup = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z]+\s+[a-zA-Z]+.*$/)]],
@@ -38,11 +42,23 @@ export class Contact implements OnInit {
   * @returns {void}
   */
   ngOnInit(){
-    if (this.dbService.logingStatus() === 'nobody') {
+    if (this.oAuthService.logingStatus() === 'nobody') {
       this.router.navigate(['/']);
     }
-    this.dbService.getContacts();
-    this.dbService.subscribeToChanges();
+    this.contactService.getContacts();
+  }
+
+  /**
+  * Lifecycle hook that orchestrates component cleanup before destruction.
+  * It explicitly triggers the cleanup logic in {@link ContactService},
+  * ensuring that real-time database channels are closed and resources
+  * are released when the user leaves the board view.
+  * This is critical to prevent memory leaks and redundant network
+  * traffic from background subscriptions.
+  * @returns {void}
+  */
+  ngOnDestroy() {
+    this.contactService.ngOnDestroy();
   }
 
   /**
@@ -71,13 +87,13 @@ export class Contact implements OnInit {
   * Populates the form with existing contact data to prepare for editing.
   * It searches for the contact by ID within the local state and updates
   * the form controls using patchValue.
-  * * @private
+  * @private
   * @param {number} [id] - The unique identifier of the contact to be edited.
   * @returns {void}
   */
   private prepareEditForm(id?: number) {
     if (!id) return;
-    const CONTACT = this.dbService.contacts().find(contact => contact.id === id);
+    const CONTACT = this.contactService.contacts().find(contact => contact.id === id);
     if (CONTACT) {
       this.userForm.patchValue(CONTACT);
     }
@@ -111,7 +127,7 @@ export class Contact implements OnInit {
    const ID = this.selectedContactId();
     if (ID) {
       try {
-        await this.dbService.deleteContact(ID);
+        await this.contactService.deleteContact(ID);
         this.closeDetailView();
         this.closeDialog();
         this.dbService.showNotification('Contact successfully deleted.');
@@ -162,7 +178,7 @@ export class Contact implements OnInit {
   private async updateExistingContact(formData: ContactFormData) {
     const ID = this.selectedContactId();
     if (!ID) throw new Error('No contact ID selected for update');
-      await this.dbService.updateContact(ID, formData);
+      await this.contactService.updateContact(ID, formData);
   }
 
   /**
@@ -174,9 +190,9 @@ export class Contact implements OnInit {
   private async createNewContact(formData: ContactFormData) {
     const NEW_CONTACT = {
       ...formData,
-      color: this.dbService.getRandomColor()
+      color: this.contactService.getRandomColor()
     };
-    await this.dbService.addContact(NEW_CONTACT);
+    await this.contactService.addContact(NEW_CONTACT);
   }
 
   /**

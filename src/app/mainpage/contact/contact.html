@@ -1,6 +1,6 @@
 <div class="contact-site" [class.mobile-details-open]="isVisible()">
   <div class="main-contacts-list">
-    @if (dbService.contacts().length > 0) {
+    @if (contactService.contacts().length > 0) {
     <div class="list">
       <div class="btn-cover">
         <button (click)="openDialogWindow('addContact')" class="add-contact-btn">
@@ -8,11 +8,11 @@
           <img src="assets/icons/add-person.png" alt="Edit-User">
         </button>
       </div>
-      @for (contact of dbService.contacts(); track contact.id; let i = $index){
+      @for (contact of contactService.contacts(); track contact.id; let i = $index){
       <div>
         <div>
           @let currentLetter = contact.name[0].toUpperCase(); @let previousContact =
-          dbService.contacts()[i - 1]; @if (i === 0 || currentLetter !==
+          contactService.contacts()[i - 1]; @if (i === 0 || currentLetter !==
           previousContact.name[0].toUpperCase()) {
           <div>
             <h2 class="letter">{{ currentLetter }}</h2>
@@ -26,7 +26,7 @@
           [class.active]="selectedContactId() === contact.id"
         >
           <span class="roundContact" [style.background-color]="contact.color">
-            {{dbService.getInitials(contact.name)}}
+            {{contactService.getInitials(contact.name)}}
           </span>
           <div class="text-cut">
             <div class="text-cut">
@@ -58,7 +58,7 @@
       @if (selectedContactData(); as contact) {
       <div class="header-details">
         <div class="roundContact-large" [style.background-color]="contact.color">
-          {{dbService.getInitials(contact.name)}}
+          {{contactService.getInitials(contact.name)}}
         </div>
 
         <div class="name-container">
@@ -111,7 +111,7 @@
         <div id="user">
           @if(isEditMode() && selectedContactData(); as contact){
           <div class="roundContact-large" [style.background-color]="selectedContactData()?.color">
-            {{dbService.getInitials(contact.name)}}
+            {{contactService.getInitials(contact.name)}}
           </div>
           } @else {
           <img src="assets/icons/unknown-user.png" alt="User" />
@@ -167,6 +167,5 @@
       </section>
     </div>
   </dialog>
-
 
 </div>

@@ -1,6 +1,8 @@
 import { Component, inject, computed, OnInit, OnDestroy, signal} from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { Supabase } from '../../services/supabase';
+import { TasksService } from '../../services/tasks-service';
+import { OAuthService } from '../../services/o-auth-service';
 
 @Component({
   selector: 'app-summary',
@@ -11,12 +13,14 @@ import { Supabase } from '../../services/supabase';
 export class Summary implements OnInit, OnDestroy {
   greeting = signal<string>('');
   dbService = inject(Supabase);
-  totalTasks = computed(() => this.dbService.tasks().length);
-  urgentCount = computed(() => this.dbService.tasks().filter(t => t.priority === 'Urgent').length);
-  todoCount = computed(() => this.dbService.tasks().filter(t => t.status === 'ToDo').length);
-  doneCount = computed(() => this.dbService.tasks().filter(t => t.status === 'Done').length);
-  inProgressCount = computed(() => this.dbService.tasks().filter(t => t.status === 'In Progress').length);
-  awaitingFeedbackCount = computed(() => this.dbService.tasks().filter(t => t.status === 'Awaiting Feedback').length);
+  taskService = inject(TasksService);
+  oAuthService = inject(OAuthService);
+  totalTasks = computed(() => this.taskService.tasks().length);
+  urgentCount = computed(() => this.taskService.tasks().filter(task => task.priority === 'Urgent').length);
+  todoCount = computed(() => this.taskService.tasks().filter(task => task.status === 'ToDo').length);
+  doneCount = computed(() => this.taskService.tasks().filter(task => task.status === 'Done').length);
+  inProgressCount = computed(() => this.taskService.tasks().filter(task => task.status === 'In Progress').length);
+  awaitingFeedbackCount = computed(() => this.taskService.tasks().filter(task => task.status === 'Awaiting Feedback').length);
   greetingInterval: ReturnType<typeof setInterval> | undefined;
   router = inject(Router);
 
@@ -25,15 +29,12 @@ export class Summary implements OnInit, OnDestroy {
   * starting the update interval, and loading data from the database.
   */
   ngOnInit() {
-    if (this.dbService.logingStatus() === 'nobody') {
+    if (this.oAuthService.logingStatus() === 'nobody') {
       this.router.navigate(['/']);
     }
     this.setGreeting();
     this.greetingInterval = setInterval(() => this.setGreeting(), 60000);
-    this.dbService.loadBoardData();
-    setTimeout(() => {
-      this.dbService.subscribeToChanges();
-    }, 500);
+    this.taskService.loadBoardData();
   }
 
   /**
@@ -68,12 +69,12 @@ export class Summary implements OnInit, OnDestroy {
   upcomingDeadline = computed(() => {
     const TODAY = new Date();
     TODAY.setHours(0, 0, 0, 0);
-    const FUTURE_DATES = this.dbService.tasks()
-      .filter(t => t.due_date)
-      .map(t => new Date(t.due_date))
+    const FUTURE_DATES = this.taskService.tasks()
+      .filter(task => task.due_date)
+      .map(task => new Date(task.due_date))
       .filter(date => date >= TODAY);
     if (FUTURE_DATES.length === 0) return 'No upcoming deadline';
-    const NEAREST_DATE = new Date(Math.min(...FUTURE_DATES.map(d => d.getTime())));
+    const NEAREST_DATE = new Date(Math.min(...FUTURE_DATES.map(date => date.getTime())));
     return NEAREST_DATE.toLocaleDateString('en-US', {
       month: 'long',
       day: 'numeric',

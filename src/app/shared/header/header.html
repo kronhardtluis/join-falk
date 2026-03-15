@@ -4,10 +4,10 @@
       <img id="logo" src="assets/icons/logo.png" alt="Logo" />
       <p>Kanban Project Management Tool</p>
     </div>
-    @if(dbService.logingStatus()!='nobody'){
+    @if(oAuthService.logingStatus()!='nobody'){
       <div id="header-navigation">
         <a id="help" routerLinkActive="help-hidden" routerLink="help"><img src="assets/icons/help.png" alt="Help" /></a>
-        <button id="user" (click)="toggleMenu(); $event.stopPropagation()">{{dbService.getInitials(dbService.logedUser())}}</button>
+        <button id="user" (click)="toggleMenu(); $event.stopPropagation()">{{contactService.getInitials(oAuthService.logedUser())}}</button>
       </div>
 
       <div class="dropdown" (click)="$event.stopPropagation()" [class.open]="isMenuOpen">

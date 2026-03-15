@@ -7,7 +7,7 @@
 
       <div>
         <nav>
-          @if(dbService.logingStatus() != 'nobody'){
+          @if(oAuthService.logingStatus() != 'nobody'){
             <a routerLink="summary" routerLinkActive="active" class="navigation">
               <img src="assets/icons/summary.png" alt="Summary" />
               <span>Summary</span>
