@@ -192,7 +192,8 @@ span {
 
   .button,
   .button-two {
-    height: 140px;
+    height: fit-content;
+    padding: 12px;
   }
 
   .button-three {
