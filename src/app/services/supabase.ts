@@ -21,5 +21,4 @@ export class Supabase {
     this.notificationMessage.set(message);
     setTimeout(() => {this.notificationMessage.set('');}, 1250);
   }
-
 }

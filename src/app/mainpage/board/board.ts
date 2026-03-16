@@ -86,8 +86,6 @@ export class Board {
       this.taskService.selectedTask.set(null);
       this.isTaskEditMode.set(false);
     }, 400);
-
-
   }
 
   // Zugriff auf das native <dialog> Element
