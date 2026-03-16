@@ -58,7 +58,7 @@ main {
   }
 
   > h2 {
-    font-size: clamp(4.4rem, 5vw, 6.4rem);
+    font-size: clamp(2.5rem, 5vw, 6.4rem);
     color: all.$blueLight;
   }
 }
@@ -153,7 +153,7 @@ span {
 
 //#region Mediaquerries
 
-@include all.notebook {
+@media (max-width: 1200px) {
   main {
     #greet {
       display: none;
@@ -181,6 +181,11 @@ span {
       display: block;
     }
   }
+
+  .button-two{
+    height: 140px;
+  }
+
 }
 
 @include all.mobile {
