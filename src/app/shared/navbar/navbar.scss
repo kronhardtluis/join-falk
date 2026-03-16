@@ -66,7 +66,7 @@ nav {
 #legal-links {
   width: 100%;
   @include all.flexi($fd: column, $ai: flex-start);
-  z-index: 10;
+  z-index: 9;
 
   > a {
     padding: 8px 8px 8px 52px;

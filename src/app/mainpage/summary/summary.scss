@@ -21,7 +21,7 @@ main {
 
 #mobile-animation{
   animation: backgroundAnimation 3.5s forwards;
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   visibility: hidden;
@@ -29,12 +29,13 @@ main {
   >div{
     width: 100%;
     height: 100dvh;
-    @include all.flexi();
+    @include all.flexi($fd:column);
 
     p{
-      position: fixed;
-      top: calc(50% - 96px);
-      font-size: 3rem;
+      font-size: 3.5rem;
+    }
+    h2{
+      color: all.$blueLight;
     }
   }
 }
