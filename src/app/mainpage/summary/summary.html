@@ -1,21 +1,26 @@
 <main>
+  <div id="mobile-animation">
+    <div>
+      <p>{{ greeting() }}!</p>
+    </div>
+  </div>
   <section id="wrapper">
     <section>
       <div id="headline">
         <h3>Join 100</h3>
         <span></span>
         <p>Key Metrics at a Glance</p>
-        <img src="assets/icons/blue-underline.png" alt="underline">
+        <img src="assets/icons/blue-underline.png" alt="underline" />
       </div>
 
       <div class="card">
-        <a [routerLink]="'/board'"  class="button">
+        <a [routerLink]="'/board'" class="button">
           <div class="icon-wrapper">
             <img class="icon-default" src="assets/icons/edit-circle-blue.png" alt="Edit" />
             <img class="icon-hover" src="assets/icons/edit-circle-white.png" alt="Edit" />
           </div>
           <div class="information">
-            <span>{{todoCount()}}</span>
+            <span>{{ todoCount() }}</span>
             <p>To-do</p>
           </div>
         </a>
@@ -26,7 +31,7 @@
             <img class="icon-hover" src="assets/icons/check-circle-white.png" alt="Check" />
           </div>
           <div class="information">
-            <span>{{doneCount()}}</span>
+            <span>{{ doneCount() }}</span>
             <p>Done</p>
           </div>
         </a>
@@ -38,7 +43,7 @@
             <div id="urgent-header">
               <img class="urgent" src="assets/icons/urgent.png" alt="Urgent" />
               <div class="information">
-                <span>{{urgentCount()}}</span>
+                <span>{{ urgentCount() }}</span>
                 <p>Urgent</p>
               </div>
             </div>
@@ -46,7 +51,7 @@
 
           <div id="seperator"></div>
           <div>
-            <strong>{{upcomingDeadline()}}</strong>
+            <strong>{{ upcomingDeadline() }}</strong>
             <p>Upcoming Deadline</p>
           </div>
         </a>
@@ -55,21 +60,21 @@
       <div class="card">
         <a [routerLink]="'/board'" class="button-three" href="">
           <div class="information">
-            <span>{{totalTasks()}}</span>
+            <span>{{ totalTasks() }}</span>
             <p>Tasks in</p>
             <p>Board</p>
           </div>
         </a>
         <a [routerLink]="'/board'" class="button-three" href="">
           <div class="information">
-            <span>{{inProgressCount()}}</span>
-            <p>Tasks in </p>
+            <span>{{ inProgressCount() }}</span>
+            <p>Tasks in</p>
             <p>Progress</p>
           </div>
         </a>
         <a [routerLink]="'/board'" class="button-three" href="">
           <div class="information">
-            <span>{{awaitingFeedbackCount()}}</span>
+            <span>{{ awaitingFeedbackCount() }}</span>
             <p>Awaiting</p>
             <p>Feedback</p>
           </div>
@@ -79,7 +84,7 @@
 
     <section id="greet">
       <h4>{{ greeting() }},</h4>
-      <h2>{{oAuthService.logedUser()}}</h2>
+      <h2>{{ oAuthService.logedUser() }}</h2>
     </section>
   </section>
 </main>
