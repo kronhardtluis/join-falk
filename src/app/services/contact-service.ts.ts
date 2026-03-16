@@ -21,7 +21,7 @@ export class ContactService {
   subscribeToChanges() {
     if (this.channels) return;
     this.channels = this.dbService.supabase
-      .channel('custom-all-channel')
+      .channel('contacts-db-changes')
       .on('postgres_changes', { event: '*', schema: 'public' }, () => {
         this.getContacts();
       })
