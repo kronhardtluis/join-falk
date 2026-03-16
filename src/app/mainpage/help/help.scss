@@ -31,3 +31,7 @@ span {
 .howToUse {
   @include all.flexi($ai: start, $gap: 35px);
 }
+
+.blue {
+  color: all.$blueLight;
+}
