@@ -52,7 +52,7 @@
                 Your email is required.
               }
               @else if (userForm.get('email')?.hasError('pattern')) {
-                Please enter a valid email address (e.g. name@domain.com).
+                Please enter a valid email address.
               }
               @else if (userForm.get('password')?.hasError('supabase') || userForm.get('email')?.hasError('supabase')) {
               }
@@ -94,7 +94,7 @@
                 Password must be at least 8 characters.
               }
               @else if (userForm.get('password')?.hasError('supabase') || userForm.get('email')?.hasError('supabase')) {
-                Check your email and password. Please try again.
+                Check your email and password.
               }
             </span>
           </div>
@@ -129,7 +129,7 @@
               />
               <span class="error-message">
                 @if (userForm.get('confirm')?.invalid && userForm.get('confirm')?.touched && activeState() === 'sign-up') {
-                  Your passwords don't match. Please try again.
+                  Your passwords don't match.
                 }
               </span>
             </div>
@@ -151,11 +151,13 @@
                   }
                 </p>
               </div>
-              <span class="error-message">
-                @if (userForm.get('checkBox')?.invalid && userForm.get('checkBox')?.touched && activeState() === 'sign-up') {
-                  Please accept privacy policy.
-                }
-              </span>
+              @if(activeState() === 'sign-up'){
+                <span class="error-message">
+                  @if (userForm.get('checkBox')?.invalid && userForm.get('checkBox')?.touched) {
+                    Please accept privacy policy.
+                  }
+                </span>
+              }
             </div>
         </form>
       </div>

@@ -15,6 +15,9 @@ main {
 
     #logo {
       width: 60px;
+      @include all.mobile{
+        width: 25px;
+      }
     }
   }
 }
@@ -37,7 +40,7 @@ main {
 
   @include all.tablet {
     left: 4%;
-    top: 4%;
+    top: 3%;
     width: 80px;
     height: auto;
   }
@@ -107,6 +110,9 @@ main {
 header {
   @include all.flexi($ai: start, $jc: flex-end);
   height: 100px;
+  @include all.mobile{
+    height: 34px;
+  }
   #sign-up-area {
     @include all.flexi($jc: flex-end, $gap: 16px);
     margin-top: 32px;
@@ -224,22 +230,23 @@ header {
     }
   }
   .error-message {
-    margin-top: 3px;
+    // margin-top: 3px;
     font-size: 1.4rem;
     color: red;
     height: 14px;
     width: 100%;
 
-    @include all.notebook {
-      height: 28px;
-    }
+    // @include all.notebook {
+    //   height: 28px;
+    // }
 
-    @include all.mobile {
-      height: 28px;
-    }
+    // @include all.mobile {
+    //   height: 28px;
+    // }
   }
 
   #checkbox-content {
+    margin-top: 8px;
     @include all.flexi($fd: column);
 
     #checkbox-wrapper {
@@ -269,6 +276,7 @@ header {
 }
 
 #sign-up-footer {
+  margin-top: 4px;
   @include all.flexi();
 }
 
@@ -282,7 +290,7 @@ header {
 }
 
 footer {
-  @include all.flexi($gap: 40px, $fd: column);
+  @include all.flexi($gap: 20px, $fd: column);
   margin-top: 16px;
 
   #sign-up-area-responsive {
