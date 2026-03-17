@@ -1,13 +1,13 @@
 @if(oAuthService.logingStatus() === "nobody" && oAuthService.activeSite() === "log-in"){
-  <main class="content auth-mode">
+  <div class="content auth-mode">
     <router-outlet />
-  </main>
+  </div>
 } @else {
   <app-navbar class="navbar"></app-navbar>
   <app-header class="header"></app-header>
-  <main class="content">
+  <div class="content">
     <router-outlet />
-  </main>
+  </div>
 }
 
 

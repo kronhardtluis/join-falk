@@ -8,6 +8,15 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  @media (max-height: 840px) {
+    height: fit-content;
+    overflow-y: auto;
+
+    #logo {
+      width: 60px;
+    }
+  }
 }
 
 #background-animation {
@@ -97,7 +106,7 @@ main {
 
 header {
   @include all.flexi($ai: start, $jc: flex-end);
-  height: 200px;
+  height: 100px;
   #sign-up-area {
     @include all.flexi($jc: flex-end, $gap: 16px);
     margin-top: 32px;
