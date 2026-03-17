@@ -18,6 +18,10 @@ app-add-task {
   }
 }
 
+app-mainpage {
+  @include all.flexi();
+}
+
 app-root {
   display: grid;
   height: 100dvh;
