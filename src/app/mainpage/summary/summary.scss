@@ -10,11 +10,15 @@ main {
     height: 100%;
     padding-left: clamp(6%, 5vw, 12%);
     padding-right: clamp(6%, 5vw, 12%);
-    @include all.flexi($jc: flex-start, $ai: flex-start, $gap: 10%);
+    @include all.flexi($jc: flex-start, $ai: center, $gap: 10%);
 
-    > section {
+    #content {
       width: 75%;
       height: 100%;
+      // hier raus nehmen um rückgängig zu machen
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
     }
   }
 }
@@ -51,7 +55,7 @@ main {
   }
 
   > p {
-    font-size: 2.8rem;
+    font-size: clamp(2rem, 3vw, 2.8rem);
   }
 
   > span {
@@ -188,7 +192,7 @@ span {
       @include all.flexi($jc: center, $ai: center);
       padding-left: clamp(10%, 10vw, 25%);
       padding-right: clamp(10%, 10vw, 25%);
-      > section {
+      #content {
         width: clamp(300px, 100%, 560px);
       }
     }
