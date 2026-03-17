@@ -16,6 +16,7 @@ export class OAuthService {
   public rememberedEmail = signal<string>(localStorage.getItem('join_remembered_email') || "");
   public activeSite = signal<string>("");
   public activeForm = signal<'log-in' | 'sign-up'>('log-in');
+  public showGreetingsAnimationMobile = signal<boolean>(true);
 
   /**
   * Initializes the OAuthService and restores the user's authentication state.
@@ -145,8 +146,11 @@ export class OAuthService {
   }
 
   /**
-  * Manually sets the login status (e.g., for Guest access).
-  * @param status - The status string to set ('Guest', 'User', or 'guest').
+  * Updates authentication status and manages login side effects.
+  * Synchronizes the `logingStatus` signal and localStorage. For 'guest' status,
+  * it automatically sets the display name to 'Guest'. For any active session,
+  * it triggers a 3.5s delay to hide the mobile greeting animation.
+  * @param status - The new auth state ('user', 'guest', or 'nobody').
   */
   setLoginStatus(status:string){
     this.logingStatus.set(status);
@@ -154,6 +158,11 @@ export class OAuthService {
     if (status === 'guest') {
       this.logedUser.set('Guest');
       localStorage.setItem('join_user_name', 'Guest');
+    }
+    if(status != 'nobody'){
+    setTimeout(() => {
+        this.showGreetingsAnimationMobile.set(false);
+      }, 3500);
     }
   }
 
@@ -223,6 +232,7 @@ export class OAuthService {
       localStorage.removeItem('join_user_name');
       localStorage.removeItem('join_login_status');
       this.router.navigate(['/']);
+      this.showGreetingsAnimationMobile.set(true);
     }
   }
 }

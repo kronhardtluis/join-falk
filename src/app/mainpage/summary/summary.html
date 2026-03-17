@@ -1,10 +1,11 @@
 <main>
+   @if(oAuthService.showGreetingsAnimationMobile() === true){
   <div id="mobile-animation">
     <div>
       <p>{{ greeting() }}!</p>
       <h2>{{ oAuthService.logedUser() }}</h2>
     </div>
-  </div>
+  </div>}
   <section id="wrapper">
     <section id="content">
       <div id="headline">
