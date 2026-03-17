@@ -2,6 +2,7 @@
 
 app-mainpage {
   background-color: all.$grey;
+  @include all.flexi();
 }
 
 app-add-task {
@@ -16,10 +17,6 @@ app-add-task {
   @include all.notebook {
     padding-inline: 0%;
   }
-}
-
-app-mainpage {
-  @include all.flexi();
 }
 
 app-root {
