@@ -18,6 +18,9 @@ export class Mainpage {
   router = inject(Router);
   contactService = inject(ContactService);
   activeState = this.oAuthService.activeForm;
+  email = "";
+  rememberMe = false;
+
   userForm = new FormGroup(
     {
       name: new FormControl('', {
@@ -50,18 +53,26 @@ export class Mainpage {
 
   /**
   * Initializes the component and performs essential startup checks.
-  * 1. Sets the current active site state to 'log-in'.
-  * 2. Redirects authenticated users or guests (anyone not 'nobody') to the summary page
-  * to prevent re-accessing the login screen while active.
-  * 3. Pre-fetches the contacts list from the database to ensure data availability
-  * for validation and UI components.
+  * 1. Sets the current active site state to 'log-in' for navigation highlighting.
+  * 2. Guards the route by redirecting active users or guests to the summary page
+  * if a session is already established.
+  * 3. Pre-fetches the contacts list to ensure data availability for validation.
+  * 4. Implements "Remember Me" logic: hydrates the login form with a persisted
+  * email address from the OAuthService signal if available.
   */
   ngOnInit(){
+    const SAVED_EMAIL = this.oAuthService.rememberedEmail();
     this.oAuthService.activeSite.set("log-in");
     if (this.oAuthService.logingStatus() !== 'nobody') {
       this.router.navigate(['/summary']);
     }
     this.contactService.getContacts();
+    if (SAVED_EMAIL) {
+      this.userForm.patchValue({
+        email: SAVED_EMAIL,
+        checkBox: true
+      });
+    }
   }
 
   /**
@@ -148,6 +159,7 @@ export class Mainpage {
     const currentValue = this.userForm.get('checkBox')?.value;
     this.userForm.get('checkBox')?.setValue(!currentValue);
     this.userForm.get('checkBox')?.markAsTouched(); // Damit Fehlermeldungen getriggert werden
+    if(!currentValue) this.oAuthService.setRememberedEmail(false);
   }
 
   /**
@@ -262,5 +274,4 @@ export class Mainpage {
       this.oAuthService.logedUser.set('Guest')
     }
   }
-
 }

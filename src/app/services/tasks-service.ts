@@ -28,9 +28,9 @@ export class TasksService {
   subscribeToChanges() {
     if (this.channels) return;
     this.channels = this.dbService.supabase
-      .channel('custom-all-channel')
+      .channel('tasks-db-changes')
       .on('postgres_changes', { event: '*', schema: 'public' }, () => {
-        this.getTasks();
+        this.loadBoardData();
       })
       .subscribe();
   }

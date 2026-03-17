@@ -13,31 +13,28 @@ export class OAuthService {
   router = inject(Router);
   public logingStatus = signal<string>(localStorage.getItem('join_login_status') || 'nobody');
   public logedUser = signal<string>(localStorage.getItem('join_user_name') || "");
+  public rememberedEmail = signal<string>(localStorage.getItem('join_remembered_email') || "");
   public activeSite = signal<string>("");
   public activeForm = signal<'log-in' | 'sign-up'>('log-in');
 
+  /**
+  * Initializes the OAuthService and restores the user's authentication state.
+  * The constructor triggers an immediate check for a persisted session to ensure
+  * that the user's login status is consistent across page reloads or browser restarts.
+  * It bridges the gap between Supabase Auth's internal persistence and the
+  * application's reactive signals.
+  */
   constructor(){
     this.checkPersistedSession();
   }
 
   /**
-   * Registers a new user with Supabase Auth after verifying email availability.
-   * 1. Checks if the email is already in the contacts list to prevent duplicates.
-   * 2. Registers the user in Supabase Auth with metadata.
-   * 3. Synchronizes the contact in the database.
-   * 4. Automatically signs in the user upon successful registration.
-   * @param email - User's email address.
-   * @param pass - User's chosen password.
-   * @param name - Full name to be stored in user_metadata and contacts.
-   * @returns {Promise<{data: any, error: any}>}
-   */
+  * Orchestrates the registration process: validation, auth creation,
+  * contact synchronization, and automatic login.
+  */
   async signUp(email: string, pass: string, name: string) {
-    if (this.contactService.contacts().length === 0) await this.contactService.getContacts();
-    const EMAIL_TAKEN = this.contactService.contacts().some(c => c.email.toLowerCase() === email.toLowerCase());
-    if (EMAIL_TAKEN) {
-      this.dbService.showNotification("This email is already registered.");
-      return { data: null, error: { message: 'Email taken' } };
-    }
+    const IS_AVAILABLE = await this.validateEmailAvailability(email);
+    if (!IS_AVAILABLE) return { data: null, error: { message: 'Email taken' } };
     const { data, error } = await this.dbService.supabase.auth.signUp({
       email,
       password: pass,
@@ -49,19 +46,41 @@ export class OAuthService {
     }
     if (data.user) {
       await this.ensureContactExists(email, name);
+      this.dbService.showNotification("Registration successful.");
+      await this.signIn(email, pass);
     }
-    this.dbService.showNotification("Registration successful.");
-    await this.signIn(email, pass);
     return { data, error: null };
   }
 
   /**
-   * Authenticates a user and manages the persistence of the login state.
-   * @param email - User's email address.
-   * @param pass - User's password.
-   * @param rememberMe - If true, the 'User' status is saved in localStorage.
-   * @returns The data object on success, or an object with error on failure. // ZMIENIONO
-   */
+  * Helper: Checks if the email is already registered in the contacts list.
+  * @private
+  */
+  private async validateEmailAvailability(email: string): Promise<boolean> {
+    if (this.contactService.contacts().length === 0) {
+      await this.contactService.getContacts();
+    }
+    const EMAIL_TAKEN = this.contactService.contacts().some(
+      contact => contact.email.toLowerCase() === email.toLowerCase()
+    );
+    if (EMAIL_TAKEN) {
+      this.dbService.showNotification("This email is already registered.");
+      return false;
+    }
+    return true;
+  }
+
+  /**
+  * Authenticates a user using email and password via Supabase Auth.
+  * Upon successful login, it:
+  * 1. Validates or creates a corresponding contact entry.
+  * 2. Updates the global reactive state (`logedUser`, `logingStatus`).
+  * 3. Triggers the email persistence logic based on the 'Remember Me' preference.
+  * @param email - The user's email address.
+  * @param pass - The user's password.
+  * @param rememberMe - Boolean flag to persist the email for future sessions.
+  * @returns {Promise<any>} The Supabase Auth response data.
+  */
   async signIn(email: string, pass: string, rememberMe: boolean = false) {
     const { data, error } = await this.dbService.supabase.auth.signInWithPassword({
       email,
@@ -73,30 +92,41 @@ export class OAuthService {
     }
     const USER_NAME = data.user?.user_metadata['full_name'] || data.user?.email || "";
     await this.ensureContactExists(email, USER_NAME);
-    localStorage.setItem('join_remember_me', rememberMe.toString());
     this.setLoginStatus('user');
     this.logedUser.set(USER_NAME)
-    if (rememberMe) {
-      localStorage.setItem('join_user_name', USER_NAME)
-    } else {
-      localStorage.removeItem('join_user_name');
-    }
+    this.setRememberedEmail(rememberMe, email)
     return data;
   }
 
   /**
-   * Ensures that a contact corresponding to the authenticated user exists in the database.
-   * * This method performs a synchronization check:
-   * 1. Fetches the current contact list if the local state is empty.
-   * 2. Verifies if the user's email is already present in the contacts collection.
-   * 3. If missing (e.g., after manual deletion), it creates a new contact using
-   * provided metadata and assigns a random color from the predefined palette.
-   * 4. Refreshes the local contacts signal after a successful insertion to maintain data integrity.
-   * @param email - The email address of the user to check or create.
-   * @param name - The full name of the user used for contact creation.
-   * @returns {Promise<void>} A promise that resolves when the synchronization check is complete.
-   * @private
-   */
+  * Manages the persistence of the user's email address in local storage.
+  * Used for the "Remember Me" feature to pre-fill the login form in future visits.
+  * @param status - If true, the email will be saved; if false, it will be removed.
+  * @param email - The email address to persist (required if status is true).
+  * @private
+  */
+  setRememberedEmail(status:boolean, email:string = ""){
+    if (status) {
+      localStorage.setItem('join_remembered_email', email);
+      this.rememberedEmail.set(email);
+    } else {
+      localStorage.removeItem('join_remembered_email');
+      this.rememberedEmail.set("");
+    }
+  }
+
+  /**
+  * Synchronizes the authenticated user with the contacts database.
+  * This method ensures that every registered or logged-in user has a corresponding
+  * entry in the 'contacts' table. If the email is not found in the current contact list:
+  * 1. It fetches the latest contacts to prevent race conditions.
+  * 2. It creates a new contact profile with default values and a random avatar color.
+  * 3. It persists the new contact and refreshes the global contact state.
+  * @param email - The email address of the user to verify/create.
+  * @param name - The full name of the user to be used for the contact profile.
+  * @returns {Promise<void>}
+  * @private
+  */
   private async ensureContactExists(email: string, name: string) {
     if (this.contactService.contacts().length === 0) await this.contactService.getContacts();
     const CONTACT_EXISTS = this.contactService.contacts().some(c => c.email === email);
@@ -115,9 +145,9 @@ export class OAuthService {
   }
 
   /**
-   * Manually sets the login status (e.g., for Guest access).
-   * @param status - The status string to set ('Guest', 'User', or 'guest').
-   */
+  * Manually sets the login status (e.g., for Guest access).
+  * @param status - The status string to set ('Guest', 'User', or 'guest').
+  */
   setLoginStatus(status:string){
     this.logingStatus.set(status);
     localStorage.setItem('join_login_status', status);
@@ -128,46 +158,71 @@ export class OAuthService {
   }
 
   /**
-   * Verifies if a session exists in Supabase Auth or falls back to localStorage status.
-   * Called automatically in the constructor to maintain user state after page refresh.
-   */
+  * Orchestrates the initial authentication check upon service instantiation.
+  * It attempts to retrieve an existing session from Supabase Auth.
+  * Depending on the result, it routes the logic to either handle a
+  * valid user session or fallback to guest/anonymous status.
+  * @returns {Promise<void>}
+  * @private
+  */
   private async checkPersistedSession() {
-    const { data } = await this.dbService.supabase.auth.getSession();
-    const REMEMBER_ME = localStorage.getItem('join_remember_me') === 'true';
-    if (data.session) {
-      const NAME = data.session.user.user_metadata['full_name'];
-      const EMAIL = data.session.user.email!;
-      await this.ensureContactExists(EMAIL, NAME);
+    const { data: { session } } = await this.dbService.supabase.auth.getSession();
+    if (session) {
+      await this.handleActiveSession(session);
+      return;
     }
-    if (data.session && !REMEMBER_ME) {
-      await this.logout();
-    return;
-    }
-    if (data.session && REMEMBER_ME) {
-      const NAME = data.session.user.user_metadata['full_name'];
-      this.logedUser.set(NAME);
-      localStorage.setItem('join_user_name', NAME);
+    this.handleGuestOrAnonymous();
+  }
+
+  /**
+  * Processes an active Supabase session and synchronizes the application state.
+  * This method:
+  * 1. Extracts user metadata (full name and email).
+  * 2. Ensures the user exists in the local 'contacts' database.
+  * 3. Updates reactive signals (`logedUser`, `logingStatus`) to reflect the logged-in state.
+  * 4. Persists basic user info to localStorage for quick access during UI initialization.
+  * @param session - The active Supabase Auth session object.
+  * @returns {Promise<void>}
+  * @private
+  */
+  private async handleActiveSession(session: any) {
+    const NAME = session.user.user_metadata['full_name'];
+    const EMAIL = session.user.email!;
+    await this.ensureContactExists(EMAIL, NAME);
+    this.logedUser.set(NAME);
+    this.logingStatus.set('user');
+    localStorage.setItem('join_login_status', 'user');
+  }
+
+  /**
+  * Manages the application state when no valid Auth session is found.
+  * It checks `localStorage` for a previously set 'guest' status. If found,
+  * it maintains the guest session; otherwise, it resets the state to 'nobody',
+  * effectively requiring the user to log in.
+  * @private
+  */
+  private handleGuestOrAnonymous() {
+    const SAVED_STATUS = localStorage.getItem('join_login_status');
+    if (SAVED_STATUS === 'guest') {
+      this.logingStatus.set('guest');
+      this.logedUser.set('Guest');
     } else {
-      const SAVED_STATUS = localStorage.getItem('join_login_status');
-      if (SAVED_STATUS === 'guest') {
-        this.logingStatus.set('guest');
-        this.logedUser.set('Guest');
-      } else {
-        this.logingStatus.set('nobody');
-      }
+      this.logingStatus.set('nobody');
+      this.logedUser.set('');
     }
   }
 
   /**
-   * Signs out the current user from Supabase Auth and clears all local storage and signals.
-   */
+  * Signs out the current user from Supabase Auth and clears all local storage and signals.
+  */
   async logout() {
-    await this.dbService.supabase.auth.signOut();
-    this.logingStatus.set('nobody');
-    this.logedUser.set('');
-    localStorage.removeItem('join_user_name');
-    localStorage.removeItem('join_login_status');
-    localStorage.removeItem('join_remember_me');
-    this.router.navigate(['/']);
+    const { error } = await this.dbService.supabase.auth.signOut();
+    if(!error){
+      this.logingStatus.set('nobody');
+      this.logedUser.set('');
+      localStorage.removeItem('join_user_name');
+      localStorage.removeItem('join_login_status');
+      this.router.navigate(['/']);
+    }
   }
 }
