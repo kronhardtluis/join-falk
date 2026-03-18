@@ -340,6 +340,7 @@
     color: #7f8c8d;
     margin-bottom: 15px;
     line-height: 1.4;
+    @include all.text-cut-multi(2);
   }
 
   .subtask {
