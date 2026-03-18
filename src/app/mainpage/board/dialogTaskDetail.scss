@@ -11,7 +11,7 @@
   background-color: white;
   border-radius: 30px;
   overflow: hidden;
-  padding: clamp(18px, 3vw, 40px);
+  padding: clamp(12px, 3vw, 40px);
 
   @include all.notebook {
     width: 60%;
@@ -38,6 +38,16 @@
   #stopPropagation {
     height: 100%;
     width: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1px;
+
+    
+  #margin{
+    margin-bottom: 6px;
+  }
   }
 
   .task-detail-header {
@@ -69,7 +79,7 @@
 
   .title-description {
     h2 {
-      font-size: clamp(3rem, 5vw, 6rem);
+      font-size: clamp(3rem, 5vw, 5.5rem);
       margin-bottom: 16px;
     }
 
@@ -124,6 +134,7 @@
     color: grey;
   }
 
+
   .assigned-to-user {
     @include all.flexi($gap: 10px, $jc: flex-start);
     margin-bottom: 16px;
@@ -163,12 +174,11 @@
   }
 
   #task-buttons {
-    position: absolute;
-    bottom: 5%;
     right: 5%;
     width: auto;
     height: 25px;
     @include all.flexi($gap: 8px);
+    align-self: flex-end;
 
     .seperator {
       width: 2px;
