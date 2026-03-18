@@ -20,6 +20,8 @@ export class Mainpage {
   activeState = this.oAuthService.activeForm;
   email = "";
   rememberMe = false;
+  isPasswordVisible = false;
+  isConfirmVisible = false;
 
   userForm = new FormGroup(
     {
@@ -178,9 +180,6 @@ export class Mainpage {
       this.userForm.markAllAsTouched();
     }
   }
-
-  isPasswordVisible = false;
-  isConfirmVisible = false;
 
   /**
   * Toggles the visibility of password characters in the UI.
