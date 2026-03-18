@@ -89,7 +89,6 @@ export class Board {
     }, 400);
   }
 
-  // Zugriff auf das native <dialog> Element
   @ViewChild('dialog') dialog!: ElementRef<HTMLDialogElement>;
 
   /**

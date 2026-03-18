@@ -24,9 +24,6 @@ export class Mainpage {
   userForm = new FormGroup(
     {
       name: new FormControl('', {
-        // Nach dem Komma validators: [] kommen unsere Validatoren rein.
-        // Validators gefolgt vom Punkt, dann sehen wir, was es alles zur Auswahl gibt.
-        //validators: [Validators.required],
       }),
       email: new FormControl('', {
         validators: [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)],
@@ -35,14 +32,11 @@ export class Mainpage {
         validators: [Validators.required],
       }),
       confirm: new FormControl('', {
-        //validators: [Validators.required, Validators.minLength(8)],
       }),
       checkBox: new FormControl(false, {
-        //validators: [Validators.requiredTrue],
       }),
     },
     {
-      // Custom Validator für den Passwort-Abgleich
       validators: (group) => {
         const password = group.get('password')?.value;
         const confirm = group.get('confirm')?.value;
@@ -171,8 +165,6 @@ export class Mainpage {
   passwordMatchValidator(form: FormGroup) {
     const password = form.get('password')?.value;
     const confirm = form.get('confirm')?.value;
-
-    // Wenn sie nicht gleich sind, setzen wir einen Fehler "mismatch"
     return password === confirm ? null : { mismatch: true };
   }
 
@@ -183,7 +175,6 @@ export class Mainpage {
   */
   handleDisabledClick() {
     if (this.userForm.invalid) {
-      // Das lässt alle Fehlermeldungen und roten Ränder aufleuchten
       this.userForm.markAllAsTouched();
     }
   }
@@ -231,7 +222,6 @@ export class Mainpage {
   */
   setValid(form: FormGroup): void{
     form.get('name')?.setValidators([Validators.required]);
-    //form.get('email')?.setValidators([Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]);
     form.get('password')?.setValidators([Validators.required, Validators.minLength(8)]);
     form.get('confirm')?.setValidators([Validators.required, Validators.minLength(8)]);
     form.get('checkBox')?.setValidators([Validators.requiredTrue]);
@@ -244,7 +234,6 @@ export class Mainpage {
   */
   clearValid(form: FormGroup): void{
     form.get('name')?.clearValidators();
-    //form.get('email')?.clearValidators();
     form.get('password')?.clearValidators();
     form.get('confirm')?.clearValidators();
     form.get('checkBox')?.clearValidators();
