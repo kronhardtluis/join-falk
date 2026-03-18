@@ -15,11 +15,12 @@ import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from 
 import { ContactService } from '../../services/contact-service.ts';
 import { TasksService } from '../../services/tasks-service';
 import { OAuthService } from '../../services/o-auth-service';
+import { BoardColumn } from './board-column/board-column';
 
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [AddTask, RouterLink, DragDropModule],
+  imports: [AddTask, RouterLink, DragDropModule, BoardColumn],
   templateUrl: './board.html',
   styleUrl: './board.scss',
 })
@@ -98,10 +99,8 @@ export class Board {
   open(status: string = 'ToDo') {
     this.currentColumnStatus.set(status);
     if (window.innerWidth > 640) {
-      // Desktop-Logik: Modal öffnen
       this.dialog.nativeElement.showModal();
     } else {
-      // Mobile-Logik: Navigation zur Seite
       this.router.navigate(['/add-task']);
     }
   }
@@ -228,16 +227,6 @@ export class Board {
   }
 
   /**
-  * Handles the dropping of a task card using Angular CDK Drag and Drop.
-  * If the task is moved to a different container (column), it triggers a status update in the database.
-  * If moved within the same container, it reorders the tasks locally in the array.
-  * @param event - The CdkDragDrop event containing data about the dragged item and target container.
-  */
-  toggleMenu(taskId:number) {
-    this.activeDropdownId.update(id => id === taskId ? null : taskId);
-  }
-
-  /**
   * Toggles the visibility of the mobile "Move to" dropdown menu for a specific task.
   * Uses a signal to track the active task ID; if the same task is clicked again, the menu closes.
   * @param taskId - The unique numeric identifier of the task being toggled.
@@ -250,20 +239,19 @@ export class Board {
   * Manages UI state changes based on window resize events.
   * Handles drag-and-drop orientation, disables dragging on mobile,
   * and closes open dialogs or dropdowns when switching view modes.
+  * Drag & Drop Logic
+  * 1200px -> vertical (Karten stapeln sich)
+  * < 1200px -> horizontal (Karten liegen nebeneinander)
+  * this.orientation = window.innerWidth > 1200 ? 'vertical' : 'horizontal';
+  * Drag and Drop ausschalten ab 640px
+  * this.dragDisabled = window.innerWidth <= 640;
+  * Close elements that shouldn't be open on certain screens
   */
   @HostListener('window:resize')
   onResize(){
     const WIDTH = window.innerWidth;
-    // Drag & Drop Logic
-    // > 1200px -> vertical (Karten stapeln sich)
-    // < 1200px -> horizontal (Karten liegen nebeneinander)
-    // this.orientation = window.innerWidth > 1200 ? 'vertical' : 'horizontal';
-    // Drag and Drop ausschalten ab 640px
-    // this.dragDisabled = window.innerWidth <= 640;
     this.orientation = WIDTH > 1200 ? 'vertical' : 'horizontal';
     this.dragDisabled = WIDTH <= 1200;
-
-    //Close elements that shouldn't be open on certain screens
     if (WIDTH < 640 && this.dialog?.nativeElement.open) this.close();
     if (WIDTH > 640) this.closeMenu();
   }
@@ -276,7 +264,6 @@ export class Board {
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const TARGET = event.target as HTMLElement;
-    // Logic for Mobile "Move to" Dropdown
     const IS_DROPDOWN_CLICK = TARGET.closest('.dropdown-button') || TARGET.closest('.dropdown');
     if (!IS_DROPDOWN_CLICK) {
       this.closeMenu();

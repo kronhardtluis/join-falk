@@ -1,0 +1,259 @@
+@use '../../../../public/assets/styles/all-styles.scss' as all;
+
+form {
+  grid-row: 2;
+  display: flex;
+  justify-content: space-between;
+  min-height: 50%;
+  max-width: calc(1440px - 232px);
+  width: 100%;
+  padding-inline: 5%;
+  overflow-y: auto;
+
+  &.edit-mode {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @media (max-width: 1250px) {
+    flex-direction: column;
+    align-items: center;
+    padding-inline: 0%;
+  }
+
+  .content {
+    width: 45%;
+    height: fit-content;
+    max-width: 1060px;
+    overflow: visible;
+    @include all.flexi($fd: column, $ai: flex-start);
+
+    &.edit-mode{
+      width: 100%;
+    }
+
+    @media (max-width: 1250px) {
+      width: clamp(300px, 90%, 400px);
+    }
+
+    h3 {
+      margin-block: 16px 8px;
+      font-weight: normal;
+      font-size: 18px;
+    }
+
+    input,
+    textarea,
+    .input-container {
+      border-radius: 8px;
+      border: 2px solid all.$greyMid;
+      padding: 12px 8px;
+      background-color: white;
+      min-height: 50px;
+      width: 98%;
+      outline: none;
+      transition: 0.3s;
+      &[type='date']:hover {
+        cursor: text;
+      }
+      &:focus {
+        border-color: all.$blueLight;
+      }
+      &.invalid-border {
+        border-color: red;
+      }
+      &.ng-invalid.ng-touched {
+        border-color: red;
+      }
+    }
+    textarea{
+      min-width: 98%;
+      max-width: 98%;
+      max-height: 250px;
+    }
+
+    #priorities {
+      @include all.flexi($jc: space-between);
+      margin-left: 4px;
+      width: calc(98% - 8px);
+
+      @include all.tablet {
+        @include all.flexi($fd: column, $gap: 16px);
+
+        .importance {
+          width: 80%;
+        }
+      }
+
+      .importance {
+        @include all.flexi($gap: 8px);
+        box-shadow: 0px 0px 3px all.$greyMid;
+        border-radius: 8px;
+
+        @media (max-width: 1250px) {
+          padding: 8px 8px;
+        }
+
+        &:hover {
+          cursor: pointer;
+          box-shadow: 0px 4px 3px all.$greyMid;
+        }
+
+        img {
+          width: 21px;
+        }
+      }
+    }
+
+    #subtask-block {
+      width: 100%;
+
+      #subtask-input-buttons{
+        @include all.flexi($jc: space-between);
+        position: absolute;
+        right: 5%;
+        top: 5%;
+        width: 15%;
+        height: 95%;
+        min-width: 60px;
+      }
+
+      button {
+        background: none;
+        border-radius: 50%;
+        padding: 6px;
+
+        &:hover {
+          background-color: all.$greyMid;
+          cursor: pointer;
+        }
+      }
+
+      #small-line {
+        height: 70%;
+        width: 1px;
+        background-color: all.$greyMid;
+      }
+    }
+
+    #subtask-content {
+      margin-top: 8px;
+      width: 100%;
+      height: fit-content;
+      @include all.flexi($fd: column, $jc:flex-start);
+
+
+      .subtask-row {
+        width: 100%;
+        @include all.flexi($jc: space-between);
+        font-size: 16px;
+        border-radius: 8px;
+
+        &:hover {
+          background-color: all.$greyMid;
+          .subtasks-buttons .hover {
+            display: block;
+          }
+        }
+
+        &:has(#subtask-input:focus) {
+          #dot {
+            display: none;
+          }
+          .subtasks-buttons .hover {
+            display: none;
+          }
+          .subtasks-buttons .seperator {
+            display: block;
+          }
+          .subtasks-buttons .focus {
+            display: block;
+          }
+        }
+
+        #dot {
+          position: absolute;
+          left: 0;
+          width: 6px;
+          height: auto;
+          z-index: 999;
+        }
+
+        #subtask-input {
+          background-color: transparent;
+          list-style-position: inside;
+          list-style-type: disc;
+          width: 100%;
+          border: none;
+          outline: none;
+          padding: 0px 70px 0px 15px;
+          min-height: 30px;
+          height: 30px;
+          cursor: pointer;
+
+          &:focus {
+            background-color: white;
+            border-radius: 0px;
+            border-bottom: 1px solid all.$blueLight;
+            list-style-type: none;
+
+            #dot {
+              display: none;
+            }
+          }
+        }
+
+        .seperator {
+          width: 2px;
+          height: 20px;
+          background-color: grey;
+        }
+
+        .subtasks-buttons {
+          position: absolute;
+          right: 1%;
+          top: 5%;
+          height: 100%;
+          width: 15%;
+          @include all.flexi($ai: center, $gap: 6px);
+          align-items: center;
+
+          .buttons {
+            cursor: pointer;
+            background-color: transparent;
+
+            #pointer-none {
+              pointer-events: none;
+              background-color: red;
+            }
+          }
+
+          .hover {
+            display: none;
+          }
+          .focus {
+            display: none;
+          }
+        }
+      }
+    }
+
+    #category-block {
+      width: 100%;
+    }
+
+    #options {
+      position: absolute;
+      right: 0;
+      top: 12px;
+      padding: 8px;
+      background: none;
+
+      &:hover {
+        cursor: pointer;
+        border-radius: 50%;
+        background-color: all.$greyMid;
+      }
+    }
+  }
+}
