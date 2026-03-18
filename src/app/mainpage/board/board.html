@@ -23,10 +23,8 @@
     </div>
   </section>
 
-  <!-- Board -->
   <section id="board-content">
     <div cdkDropListGroup class="board-columns">
-      <!-- Spalte: To Do -->
       <div class="board-column">
         <div class="column-header">
           <p>To do</p>
@@ -68,7 +66,6 @@
         </div>
       </div>
 
-      <!-- Spalte: In Progress -->
       <div class="board-column">
         <div class="column-header">
           <p>In progress</p>
@@ -110,7 +107,6 @@
         </div>
       </div>
 
-      <!-- Spalte: Await Feedback -->
       <div class="board-column">
         <div class="column-header">
           <p>Await feedback</p>
@@ -152,7 +148,6 @@
         </div>
       </div>
 
-      <!-- Spalte: Done -->
       <div class="board-column">
         <div class="column-header">
           <p>Done</p>
@@ -246,7 +241,6 @@
           </div>
         </div>
 
-        <!-- "assigned-to-section" -->
         <div>
           <p class="subtitle">Assigned To:</p>
           <div class="scroll-div">
@@ -260,7 +254,6 @@
             }
           </div>
         </div>
-        <!-- Subtask section -->
         <div>
           <p class="subtitle">Subtasks:</p>
           <div class="scroll-div scroll-div--subtask">
@@ -279,7 +272,6 @@
             }
           </div>
         </div>
-        <!-- Buttons section -->
         <div id="task-buttons">
           <div>
             <button class="buttons" (click)="deleteTask(task.id)">
