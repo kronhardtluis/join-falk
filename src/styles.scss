@@ -26,14 +26,14 @@ app-root {
   width: 100%;
   overflow: hidden;
 
-  // --- MOBILE ---
+
   grid-template-columns: 1fr;
   grid-template-rows: 75px 1fr 80px;
   grid-template-areas:
     'header'
     'content'
     'navbar';
-  // --- Desktop ---
+
   @include all.desktop {
     grid-template-columns: 232px 1fr;
     grid-template-rows: 96px 1fr;

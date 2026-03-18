@@ -228,19 +228,10 @@ header {
     }
   }
   .error-message {
-    // margin-top: 3px;
     font-size: 1.4rem;
     color: red;
     height: 14px;
     width: 100%;
-
-    // @include all.notebook {
-    //   height: 28px;
-    // }
-
-    // @include all.mobile {
-    //   height: 28px;
-    // }
   }
 
   #checkbox-content {

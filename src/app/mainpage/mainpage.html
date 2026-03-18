@@ -71,14 +71,12 @@
               @if (!password.matches(':focus')) {
                 <img class="icon icon--lock" src="assets/icons/lock.png" alt="User" />
               } @else if (!isPasswordVisible) {
-                <!-- Zustand 2: Fokus da, aber Passwort versteckt -> Auge durchgestrichen -->
                 <img
                   class="icon clickable"
                   src="assets/icons/visibility.png"
                   (mousedown)="togglePassword($event, 'password')"
                 />
               } @else {
-                <!-- Zustand 3: Fokus da & Passwort sichtbar -> Auge offen -->
                 <img
                   class="icon clickable"
                   src="assets/icons/visible.png"
@@ -121,14 +119,12 @@
                 @if (!confirm.matches(':focus')) {
                   <img class="icon icon--lock" src="assets/icons/lock.png" alt="User" />
                 } @else if (!isConfirmVisible) {
-                  <!-- Zustand 2: Fokus da, aber Passwort versteckt -> Auge durchgestrichen -->
                   <img
                     class="icon clickable"
                     src="assets/icons/visibility.png"
                     (mousedown)="togglePassword($event, 'confirm')"
                   />
                 } @else {
-                  <!-- Zustand 3: Fokus da & Passwort sichtbar -> Auge offen -->
                   <img
                     class="icon clickable"
                     src="assets/icons/visible.png"
