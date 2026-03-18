@@ -47,7 +47,7 @@ main{
   padding-inline: 5%;
 
   @include all.notebook {
-    @include all.flexi($jc: center, $fd: column, $gap: 16px);
+    @include all.flexi($jc: center, $fd: column, $gap: 4px);
     position: sticky;
   }
 
