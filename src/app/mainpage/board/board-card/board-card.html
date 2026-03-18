@@ -1,0 +1,82 @@
+ <div cdkDrag class="task-card" [cdkDragData]="task" (click)="openDetails.emit(task)">
+  <div class="card-header">
+    <div
+      [class]="task.category === 'Technical Task' ? 'task-type technical' : 'task-type user-story'">
+      {{ task.category }}
+    </div>
+    <button class="dropdown-button" (click)="toggleMenu.emit(task.id!); $event.stopPropagation()">
+      <img src="assets/icons/swap.png" alt="swap" />
+    </button>
+    <div class="dropdown" (click)="$event.stopPropagation()" [class.open]="activeDropdownId === task.id">
+      <div class="dropdown-content">
+        <strong>Move to</strong>
+        @if(task.status != "ToDo"){
+        <button (click)="taskService.updateTaskStatus(task.id!, 'ToDo'); menuClosed.emit()">
+          <img src="assets/icons/arrow_upward.png" alt="up" /> To Do
+        </button>
+       }
+        @if(task.status != "In Progress"){
+        <button (click)="taskService.updateTaskStatus(task.id!, 'In Progress'); menuClosed.emit()">
+          @if(task.status === "Awaiting Feedback" || task.status === "Done"){
+          <img src="assets/icons/arrow_upward.png" alt="up" />
+          } @else {
+          <img src="assets/icons/arrow_downward.png" alt="up" />
+          } In Progress
+        </button>
+        }
+        @if(task.status != "Awaiting Feedback"){
+        <button (click)="taskService.updateTaskStatus(task.id!, 'Awaiting Feedback'); menuClosed.emit()">
+          @if(task.status === "Done"){
+            <img src="assets/icons/arrow_upward.png" alt="up" />
+          } @else {
+          <img src="assets/icons/arrow_downward.png" alt="down" />
+          } Review
+        </button>
+        }
+        @if(task.status != "Done"){
+        <button (click)="taskService.updateTaskStatus(task.id!, 'Done'); menuClosed.emit()">
+          <img src="assets/icons/arrow_downward.png" alt="down" /> Done
+        </button>
+      }
+      </div>
+    </div>
+  </div>
+  <h3>{{ task.title }}</h3>
+  <p>{{ task.description }}</p>
+  @if (task.subtasks.length != 0) {
+    <div class="subtask">
+      <div class="subtask-undone"></div>
+      <div class="subtask-done" [style.--progress]="taskService.getDoneSubtasksCount(task.subtasks) / task.subtasks.length"></div>
+      <span class="subtasks-nummery">
+        {{ taskService.getDoneSubtasksCount(task.subtasks) }}/{{task.subtasks.length}}
+        Subtasks
+      </span>
+    </div>
+  }
+    <div class="task-footer">
+      <div class="assignees">
+        @for (
+          assignment of task.task_assignments.slice(0, 3);
+          track assignment.contacts.id
+        ) {
+          <span class="assignee" [style.background-color]="assignment.contacts.color">
+            {{ contactService.getInitials(assignment.contacts.name) }}
+          </span>
+        }
+        @if (task.task_assignments.length > 3) {
+          <span class="assignee ellipsis-badge"> +{{ task.task_assignments.length - 3 }} </span>
+        }
+      </div>
+      @switch (task.priority) {
+        @case ('Urgent') {
+          <img src="assets/icons/urgent-red.png" alt="Priority Up" />
+        }
+        @case ('Medium') {
+          <img src="assets/icons/medium-orange.png" alt="Priority Up" />
+        }
+        @case ('Low') {
+          <img src="assets/icons/low-green.png" alt="Priority Up" />
+        }
+      }
+  </div>
+</div>

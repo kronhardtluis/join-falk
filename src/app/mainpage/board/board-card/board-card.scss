@@ -1,0 +1,88 @@
+@use '../../../../../public/assets/styles/all-styles.scss' as all;
+@use '../board.scss';
+
+.task-card {
+  @include all.flexi($jc: space-between, $ai: start, $fd: column);
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 4px 2px 4px rgba(9, 30, 66, 0.25);
+  cursor: grab;
+  width: 100%;
+
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #7f8c8d;
+    margin-bottom: 15px;
+    line-height: 1.4;
+    @include all.text-cut-multi(2);
+  }
+
+  .subtask {
+    @include all.flexi($jc: flex-end);
+    width: 100%;
+
+    .subtask-done {
+      position: absolute;
+      left: 0;
+      background: rgb(69, 137, 255);
+      width: calc(48% * var(--progress, 0));
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    .subtask-undone {
+      position: absolute;
+      left: 0;
+      background: white;
+      box-shadow: 0px 0px 3px rgb(111, 111, 111);
+      width: 48%;
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    .subtasks-nummery {
+      width: 48%;
+      font-size: 12px;
+      color: #7f8c8d;
+    }
+  }
+
+  .task-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+    width: 100%;
+
+    img {
+      width: 20px;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+
+  .task-card {
+    width: 250px;
+    height: 230px;
+    min-width: 250px;
+  }
+
+  .card-header {
+    .dropdown-button {
+      display: block;
+    }
+  }
+}

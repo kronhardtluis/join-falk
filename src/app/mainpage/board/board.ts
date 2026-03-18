@@ -15,11 +15,13 @@ import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from 
 import { ContactService } from '../../services/contact-service.ts';
 import { TasksService } from '../../services/tasks-service';
 import { OAuthService } from '../../services/o-auth-service';
+import { BoardCard } from './board-card/board-card';
+
 
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [AddTask, RouterLink, DragDropModule],
+  imports: [AddTask, RouterLink, DragDropModule, BoardCard],
   templateUrl: './board.html',
   styleUrl: './board.scss',
 })
