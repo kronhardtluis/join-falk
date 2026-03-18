@@ -90,7 +90,6 @@ export class Board {
     }, 400);
   }
 
-  // Zugriff auf das native <dialog> Element
   @ViewChild('dialog') dialog!: ElementRef<HTMLDialogElement>;
 
   /**
@@ -100,10 +99,8 @@ export class Board {
   open(status: string = 'ToDo') {
     this.currentColumnStatus.set(status);
     if (window.innerWidth > 640) {
-      // Desktop-Logik: Modal öffnen
       this.dialog.nativeElement.showModal();
     } else {
-      // Mobile-Logik: Navigation zur Seite
       this.router.navigate(['/add-task']);
     }
   }
@@ -256,16 +253,8 @@ export class Board {
   @HostListener('window:resize')
   onResize(){
     const WIDTH = window.innerWidth;
-    // Drag & Drop Logic
-    // > 1200px -> vertical (Karten stapeln sich)
-    // < 1200px -> horizontal (Karten liegen nebeneinander)
-    // this.orientation = window.innerWidth > 1200 ? 'vertical' : 'horizontal';
-    // Drag and Drop ausschalten ab 640px
-    // this.dragDisabled = window.innerWidth <= 640;
     this.orientation = WIDTH > 1200 ? 'vertical' : 'horizontal';
     this.dragDisabled = WIDTH <= 1200;
-
-    //Close elements that shouldn't be open on certain screens
     if (WIDTH < 640 && this.dialog?.nativeElement.open) this.close();
     if (WIDTH > 640) this.closeMenu();
   }
@@ -278,7 +267,6 @@ export class Board {
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const TARGET = event.target as HTMLElement;
-    // Logic for Mobile "Move to" Dropdown
     const IS_DROPDOWN_CLICK = TARGET.closest('.dropdown-button') || TARGET.closest('.dropdown');
     if (!IS_DROPDOWN_CLICK) {
       this.closeMenu();
