@@ -20,7 +20,7 @@ export class Contact implements OnInit {
   public selectedContactId = signal<number | null>(null);
   public selectedContactData = computed(() => {
     const ID = this.selectedContactId();
-    return ID ? this.contactService.contacts().find(c => c.id === ID) || null : null;
+    return ID ? this.contactService.contacts().find((c) => c.id === ID) || null : null;
   });
   public isVisible = signal(false);
   public isEditMode = signal(false);
@@ -30,18 +30,28 @@ export class Contact implements OnInit {
   oAuthService = inject(OAuthService);
   private fb = inject(FormBuilder);
   public userForm: FormGroup = this.fb.group({
-    name: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z]+\s+[a-zA-Z]+.*$/)]],
-    email: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
-    phone: ['', [Validators.required, Validators.pattern(/^[0-9+ ]{9,15}$/)]]
+    name: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.pattern(/^[a-zA-Z]+\s+[a-zA-Z]+.*$/),
+      ],
+    ],
+    email: [
+      '',
+      [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)],
+    ],
+    phone: ['', [Validators.required, Validators.pattern(/^[0-9+ ]{9,15}$/)]],
   });
   router = inject(Router);
 
   /**
-  * Lifecycle hook that initializes the component by fetching the initial contact list
-  * and establishing a real-time database subscription for live updates.
-  * @returns {void}
-  */
-  ngOnInit(){
+   * Lifecycle hook that initializes the component by fetching the initial contact list
+   * and establishing a real-time database subscription for live updates.
+   * @returns {void}
+   */
+  ngOnInit() {
     if (this.oAuthService.logingStatus() === 'nobody') {
       this.router.navigate(['/']);
     }
@@ -49,63 +59,62 @@ export class Contact implements OnInit {
   }
 
   /**
-  * Lifecycle hook that orchestrates component cleanup before destruction.
-  * It explicitly triggers the cleanup logic in {@link ContactService},
-  * ensuring that real-time database channels are closed and resources
-  * are released when the user leaves the board view.
-  * This is critical to prevent memory leaks and redundant network
-  * traffic from background subscriptions.
-  * @returns {void}
-  */
+   * Lifecycle hook that orchestrates component cleanup before destruction.
+   * It explicitly triggers the cleanup logic in {@link ContactService},
+   * ensuring that real-time database channels are closed and resources
+   * are released when the user leaves the board view.
+   * This is critical to prevent memory leaks and redundant network
+   * traffic from background subscriptions.
+   * @returns {void}
+   */
   ngOnDestroy() {
     this.contactService.ngOnDestroy();
   }
 
   /**
-  * Orchestrates the opening of dialog windows and triggers the contact deletion process.
-  * Depending on the 'type', it prepares the form for adding/editing or executes deletion.
-  * @param {'addContact' | 'editContact' | 'deleteContact'} type - The action type to perform.
-  * @param {number} [id] - Optional contact identifier (required for 'editContact').
-  * @returns {void}
-  */
-  openDialogWindow(type:'addContact' | 'editContact' | 'deleteContact', id?:number){
-    if(type === "addContact"){
+   * Orchestrates the opening of dialog windows and triggers the contact deletion process.
+   * Depending on the 'type', it prepares the form for adding/editing or executes deletion.
+   * @param {'addContact' | 'editContact' | 'deleteContact'} type - The action type to perform.
+   * @param {number} [id] - Optional contact identifier (required for 'editContact').
+   * @returns {void}
+   */
+  openDialogWindow(type: 'addContact' | 'editContact' | 'deleteContact', id?: number) {
+    if (type === 'addContact') {
       this.isEditMode.set(false);
       this.userForm.reset();
       this.dialog.nativeElement.showModal();
-    } else if(type === "editContact") {
+    } else if (type === 'editContact') {
       this.isEditMode.set(true);
       this.prepareEditForm(id);
       this.dialog.nativeElement.showModal();
-    }
-      else if(type === "deleteContact"){
+    } else if (type === 'deleteContact') {
       this.handleDelete();
-    } else return
+    } else return;
   }
 
   /**
-  * Populates the form with existing contact data to prepare for editing.
-  * It searches for the contact by ID within the local state and updates
-  * the form controls using patchValue.
-  * @private
-  * @param {number} [id] - The unique identifier of the contact to be edited.
-  * @returns {void}
-  */
+   * Populates the form with existing contact data to prepare for editing.
+   * It searches for the contact by ID within the local state and updates
+   * the form controls using patchValue.
+   * @private
+   * @param {number} [id] - The unique identifier of the contact to be edited.
+   * @returns {void}
+   */
   private prepareEditForm(id?: number) {
     if (!id) return;
-    const CONTACT = this.contactService.contacts().find(contact => contact.id === id);
+    const CONTACT = this.contactService.contacts().find((contact) => contact.id === id);
     if (CONTACT) {
       this.userForm.patchValue(CONTACT);
     }
   }
 
   /**
-  * Initiates the closing sequence of the contact dialog with a CSS transition.
-  * It applies a 'closing' class to trigger responsive animations (vertical for mobile,
-  * horizontal for desktop) and uses a timeout to call the native close() method
-  * only after the animation has completed.
-  * @returns {void}
-  */
+   * Initiates the closing sequence of the contact dialog with a CSS transition.
+   * It applies a 'closing' class to trigger responsive animations (vertical for mobile,
+   * horizontal for desktop) and uses a timeout to call the native close() method
+   * only after the animation has completed.
+   * @returns {void}
+   */
   closeDialog() {
     const DIALOG_ELEMENT = this.dialog.nativeElement;
     DIALOG_ELEMENT.classList.add('closing');
@@ -116,15 +125,15 @@ export class Contact implements OnInit {
   }
 
   /**
-  * Handles the contact deletion process.
-  * If a contact ID is selected, it calls the database service to remove the record,
-  * closes active UI views (details and dialog), and displays a success notification.
-  * @async
-  * @private
-  * @returns {Promise<void>} Resolves when the deletion and UI updates are complete.
-  */
+   * Handles the contact deletion process.
+   * If a contact ID is selected, it calls the database service to remove the record,
+   * closes active UI views (details and dialog), and displays a success notification.
+   * @async
+   * @private
+   * @returns {Promise<void>} Resolves when the deletion and UI updates are complete.
+   */
   async handleDelete() {
-   const ID = this.selectedContactId();
+    const ID = this.selectedContactId();
     if (ID) {
       try {
         await this.contactService.deleteContact(ID);
@@ -132,33 +141,35 @@ export class Contact implements OnInit {
         this.closeDialog();
         this.dbService.showNotification('Contact successfully deleted.');
       } catch (error) {
-      console.error('Error deleting contact:', error);
+        console.error('Error deleting contact:', error);
       }
     }
   }
 
   /**
-  * Main form submission handler. Validates the form, processes the data,
-  * and handles UI finalization or error reporting.
-  * @returns {Promise<void>}
-  */
-  async formSubmit(){
+   * Main form submission handler. Validates the form, processes the data,
+   * and handles UI finalization or error reporting.
+   * @returns {Promise<void>}
+   */
+  async formSubmit() {
     if (this.userForm.invalid) return;
     try {
       await this.processContactData();
       this.finalizeForm();
-      this.dbService.showNotification(this.isEditMode() ? 'Contact successfully saved.' : 'Contact successfully created.');
+      this.dbService.showNotification(
+        this.isEditMode() ? 'Contact successfully saved.' : 'Contact successfully created.',
+      );
     } catch (error) {
       this.handleError(error);
     }
   }
 
   /**
-  * Determines whether to create a new contact or update an existing one
-  * based on the current component state.
-  * @private
-  * @returns {Promise<void>}
-  */
+   * Determines whether to create a new contact or update an existing one
+   * based on the current component state.
+   * @private
+   * @returns {Promise<void>}
+   */
   private async processContactData() {
     const formData = this.userForm.value;
     if (this.isEditMode()) {
@@ -169,69 +180,68 @@ export class Contact implements OnInit {
   }
 
   /**
-  * Updates an existing contact record in the database using the selected ID.
-  * @private
-  * @param {ContactFormData} formData - The validated data from userForm.
-  * @throws {Error} If no contact ID is selected for the update.
-  * @returns {Promise<void>}
-  */
+   * Updates an existing contact record in the database using the selected ID.
+   * @private
+   * @param {ContactFormData} formData - The validated data from userForm.
+   * @throws {Error} If no contact ID is selected for the update.
+   * @returns {Promise<void>}
+   */
   private async updateExistingContact(formData: ContactFormData) {
     const ID = this.selectedContactId();
     if (!ID) throw new Error('No contact ID selected for update');
-      await this.contactService.updateContact(ID, formData);
+    await this.contactService.updateContact(ID, formData);
   }
 
   /**
-  * Assigns a random color to new contact data and sends it to the database service.
-  * @private
-  * @param {ContactFormData} formData - The validated data from userForm.
-  * @returns {Promise<void>}
-  */
+   * Assigns a random color to new contact data and sends it to the database service.
+   * @private
+   * @param {ContactFormData} formData - The validated data from userForm.
+   * @returns {Promise<void>}
+   */
   private async createNewContact(formData: ContactFormData) {
     const NEW_CONTACT = {
       ...formData,
-      color: this.contactService.getRandomColor()
+      color: this.contactService.getRandomColor(),
     };
     await this.contactService.addContact(NEW_CONTACT);
   }
 
   /**
-  * Cleans up the UI by resetting the form state and closing the active dialog.
-  * @private
-  * @returns {void}
-  */
+   * Cleans up the UI by resetting the form state and closing the active dialog.
+   * @private
+   * @returns {void}
+   */
   private finalizeForm() {
     this.userForm.reset();
     this.closeDialog();
   }
 
   /**
-  * Centralized error handler for form submission failures.
-  * Logs the provided error to the console for debugging purposes.
-  * @private
-  * @param {unknown} error - The error object or message captured during the submission process.
-  * @returns {void}
-  */
+   * Centralized error handler for form submission failures.
+   * Logs the provided error to the console for debugging purposes.
+   * @private
+   * @param {unknown} error - The error object or message captured during the submission process.
+   * @returns {void}
+   */
   private handleError(error: unknown) {
     console.error('Form submission failed:', error);
   }
 
   /**
-  * Detects clicks on the dialog's backdrop and closes the UI components accordingly.
-  * It calculates the bounding box of the dialog and compares it with the mouse click
-  * coordinates to determine if the click occurred outside the dialog's boundaries.
-  * @param {MouseEvent} event - The mouse event triggered by clicking.
-  * @returns {void}
-  */
+   * Detects clicks on the dialog's backdrop and closes the UI components accordingly.
+   * It calculates the bounding box of the dialog and compares it with the mouse click
+   * coordinates to determine if the click occurred outside the dialog's boundaries.
+   * @param {MouseEvent} event - The mouse event triggered by clicking.
+   * @returns {void}
+   */
   onBackdropClick(event: MouseEvent) {
     const DIALOG_ELEMENT = this.dialog.nativeElement;
     const RECT = DIALOG_ELEMENT.getBoundingClientRect();
-    const IS_CLICK_OUTSIDE = (
+    const IS_CLICK_OUTSIDE =
       event.clientX < RECT.left ||
       event.clientX > RECT.right ||
       event.clientY < RECT.top ||
-      event.clientY > RECT.bottom
-    );
+      event.clientY > RECT.bottom;
     if (IS_CLICK_OUTSIDE) {
       this.closeDialog();
       this.isMobileMenuOpen.set(false);
@@ -239,26 +249,26 @@ export class Contact implements OnInit {
   }
 
   /**
-  * Opens the contact detail view with a smooth transition effect.
-  * It manages the entry and exit animations by toggling visibility state and
-  * updates the selected contact ID to trigger reactive data updates via computed signals.
-  * @param {number} id - The unique identifier of the contact to be displayed.
-  * @returns {Promise<void>} A promise that resolves after handling exit animations
-  * (if any) and initiating the display of the new contact.
-  */
+   * Opens the contact detail view with a smooth transition effect.
+   * It manages the entry and exit animations by toggling visibility state and
+   * updates the selected contact ID to trigger reactive data updates via computed signals.
+   * @param {number} id - The unique identifier of the contact to be displayed.
+   * @returns {Promise<void>} A promise that resolves after handling exit animations
+   * (if any) and initiating the display of the new contact.
+   */
   async openDetailWindow(id: number) {
     if (this.isVisible()) {
       this.isVisible.set(false);
-      await new Promise(resolve => setTimeout(resolve, 250));
+      await new Promise((resolve) => setTimeout(resolve, 250));
     }
     this.selectedContactId.set(id);
     this.isVisible.set(true);
   }
 
   /**
-  * Closes the contact detail view.
-  * @param {boolean} keepSelection - If true, the selectedContactId remains set (useful for mobile back navigation).
-  */
+   * Closes the contact detail view.
+   * @param {boolean} keepSelection - If true, the selectedContactId remains set (useful for mobile back navigation).
+   */
   closeDetailView(keepSelection: boolean = false) {
     this.isVisible.set(false);
     setTimeout(() => {
@@ -269,25 +279,25 @@ export class Contact implements OnInit {
   }
 
   /**
-  * Toggles the visibility state of the mobile menu.
-  * It prevents the event from bubbling up to parent elements and stops default
-  * browser behavior to ensure a clean UI transition.
-  * @param {Event} event - The trigger event (e.g., click or touch).
-  * @returns {void}
-  */
+   * Toggles the visibility state of the mobile menu.
+   * It prevents the event from bubbling up to parent elements and stops default
+   * browser behavior to ensure a clean UI transition.
+   * @param {Event} event - The trigger event (e.g., click or touch).
+   * @returns {void}
+   */
   toggleMobileMenu(event: Event) {
     event.stopPropagation();
     event.preventDefault();
-    this.isMobileMenuOpen.update(v => !v);
+    this.isMobileMenuOpen.update((v) => !v);
   }
 
   /**
-  * Executes contact actions (edit or delete) specifically from the mobile interface.
-  * It retrieves the currently selected contact ID, triggers the appropriate
-  * dialog window, and automatically closes the mobile menu to clean up the UI.
-  * @param {'editContact' | 'deleteContact'} type - The specific action to perform on the selected contact.
-  * @returns {void}
-  */
+   * Executes contact actions (edit or delete) specifically from the mobile interface.
+   * It retrieves the currently selected contact ID, triggers the appropriate
+   * dialog window, and automatically closes the mobile menu to clean up the UI.
+   * @param {'editContact' | 'deleteContact'} type - The specific action to perform on the selected contact.
+   * @returns {void}
+   */
   handleMobileAction(type: 'editContact' | 'deleteContact') {
     const ID = this.selectedContactId();
     if (ID) {
@@ -297,12 +307,12 @@ export class Contact implements OnInit {
   }
 
   /**
-  * Globally listens for click events to detect if the user clicked outside the mobile menu.
-  * If the menu is open and the click target is not within the '.mobile-menu-container',
-  * the menu is automatically closed.
-  * @param {Event} event - The global document click event.
-  * @returns {void}
-  */
+   * Globally listens for click events to detect if the user clicked outside the mobile menu.
+   * If the menu is open and the click target is not within the '.mobile-menu-container',
+   * the menu is automatically closed.
+   * @param {Event} event - The global document click event.
+   * @returns {void}
+   */
   @HostListener('document:click', ['$event'])
   clickOutsideMenu(event: Event) {
     const CLICKED_ELEMENT = event.target as HTMLElement;
@@ -312,12 +322,12 @@ export class Contact implements OnInit {
   }
 
   /**
-  * Truncates a string to a specified length and appends an ellipsis if it exceeds the limit.
-  * Useful for maintaining UI consistency in contact lists.
-  * @param {string} text - The string to be truncated.
-  * @param {number} [limit=14] - The maximum number of characters allowed.
-  * @returns {string} The truncated string or the original string if within the limit.
-  */
+   * Truncates a string to a specified length and appends an ellipsis if it exceeds the limit.
+   * Useful for maintaining UI consistency in contact lists.
+   * @param {string} text - The string to be truncated.
+   * @param {number} [limit=14] - The maximum number of characters allowed.
+   * @returns {string} The truncated string or the original string if within the limit.
+   */
   truncateName(text: string, limit: number = 14): string {
     return text.length > limit ? text.substring(0, limit) + '...' : text;
   }
