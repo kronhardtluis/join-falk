@@ -14,7 +14,7 @@ import { ContactService } from './services/contact-service.ts';
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('join-falk');
+  protected readonly title = signal('join');
   dbService = inject(Supabase);
   oAuthService = inject(OAuthService)
   private tasksService = inject(TasksService);

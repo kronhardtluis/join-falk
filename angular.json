@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "join-falk": {
+    "join": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -61,10 +61,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "join-falk:build:production"
+              "buildTarget": "join:build:production"
             },
             "development": {
-              "buildTarget": "join-falk:build:development"
+              "buildTarget": "join:build:development"
             }
           },
           "defaultConfiguration": "development"
